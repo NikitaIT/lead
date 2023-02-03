@@ -1,17 +1,35 @@
 {
-  "extends": ["plugin:@nrwl/nx/react"],
-  "root": true,
+  "extends": ["plugin:@nrwl/nx/react", "./.eslintrc.base.json"],
   "ignorePatterns": ["!**/*"],
-  "plugins": ["@nrwl/nx"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nrwl/nx/typescript"],
-      "rules": {}
+      "rules": {
+        // "@nrwl/nx/enforce-module-boundaries": [
+        //   "error",
+        //   {
+        //     "allow": [],
+        //     // update depConstraints based on your tags
+        //     "depConstraints": [
+        //       {
+        //         "sourceTag": "scope:shared",
+        //         "onlyDependOnLibsWithTags": ["scope:shared"]
+        //       },
+        //       {
+        //         "sourceTag": "scope:admin",
+        //         "onlyDependOnLibsWithTags": ["scope:shared", "scope:admin"]
+        //       },
+        //       {
+        //         "sourceTag": "scope:client",
+        //         "onlyDependOnLibsWithTags": ["scope:shared", "scope:client"]
+        //       }
+        //     ]
+        //   }
+        // ]
+      }
     },
     {
       "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nrwl/nx/javascript"],
       "rules": {}
     },
     {

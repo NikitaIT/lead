@@ -1,5 +1,7 @@
 import styled from 'styled-components';
-import NxWelcome from './nx-welcome';
+import { Route, Routes } from 'react-router-dom';
+import Root from './root/root';
+import { Tasks } from '@lead/tasks';
 
 const StyledApp = styled.div`
   // Your style here
@@ -8,7 +10,10 @@ const StyledApp = styled.div`
 export function App() {
   return (
     <StyledApp>
-      <NxWelcome title="lead" />
+      <Routes>
+        <Route path="/" element={<Root />}></Route>
+        <Route path="/tasks" element={<Tasks />}></Route>
+      </Routes>
     </StyledApp>
   );
 }
