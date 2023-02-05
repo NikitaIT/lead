@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import Banner from './banner';
+import DataAccess from './data-access';
 
-describe('Banner', () => {
+describe('DataAccess', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<Banner text="lol" />);
+    const { baseElement } = render(<DataAccess />);
     expect(baseElement).toBeTruthy();
   });
 });

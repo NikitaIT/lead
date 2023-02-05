@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import Banner from './banner';
+import SetForm from './set-form';
 
-describe('Banner', () => {
+describe('SetForm', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<Banner text="lol" />);
+    const { baseElement } = render(<SetForm />);
     expect(baseElement).toBeTruthy();
   });
 });
