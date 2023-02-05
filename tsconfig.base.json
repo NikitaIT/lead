@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@lead/data-access": ["data-access/src/index.ts"],
+      "@lead/models": ["models/src/index.ts"],
       "@lead/shared/ui": ["shared/ui/src/index.ts"],
       "@lead/tasks": ["tasks/src/index.ts"]
     }

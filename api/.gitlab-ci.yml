@@ -1,0 +1,176 @@
+default:
+  tags:
+    - node
+
+stages:
+  - build_nginx
+  - build
+  - deploy_nginx
+  - deploy
+
+variables:
+  SERVICE_NAME: lead-api
+  AWS_REGISTRY_URL: 0000.eu-west-0000.amazonaws.com
+  IMAGE_NAME: api-client-${SERVICE_NAME}
+  NGINX_IMAGE_TAG: nginx-${ENV}-${CI_COMMIT_SHORT_SHA}
+  PROXY_REGISTRY_URL: 'docker-proxy.lead.io'
+  API_SERVICE_NAME: 'lead-api'
+  NGINX_SERVICE_NAME: 'nginx-lead-api'
+  IMAGE_TAG: ${SERVICE_NAME}-${ENV}-${CI_COMMIT_SHORT_SHA}
+  SLACK_NOTIFICATIONS_TEXT: '${SERVICE_NAME} node was deployed successfully on ${ENV} ${NODE_TYPE}'
+
+.ssh-config: &ssh-config
+  - |
+    mkdir -p ~/.ssh; chmod 0700 ~/.ssh
+    ssh-keyscan -H ${API_HOST} >> ~/.ssh/known_hosts
+    chmod 600 ${SRV_GITLAB_SSH_PRIVATE_KEY}
+
+.mkdir-build: &mkdir-build
+  - |
+    ssh -o StrictHostKeyChecking=no -i ${SRV_GITLAB_SSH_PRIVATE_KEY} ${SRV_GITLAB_SSH_USER}@${API_HOST} /bin/bash << ENDSSH
+    export SRV_GITLAB_SSH_USER='$SRV_GITLAB_SSH_USER'
+    export DOCKER_COMPOSE_FILE_DIR='$DOCKER_COMPOSE_FILE_DIR'
+    sudo mkdir -p ${DOCKER_COMPOSE_FILE_DIR}
+    sudo chown -R ${SRV_GITLAB_SSH_USER}:${SRV_GITLAB_SSH_USER} ${DOCKER_COMPOSE_FILE_DIR}
+    ENDSSH
+
+.slack-notify: &slack-notify
+  - >
+    if [ ${ENV} = "prod" ];then
+    curl -X POST --data-urlencode 
+    "payload={\"channel\": \"${SLACK_DEPLOYMENTS_CHANNEL}\", \"username\": \"${SLACK_NOTIFICATIONS_USERNAME}\", \"text\": \"${SLACK_NOTIFICATIONS_TEXT}\"}" 
+    ${SLACK_DEPLOYMENTS_WEBHOOK};
+    curl -X POST --data-urlencode 
+    "payload={\"channel\": \"${SLACK_API_DEPLOYMENTS_WEBHOOK}\", \"username\": \"${SLACK_NOTIFICATIONS_USERNAME}\", \"text\": \"${SLACK_NOTIFICATIONS_TEXT}\"}" 
+    ${SLACK_API_DEPLOYMENTS_WEBHOOK};
+    fi
+  - >
+    if [ ${ENV} = "test" ];then
+    curl -X POST --data-urlencode 
+    "payload={\"channel\": \"${SLACK_API_DEPLOYMENTS_WEBHOOK}\", \"username\": \"${SLACK_NOTIFICATIONS_USERNAME}\", \"text\": \"${SLACK_NOTIFICATIONS_TEXT}\"}" 
+    ${SLACK_API_DEPLOYMENTS_WEBHOOK};
+    fi
+
+.build:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: ['']
+  script:
+    - |
+      mkdir -p /kaniko/.docker
+      echo "{\"credsStore\":\"ecr-login\"}" > /kaniko/.docker/config.json
+      /kaniko/executor --cache=true \
+      --context $CI_PROJECT_DIR \
+      --dockerfile Dockerfile \
+      --build-arg API_VERSION=${API_VERSION} \
+      --destination ${AWS_REGISTRY_URL}/${IMAGE_NAME}:${IMAGE_TAG}
+
+.build_nginx:
+  stage: build_nginx
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: ['']
+  script:
+    - |
+      cp ${NGINX_CRT_KEY_FILE} nginx/nginx.key
+      cp ${NGINX_CRT_KEY_PASS} nginx/nginx.pass
+    - |
+      mkdir -p /kaniko/.docker
+      echo "{\"credsStore\":\"ecr-login\"}" > /kaniko/.docker/config.json
+      /kaniko/executor --cache=true \
+      --context $CI_PROJECT_DIR/nginx \
+      --dockerfile nginx/Dockerfile \
+      --build-arg NGINX_ENV=${ENV} \
+      --destination ${AWS_REGISTRY_URL}/${IMAGE_NAME}:${NGINX_IMAGE_TAG}
+    - rm -f nginx/nginx.key nginx/nginx.pass
+
+.deploy:
+  stage: deploy
+  image: ${DEPLOY_IMAGE}
+  variables:
+    DOCKER_COMPOSE_FILE_DIR: /home/lead/api/build
+    DOCKER_COMPOSE_FILE_PATH: ${DOCKER_COMPOSE_FILE_DIR}/docker-compose.yml
+    DOCKER_COMPOSE_PROJECT_NAME: ${SERVICE_NAME}
+  script:
+    - *ssh-config
+    - *mkdir-build
+    - |
+      envsubst < docker-compose-${ENV}.yml > docker-compose-${ENV}-${CI_PIPELINE_IID}.yml
+      scp -o StrictHostKeyChecking=no -i ${SRV_GITLAB_SSH_PRIVATE_KEY} docker-compose-${ENV}-${CI_PIPELINE_IID}.yml ${SRV_GITLAB_SSH_USER}@${API_HOST}:${DOCKER_COMPOSE_FILE_PATH}
+      ssh -o StrictHostKeyChecking=no -i ${SRV_GITLAB_SSH_PRIVATE_KEY} ${SRV_GITLAB_SSH_USER}@${API_HOST} docker-compose --file ${DOCKER_COMPOSE_FILE_PATH} -p ${DOCKER_COMPOSE_PROJECT_NAME}  stop -t 300 ${API_SERVICE_NAME}
+      ssh -o StrictHostKeyChecking=no -i ${SRV_GITLAB_SSH_PRIVATE_KEY} ${SRV_GITLAB_SSH_USER}@${API_HOST} docker-compose --file ${DOCKER_COMPOSE_FILE_PATH} -p ${DOCKER_COMPOSE_PROJECT_NAME}  up --force-recreate -d
+    - *slack-notify
+  when: manual
+  allow_failure: false
+
+.deploy_nginx:
+  stage: deploy_nginx
+  image: ${DEPLOY_IMAGE}
+  variables:
+    DOCKER_COMPOSE_FILE_DIR: /home/lead/api/build
+    DOCKER_COMPOSE_FILE_PATH: ${DOCKER_COMPOSE_FILE_DIR}/docker-compose.yml
+    DOCKER_COMPOSE_PROJECT_NAME: ${SERVICE_NAME}
+  script:
+    - *ssh-config
+    - *mkdir-build
+    - |
+      envsubst < docker-compose-${ENV}.yml > docker-compose-${ENV}-${CI_PIPELINE_IID}.yml
+      scp -o StrictHostKeyChecking=no -i ${SRV_GITLAB_SSH_PRIVATE_KEY} docker-compose-${ENV}-${CI_PIPELINE_IID}.yml ${SRV_GITLAB_SSH_USER}@${API_HOST}:${DOCKER_COMPOSE_FILE_PATH}
+      ssh -o StrictHostKeyChecking=no -i ${SRV_GITLAB_SSH_PRIVATE_KEY} ${SRV_GITLAB_SSH_USER}@${API_HOST} docker-compose --file ${DOCKER_COMPOSE_FILE_PATH} -p ${DOCKER_COMPOSE_PROJECT_NAME} stop -t 10 ${NGINX_SERVICE_NAME}
+      ssh -o StrictHostKeyChecking=no -i ${SRV_GITLAB_SSH_PRIVATE_KEY} ${SRV_GITLAB_SSH_USER}@${API_HOST} docker-compose --file ${DOCKER_COMPOSE_FILE_PATH} -p ${DOCKER_COMPOSE_PROJECT_NAME} up -d --force-recreate --no-deps ${NGINX_SERVICE_NAME}
+  when: manual
+
+build_prod:
+  variables:
+    ENV: prod
+    API_VERSION: '0.0.1'
+  extends: .build
+  only:
+    - deploy_prod
+
+build_nginx_prod:
+  variables:
+    ENV: prod
+  before_script:
+    - export NGINX_CRT_KEY_FILE=${PROD_NGINX_CRT_KEY_FILE}
+    - export NGINX_CRT_KEY_PASS=${PROD_NGINX_CRT_KEY_PASS}
+  extends: .build_nginx
+  only:
+    - deploy_prod
+
+deploy_primary:
+  variables:
+    API_HOST: '0.0.0.0'
+    ENV: prod
+    API_VERSION: '0.0.1'
+    NODE_TYPE: 'primary'
+  extends: .deploy
+  only:
+    - deploy_prod
+
+deploy_nginx_primary:
+  variables:
+    API_HOST: '0.0.0.0'
+    ENV: prod
+  extends: .deploy_nginx
+  only:
+    - deploy_prod
+
+deploy_secondary:
+  variables:
+    API_HOST: '0.0.0.0'
+    ENV: prod
+    API_VERSION: '0.0.1'
+    NODE_TYPE: 'secondary'
+  extends: .deploy
+  only:
+    - deploy_prod
+
+deploy_nginx_secondary:
+  variables:
+    API_HOST: '0.0.0.0'
+    ENV: prod
+  extends: .deploy_nginx
+  only:
+    - deploy_prod

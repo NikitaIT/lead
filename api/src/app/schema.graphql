@@ -12,3 +12,15 @@ type Query {
 type Mutation {
   addSet(name: String, year: String, numParts: Int): Set
 }
+
+type Comment {
+  postId: Int!
+  comment: String!
+}
+
+type Mutation {
+  addComment(postId: String!, comment: String!): Set
+}
+type Subscription {
+  commentAdded(postId: String!): Comment
+}

@@ -1,11 +1,17 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Context,
+  Int,
+  Mutation,
+  Query,
+  Resolver,
+  Subscription,
+} from '@nestjs/graphql';
 
-export interface SetEntity {
-  id: number;
-  name: string;
-  numParts: number;
-  year: string;
-}
+import { PubSub } from 'graphql-subscriptions';
+import { Set } from './graphql';
+
+export type SetEntity = Set;
 
 @Resolver('Set')
 export class SetResolver {
@@ -45,5 +51,35 @@ export class SetResolver {
     this.sets.push(newSet);
 
     return newSet;
+  }
+
+  @Mutation()
+  async addComment(
+    @Args('postId', { type: () => Int }) postId: number,
+    @Args('comment', { type: () => String }) comment: string,
+    @Context('pubsub') pubSub: PubSub
+  ): Promise<{ postId: number; comment: string }> {
+    const newComment = { postId, comment };
+    // const newComment = this.commentsService.addComment({ id: postId, comment });
+    const msg = {
+      topic: 'commentAdded',
+      payload: {
+        commentAdded: newComment,
+      },
+    };
+
+    await pubSub.publish(msg.topic, msg.payload);
+
+    return newComment;
+  }
+  @Subscription('commentAdded', {
+    filter: (payload, variables) =>
+      payload.commentAdded.postId === variables.postId,
+  })
+  commentAdded(
+    @Args('postId') postId: string,
+    @Context('pubsub') pubSub: PubSub
+  ) {
+    return pubSub.asyncIterator('commentAdded');
   }
 }

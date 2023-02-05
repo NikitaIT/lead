@@ -1,5 +1,5 @@
 import { GraphQLDefinitionsFactory } from '@nestjs/graphql';
-import { generateOptions } from 'api/src/feature/graphql/GenerateOptions';
+import { generateOptions } from '../../feature/graphql/GenerateOptions';
 
 export function main() {
   const definitionsFactory = new GraphQLDefinitionsFactory();

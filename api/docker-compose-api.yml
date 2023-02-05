@@ -1,0 +1,27 @@
+version: '3'
+services:
+  lead-api:
+    image: ${PROXY_REGISTRY_URL}/${IMAGE_NAME}:${IMAGE_TAG}
+    command: -some-command
+    ports:
+      - 00001:00001
+    environment:
+      - API_PROFILE=${ENV}
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://${ENV}.lead.io:10000
+        tag: lead-api
+  nginx-lead-api:
+    image: ${PROXY_REGISTRY_URL}/${IMAGE_NAME}:${NGINX_IMAGE_TAG}
+    command: [nginx-debug, '-g', 'daemon off;']
+    ports:
+      - 00002:00002/tcp
+    restart: always
+    depends_on:
+      - lead-api
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://${ENV}.lead.io:10000
+        tag: nginx-lead-api

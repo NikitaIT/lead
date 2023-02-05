@@ -24,6 +24,18 @@ export interface IQuery {
 export interface IMutation {
     __typename?: 'IMutation';
     addSet(name?: Nullable<string>, year?: Nullable<string>, numParts?: Nullable<number>): Nullable<Set> | Promise<Nullable<Set>>;
+    addComment(postId: string, comment: string): Nullable<Set> | Promise<Nullable<Set>>;
+}
+
+export interface Comment {
+    __typename?: 'Comment';
+    postId: number;
+    comment: string;
+}
+
+export interface ISubscription {
+    __typename?: 'ISubscription';
+    commentAdded(postId: string): Nullable<Comment> | Promise<Nullable<Comment>>;
 }
 
 type Nullable<T> = T | null;
