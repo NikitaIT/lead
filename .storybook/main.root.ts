@@ -1,6 +1,4 @@
-import type { StorybookConfig } from '@storybook/core-common';
-
-export const rootMain: StorybookConfig = {
+export const rootMain = {
   stories: [],
   addons: ['@storybook/addon-essentials'],
 };

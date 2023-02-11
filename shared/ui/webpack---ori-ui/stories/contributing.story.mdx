@@ -1,0 +1,47 @@
+import React from 'react';
+import { mdx } from '@mdx-js/react';
+
+/_ @jsxRuntime classic _/
+/_ @jsx mdx _/
+import { assertIsFn, AddContext } from "@storybook/addon-docs";
+
+import { Meta, Description } from '@storybook/blocks';
+import Contributing from '../CONTRIBUTING.md';
+
+const layoutProps = {
+
+};
+const MDXLayout = "wrapper"
+function MDXContent({
+components,
+...props
+}) {
+return <MDXLayout {...layoutProps} {...props} components={components} mdxType="MDXLayout">
+
+    <Meta title="General/Contributing" mdxType="Meta" />
+    <Description mdxType="Description">{Contributing}</Description>
+    </MDXLayout>;
+
+}
+;
+MDXContent.isMDXComponent = true;
+
+export const __page = () => {
+  throw new Error('Docs-only story');
+};
+
+\_\_page.parameters = { docsOnly: true };
+
+const componentMeta = { title: 'General/Contributing', includeStories: ["__page"], };
+
+const mdxStoryNameToKey = {};
+
+componentMeta.parameters = componentMeta.parameters || {};
+componentMeta.parameters.docs = {
+...(componentMeta.parameters.docs || {}),
+page: () => <AddContext mdxStoryNameToKey={mdxStoryNameToKey} mdxComponentAnnotations={componentMeta}><MDXContent /></AddContext>,
+};
+
+export default componentMeta;
+
+;

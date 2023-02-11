@@ -15,9 +15,27 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@lead/ag-grid": ["ag-grid/src/index.ts"],
       "@lead/data-access": ["data-access/src/index.ts"],
       "@lead/models": ["models/src/index.ts"],
+      "@lead/shared/packages/codemod": ["shared/packages/codemod/src/index.ts"],
+      "@lead/shared/packages/components": [
+        "shared/packages/components/src/index.ts"
+      ],
+      "@lead/shared/packages/css-variables": [
+        "shared/packages/css-variables/src/index.ts"
+      ],
+      "@lead/shared/packages/data-grid": [
+        "shared/packages/data-grid/src/index.ts"
+      ],
+      "@lead/shared/packages/fonts": ["shared/packages/fonts/src/index.ts"],
+      "@lead/shared/packages/icons": ["shared/packages/icons/src/index.ts"],
+      "@lead/shared/packages/license": ["shared/packages/license/src/index.ts"],
+      "@lead/shared/packages/mui": ["shared/packages/mui/src/index.ts"],
       "@lead/shared/ui": ["shared/ui/src/index.ts"],
+      "@lead/storybook-preview": ["storybook-preview/src/index.ts"],
+      "@lead/storybook-story": ["storybook-story/src/index.ts"],
+      "@lead/storybook-template": ["storybook-template/src/index.ts"],
       "@lead/tasks": ["tasks/src/index.ts"]
     }
   },

@@ -1,0 +1,21 @@
+# Use Case - My Component (SPA) rendering only part of the page
+
+In this case fonts are **provided by the environment** (html page).
+
+> ❗ SPA **NEED NOT** to add font links on its own! SPAs should only define `font-family` if it wants to use fonts.
+
+```html focus=4:4,7:7
+<div class="my-app">
+  <style type="text/css">
+    .my-app {
+      font-family: Sans, SansFallback, sans-serif;
+    }
+    .my-app__title {
+      font-family: SansCondensed, SansCondensedFallback, sans-serif;
+    }
+  </style>
+
+  <div class="my-app__title">My App</div>
+  My Content
+</div>
+```

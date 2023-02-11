@@ -1,0 +1,95 @@
+import { pkg } from './readmeMeta';
+
+<div className="sb-unstyled">
+
+# {pkg.name}
+
+The following npm package, [{pkg.name}][git_project], should contain every icon used in our product.
+
+Full documentation can be found on [@mui/icons][@mui/icons].
+
+## Installation
+
+<CH.Code>
+
+```bash npm
+npm install --save {pkg.name}
+```
+
+```bash yarn
+yarn add {pkg.name}
+```
+
+</CH.Code>
+
+## Usage exports
+
+<CH.Code>
+
+```ts Named
+import { Academy } from '{pkg.name}';
+
+const myIcon = <Academy />;
+```
+
+</CH.Code>
+
+## Missing Icons
+
+In case of the missing icon, please write to the channel [xxx][slack_channel] or create an issue in [our task tracker][jira_project].
+
+## Adding new icon
+
+### Before you start
+
+Make sure that:
+
+- Icons that you want to add are [not already in our pack](/story/icons--overview).
+- Every icon must comply with our [icon rules][icon_rules]
+  - these icon aspects can be updated through [icomoon.io][icomoon]. Please continue to steps down bellow.
+
+### Steps
+
+1. Get and svg icon/s from designers
+2. Add your icon/s to [icomoon.io][icomoon] and make desired changes to match [visual rules][our_visual_rules]. [(icomoon docs here)][icomoon_docs]
+3. Export your updated icons and save your set for easy access in the future.
+4. Clone or go to repo [{pkg.name}][git_project] and add or replace new icon/s.
+5. Follow instruction in that [{pkg.name}][git_project] repo for more info.
+6. Then update package json in icons and internals.
+7. Create pull request to [{pkg.name}][git_project] with name like: `new(Icons): Add Facebook icon`
+8. After completion we will release your new icons.
+
+### Rules for Icons
+
+| Name     | Rule                                               |
+| -------- | -------------------------------------------------- |
+| Size     | 24x24 px                                           |
+| margin   | at least 3px                                       |
+| Centered | +                                                  |
+| No color | Color will be automatically removed in UI package. |
+| Content  | Icons can only have paths                          |
+
+### Creating two-tone icons
+
+Icons cannot have any color, as mentioned in rules, only opacity.
+
+```tsx Example
+<>
+  <path
+    d="M12 2.5c5.247 0 9.5 4.253 9.5 9.5s-4.253 9.5-9.5 9.5A9.5 9.5 0 012.5 12 9.5 9.5 0 0112 2.5z"
+    opacity=".3"
+  />
+  <path d="M14.355 8.905l-2.456 2.456-2.456-2.456a.4.4 0 10-.567.567l2.456 2.456-2.456 2.456a.4.4 0 10.567.567l2.456-2.456 2.456 2.456a.4.4 0 10.567-.567l-2.456-2.456 2.456-2.456a.4.4 0 10-.567-.567z" />
+</>
+```
+
+</div>
+
+[icomoon]: https://icomoon.io/
+[icomoon_docs]: https://icomoon.io/#docs
+[icon_rules]: #
+[@mui/icons]: https://mui.com/material-ui/api/icon/
+[slack_channel]: #
+[jira_project]: #
+[our_visual_rules]: #
+[git_project]: #

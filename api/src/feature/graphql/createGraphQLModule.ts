@@ -10,6 +10,6 @@ export function createGraphQLModule() {
     typePaths: ['./**/*.graphql'],
     definitions: generateOptions(),
     subscriptions: generatePubSub(),
-    plugins: [ApolloServerPluginLandingPageLocalDefault()],
+    // plugins: [ApolloServerPluginLandingPageLocalDefault()],
   });
 }

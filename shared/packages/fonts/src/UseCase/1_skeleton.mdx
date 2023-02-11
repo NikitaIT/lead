@@ -1,0 +1,42 @@
+# Use Case - My application provides whole HTML page (or its skeleton)
+
+<div className="sb-unstyled">
+
+Application needs to include font links in the `<head>` of its HTML page. This way the fonts are available for the content of the page (and SPAs included in it).
+
+Examples of this use case are _Online_ and _AppShell_ with their page layouts. Also remember to use preconnect and preload links to create the most performant version, see snippet below.
+
+```html focus=2:26
+<html>
+  <head>
+    <link rel="preconnect" crossorigin="anonymous" href="{fonts_cdn}" />
+
+    <link
+      rel="preload"
+      as="style"
+      crossorigin="anonymous"
+      href="{fonts_cdn}/fonts/v2/{font_name}.css"
+    />
+    <link
+      rel="preload"
+      as="font"
+      crossorigin="anonymous"
+      href="{fonts_cdn}/fonts/v2/{font_name}.woff2"
+    />
+    <!-- Other preloaded font files -->
+
+    <link
+      rel="stylesheet"
+      crossorigin="anonymous"
+      href="{fonts_cdn}/fonts/v2/{font_name}.css"
+      media="print"
+      onload="this.media='all'"
+    />
+  </head>
+  <body>
+    My App Content
+  </body>
+</html>
+```
+
+</div>

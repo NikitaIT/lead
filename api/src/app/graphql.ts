@@ -24,7 +24,7 @@ export interface IQuery {
 export interface IMutation {
     __typename?: 'IMutation';
     addSet(name?: Nullable<string>, year?: Nullable<string>, numParts?: Nullable<number>): Nullable<Set> | Promise<Nullable<Set>>;
-    addComment(postId: string, comment: string): Nullable<Set> | Promise<Nullable<Set>>;
+    addComment(postId: number, comment: string): Nullable<Comment> | Promise<Nullable<Comment>>;
 }
 
 export interface Comment {
@@ -35,7 +35,7 @@ export interface Comment {
 
 export interface ISubscription {
     __typename?: 'ISubscription';
-    commentAdded(postId: string): Nullable<Comment> | Promise<Nullable<Comment>>;
+    commentAdded(postId: number): Nullable<Comment> | Promise<Nullable<Comment>>;
 }
 
 type Nullable<T> = T | null;

@@ -15,3 +15,16 @@ mutation addSet($name: String!, $year: String!, $numParts: Int!) {
     year
   }
 }
+
+mutation addComment($postId: Int!, $comment: String!) {
+  addComment(postId: $postId, comment: $comment) {
+    postId
+    comment
+  }
+}
+subscription OnCommentAdded($postId: Int!) {
+  commentAdded(postId: $postId) {
+    postId
+    comment
+  }
+}

@@ -23,7 +23,14 @@ export type Comment = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addComment: Maybe<Set>;
   addSet: Maybe<Set>;
+};
+
+
+export type MutationAddCommentArgs = {
+  comment: Scalars['String'];
+  postId: Scalars['String'];
 };
 
 

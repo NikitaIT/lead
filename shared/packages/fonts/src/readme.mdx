@@ -1,0 +1,44 @@
+import { pkg } from './readmeMeta';
+
+<div className="sb-unstyled">
+
+# {pkg.name}
+
+This package contains font files and related `@font-face` style definitions for project fonts hosted at statictorage [(CDN)][fonts_cdn].
+
+Versioning scheme of fonts uses only major version of the package version. E. g. package version **{pkg.version}** is available from static storage url [CDN][fonts_cdn].
+
+Assets in static storage are cached for **{pkg.fontsCDNCachExpired}** so changes may not be seen right away. Consider if the change is a breaking changes.
+
+## Font Family
+
+There are two sans-serif font variants used in our designs:
+
+- `Sans, SansFallback, sans-serif`
+
+- `SansCondensed, SansCondensedFallback, sans-serif`
+
+> ❗ DO USE font family definitions as stated above! With fallback fonts! These fallbacks are optimized to prevent visual layout shifts during page and font load.
+
+## Usage
+
+For specific usage cases of these fonts consult our [typeface design guidelines][typeface_design_guidelines].
+
+## Preload
+
+Multiple fonts files (multiple fonts or font variants) can be preloaded at the same time.
+
+> ⚠️ But be careful - more doesn't mean better. Preloading multiple assets will take up user's bandwidth and will delay other resources. Preload only those assets that are critical for the render of your page (First Contentful Paint)!
+
+## Local development
+
+For local development of SPAs using our fonts there are two options.
+
+1. Install required fonts locally in your operating system. Done. Fonts are taken from your system from now on.
+2. Use some kind of dummy HTML page in SPA project that is used only for development. This page defines your environment and can include fonts in a way that is described above in [Use Case 1][usecase-1]. But ❗ Make sure that neither this page nor linked fonts are in your built app's bundle!
+
+</div>
+
+[fonts_cdn]: #
+[typeface_design_guidelines]: #
+[usecase-1]: ?path=/docs/usecase-1-skeleton--docs

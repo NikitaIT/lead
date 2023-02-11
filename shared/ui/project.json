@@ -48,7 +48,6 @@
     "storybook": {
       "executor": "@nrwl/storybook:storybook",
       "options": {
-        "uiFramework": "@storybook/react",
         "port": 4400,
         "configDir": "shared/ui/.storybook"
       },
@@ -62,7 +61,6 @@
       "executor": "@nrwl/storybook:build",
       "outputs": ["{options.outputDir}"],
       "options": {
-        "uiFramework": "@storybook/react",
         "outputDir": "dist/storybook/shared-ui",
         "configDir": "shared/ui/.storybook"
       },

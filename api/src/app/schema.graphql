@@ -19,8 +19,8 @@ type Comment {
 }
 
 type Mutation {
-  addComment(postId: String!, comment: String!): Set
+  addComment(postId: Int!, comment: String!): Comment
 }
 type Subscription {
-  commentAdded(postId: String!): Comment
+  commentAdded(postId: Int!): Comment
 }

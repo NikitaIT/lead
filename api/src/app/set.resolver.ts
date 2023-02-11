@@ -1,3 +1,4 @@
+import { Inject } from '@nestjs/common';
 import {
   Args,
   Context,
@@ -10,11 +11,13 @@ import {
 
 import { PubSub } from 'graphql-subscriptions';
 import { Set } from './graphql';
+import { PUB_SUB } from './PubSub.module';
 
 export type SetEntity = Set;
 
 @Resolver('Set')
 export class SetResolver {
+  constructor(@Inject(PUB_SUB) private pubSub: PubSub) {}
   private sets: SetEntity[] = [
     {
       id: 1,
@@ -35,7 +38,7 @@ export class SetResolver {
     return this.sets;
   }
 
-  @Mutation()
+  @Mutation('addSet')
   addSet(
     @Args('name') name: string,
     @Args('year') year: string,
@@ -53,11 +56,10 @@ export class SetResolver {
     return newSet;
   }
 
-  @Mutation()
+  @Mutation('addComment')
   async addComment(
     @Args('postId', { type: () => Int }) postId: number,
-    @Args('comment', { type: () => String }) comment: string,
-    @Context('pubsub') pubSub: PubSub
+    @Args('comment', { type: () => String }) comment: string
   ): Promise<{ postId: number; comment: string }> {
     const newComment = { postId, comment };
     // const newComment = this.commentsService.addComment({ id: postId, comment });
@@ -68,7 +70,7 @@ export class SetResolver {
       },
     };
 
-    await pubSub.publish(msg.topic, msg.payload);
+    await this.pubSub.publish(msg.topic, msg.payload);
 
     return newComment;
   }
@@ -76,10 +78,8 @@ export class SetResolver {
     filter: (payload, variables) =>
       payload.commentAdded.postId === variables.postId,
   })
-  commentAdded(
-    @Args('postId') postId: string,
-    @Context('pubsub') pubSub: PubSub
-  ) {
-    return pubSub.asyncIterator('commentAdded');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  commentAdded(@Args('postId') postId: number) {
+    return this.pubSub.asyncIterator('commentAdded');
   }
 }
