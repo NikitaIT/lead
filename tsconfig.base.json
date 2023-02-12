@@ -33,6 +33,7 @@
       "@lead/shared/packages/license": ["shared/packages/license/src/index.ts"],
       "@lead/shared/packages/mui": ["shared/packages/mui/src/index.ts"],
       "@lead/shared/ui": ["shared/ui/src/index.ts"],
+      "@lead/std": ["std/src/index.ts"],
       "@lead/storybook-preview": ["storybook-preview/src/index.ts"],
       "@lead/storybook-story": ["storybook-story/src/index.ts"],
       "@lead/storybook-template": ["storybook-template/src/index.ts"],
