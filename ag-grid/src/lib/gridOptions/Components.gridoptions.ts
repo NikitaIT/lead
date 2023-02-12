@@ -1,4 +1,4 @@
-import { GridOptions } from 'ag-grid-community';
+import { GridOptions } from '@ag-grid-community/core';
 // import AgComponent from '../../Infrastructure/AgComponent';
 //import { collectToolPanels } from '@/infra/collectToolPanels';
 
