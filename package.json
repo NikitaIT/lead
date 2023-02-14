@@ -170,6 +170,8 @@
     "reflect-metadata": "^0.1.13",
     "remark-gfm": "^3.0.1",
     "rxjs": "^7.0.0",
+    "semantic-release-npm-github-publish": "^1.5.4",
+    "semantic-release-plus": "^20.0.0",
     "shiki": "^0.14.1",
     "styled-components": "^5.3.6",
     "supertest": "^6.3.3",
