@@ -131,3 +131,4 @@ jobs:
           NPM_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           npx nx affected --target release --all
+          npx semantic-release-plus
