@@ -11,6 +11,7 @@ export const PUB_SUB = 'pubsub';
   providers: [
     {
       provide: PUB_SUB,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       useFactory: (configService: ConfigService) =>
         new PubSub({
           // connection: {

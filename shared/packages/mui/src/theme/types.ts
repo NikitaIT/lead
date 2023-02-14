@@ -1,9 +1,4 @@
-import {
-  Components,
-  PaletteColor,
-  PaletteColorOptions,
-  Theme,
-} from '@mui/material';
+import { Components, PaletteColorOptions, Theme } from '@mui/material';
 
 export type ComponentsOverrides<
   T extends
@@ -13,7 +8,9 @@ export type ComponentsOverrides<
 > = Required<
   Required<
     Components<Omit<Theme, 'components'>> & {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       MuiDataGrid: any;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       MuiCalendarPicker: any;
     }
   >[T]
@@ -31,9 +28,9 @@ declare module '@mui/material' {
     extends Record<keyof Palette, true> {
     default: true;
   }
-  export type ChipPropsColorOverrides = Record<keyof Palette, true>
-
-  export type ButtonPropsColorOverrides = Record<keyof Palette, true>
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  export interface ChipPropsColorOverrides
+    extends Record<keyof Palette, true> {}
 
   export interface Palette {
     blue: PaletteColor;

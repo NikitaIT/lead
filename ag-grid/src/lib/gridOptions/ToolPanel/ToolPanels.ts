@@ -10,6 +10,7 @@ export type ToolPanels<TId extends string> = {
   toToolPanelProp: ToolPanelPropCreator<TId>;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace ToolPanels {
   export function toDef<TId extends string>({
     visibleOrdered,

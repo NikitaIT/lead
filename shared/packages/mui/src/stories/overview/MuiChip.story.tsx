@@ -100,6 +100,7 @@ export const MuiChip = function MuiChip() {
           <Chip
             variant="rounded"
             label="secondary rounded onDelete"
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
             onDelete={() => {}}
           />
         </Box>

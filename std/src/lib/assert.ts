@@ -1,13 +1,13 @@
 export class AssertionError extends Error {
-  constructor(msg?: string, expected?: any) {
+  constructor(msg?: string, expected?: unknown) {
     super(msg + (expected ? JSON.stringify(expected, null, 2) : ''));
     this.name = 'AssertionError';
   }
 }
 export function assert(
-  condition: any,
+  condition: unknown,
   msg?: string,
-  expected?: any
+  expected?: unknown
 ): asserts condition {
   // asserts condition
   if (!condition) {

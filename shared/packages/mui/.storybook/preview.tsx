@@ -8,6 +8,7 @@ import { ThemeProvider } from '@mui/material';
 export const globalTypes = _globalTypes;
 
 export const decorators = [
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (Story: any): any => (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <ThemeProvider theme={theme}>

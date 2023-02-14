@@ -7,21 +7,25 @@ import { Logger } from '../logger/logger';
  */
 @Injectable()
 export class DbLogger implements TypeORMLogger {
-  constructor(private logger: Logger) { }
+  constructor(private logger: Logger) {}
 
-  private stringifyQuery(query: string, parameters?: any[]) {
+  private stringifyQuery(query: string, parameters?: unknown[]) {
     const parametersStr = parameters ? ` (${JSON.stringify(parameters)})` : '';
     return `${query}${parametersStr}`;
   }
 
-  public logQuery(query: string, parameters?: any[]): void {
+  public logQuery(query: string, parameters?: unknown[]): void {
     this.logger.debug(`DB: ${this.stringifyQuery(query, parameters)}`);
   }
-  public logQueryError(error: string, query: string, parameters?: any[]) {
-    this.logger.error(`DB: ${error} - ${this.stringifyQuery(query, parameters)}`);
+  public logQueryError(error: string, query: string, parameters?: unknown[]) {
+    this.logger.error(
+      `DB: ${error} - ${this.stringifyQuery(query, parameters)}`
+    );
   }
-  public logQuerySlow(time: number, query: string, parameters?: any[]) {
-    this.logger.warn(`DB: SLOW (${time}) - ${this.stringifyQuery(query, parameters)}`);
+  public logQuerySlow(time: number, query: string, parameters?: unknown[]) {
+    this.logger.warn(
+      `DB: SLOW (${time}) - ${this.stringifyQuery(query, parameters)}`
+    );
   }
   public logSchemaBuild(message: string) {
     this.logger.http(`DB: ${message}`);
@@ -29,7 +33,7 @@ export class DbLogger implements TypeORMLogger {
   public logMigration(message: string) {
     this.logger.http(`DB: ${message}`);
   }
-  public log(level: 'log' | 'info' | 'warn', message: any) {
+  public log(level: 'log' | 'info' | 'warn', message: unknown) {
     switch (level) {
       case 'log':
       case 'info':

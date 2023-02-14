@@ -12,7 +12,7 @@ export function isNotUndefined<T>(x: T | undefined): x is T {
 export function isNotEmpty<T>(x: T | ''): x is T {
   return x !== '';
 }
-export function isNotEmptyList<T>(getter: (x: T) => ArrayLike<any>) {
+export function isNotEmptyList<T>(getter: (x: T) => ArrayLike<unknown>) {
   return (x: T) => getter(x).length !== 0;
 }
 export function decodeHTML(html: string): string {
@@ -89,7 +89,7 @@ export function sub(a: number, b: number) {
 export function unique<T>(values?: ReadonlyArray<T> | null) {
   return Array.from(new Set(values));
 }
-export function byId<K, T extends K = K>(id: T, castId?: (x: any) => any) {
+export function byId<K, T extends K = K>(id: T, castId?: (x: K) => unknown) {
   if (!castId) {
     return (x: { id: K }) => x.id === id;
   }

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { urlJoin } from 'url-join-ts';
+// import { urlJoin } from 'url-join-ts';
 import { DEFAULT_CONFIG } from './config.default';
 import {
   ConfigData,
@@ -29,7 +29,7 @@ export class ConfigService {
   private parseConfigFromEnv(env: NodeJS.ProcessEnv): ConfigData {
     return {
       env: env.NODE_ENV || DEFAULT_CONFIG.env,
-      port: parseInt(env.PORT!, 10),
+      port: parseInt(env.PORT, 10),
       db: this.parseDbConfigFromEnv(env, DEFAULT_CONFIG.db),
       logLevel: env.LOG_LEVEL || DEFAULT_CONFIG.logLevel,
       debug: env.DEBUG || 'qapi:*',

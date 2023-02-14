@@ -9,7 +9,7 @@ import {
 } from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { CreateUserInput, User, UpdateUserInput } from '../graphql.classes';
+import { CreateUserInput, UpdateUserInput } from '../graphql.classes';
 import { UsernameEmailAdminGuard } from '../auth/guards/username-email-admin.guard';
 import { AdminGuard } from '../auth/guards/admin.guard';
 import { UserInputError, ValidationError } from 'apollo-server-core';
@@ -68,7 +68,7 @@ export class UserResolver {
       const errors = await validate(userSignup);
 
       if (errors.length > 0) {
-        const errorsResponse: any = errors.map((val: any) => {
+        const errorsResponse = errors.map((val) => {
           return Object.values(val.constraints)[0] as string;
         });
         throw new BadRequestException(errorsResponse.join(','));
@@ -91,7 +91,7 @@ export class UserResolver {
   async updateUser(
     @Args('username') username: string,
     @Args('fieldsToUpdate') fieldsToUpdate: UpdateUserInput,
-    @Context('req') request: any
+    @Context('req') request: { user?: { username: string } }
   ): Promise<UserEntity> {
     let user: UserEntity | undefined;
     if (!username && request.user) username = request.user.username;

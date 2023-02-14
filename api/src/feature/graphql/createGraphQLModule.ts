@@ -18,9 +18,7 @@ export function createGraphQLModule() {
       definitions: generateOptions(),
       subscriptions: generatePubSub(),
 
-      directiveResolvers: {
-        key: FakeKeyDirective,
-      },
+      directiveResolvers: {},
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloFederationDriver,

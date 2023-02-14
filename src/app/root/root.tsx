@@ -3,7 +3,7 @@ import { Banner } from '@lead/shared/ui';
 import { Link } from 'react-router-dom';
 import { Checkbox, ThemeProvider } from '@mui/material';
 import { theme } from '@lead/shared/packages/mui';
-import { StarRating, StarType } from '@lead/shared/packages/components';
+import { StarRating } from '@lead/shared/packages/components';
 
 /* eslint-disable-next-line */
 export interface RootProps {}

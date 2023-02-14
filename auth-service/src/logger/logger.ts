@@ -49,7 +49,7 @@ export class Logger implements LoggerService {
    * @param message the log message
    */
   public log(message: string): void;
-  public log(p0: LogLevel | string, p1?: string, meta?: any) {
+  public log(p0: LogLevel | string, p1?: string, meta?: unknown) {
     const logLevel = isLogLevel(p0) ? p0 : LogLevel.Info;
     const message = isLogLevel(p0) && p1 ? p1 : p0;
     this.logger.log(logLevel, message, meta);

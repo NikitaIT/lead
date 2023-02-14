@@ -1,7 +1,7 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { CreateUserInput, UpdateUserInput } from '../graphql.classes';
 import { randomBytes } from 'crypto';
-import { createTransport, SendMailOptions } from 'nodemailer';
+// import { createTransport, SendMailOptions } from 'nodemailer';
 import { ConfigService } from '../config/config.service';
 import { AuthService } from '../auth/auth.service';
 import { UserEntity } from './entity/users.entity';
@@ -100,6 +100,7 @@ export class UsersService {
       if (duplicateUser /* ||!emailValid*/) fieldsToUpdate.email = undefined;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const fields: any = {};
 
     if (fieldsToUpdate.password) {

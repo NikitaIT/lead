@@ -11,17 +11,18 @@ import { Reflector } from '@nestjs/core';
 export class UsernameEmailAdminGuard implements CanActivate {
   constructor(
     private usersService: UsersService,
-    private readonly reflector: Reflector,
+    private readonly reflector: Reflector
   ) {}
 
   // Returns an array of all the properties of an object seperated by a .
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getPropertiesArray(object: any): string[] {
     let result: string[] = [];
     Object.entries(object).forEach(([key, value]) => {
       const field = key;
       if (typeof value === 'object' && value !== null) {
         const objectProperties = this.getPropertiesArray(value).map(
-          prop => `${field}.${prop}`,
+          (prop) => `${field}.${prop}`
         );
         result = result.concat(objectProperties);
       } else {
@@ -36,7 +37,7 @@ export class UsernameEmailAdminGuard implements CanActivate {
     const request = ctx.getContext().req;
     let shouldActivate = false;
     if (request.user) {
-      const user = <User> request.user;
+      const user = <User>request.user;
       const args = ctx.getArgs();
       if (args.username && typeof args.username === 'string') {
         shouldActivate =
@@ -53,17 +54,17 @@ export class UsernameEmailAdminGuard implements CanActivate {
       ) {
         const adminAllowedArgs = this.reflector.get<string[]>(
           'adminAllowedArgs',
-          context.getHandler(),
+          context.getHandler()
         );
 
         shouldActivate = true;
 
         if (adminAllowedArgs) {
           const argFields = this.getPropertiesArray(args);
-          argFields.forEach(field => {
+          argFields.forEach((field) => {
             if (!adminAllowedArgs.includes(field)) {
               throw new AuthenticationError(
-                `Admin is not allowed to modify ${field}`,
+                `Admin is not allowed to modify ${field}`
               );
             }
           });

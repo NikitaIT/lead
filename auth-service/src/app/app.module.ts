@@ -22,11 +22,11 @@ import { ApolloFederationDriver } from '@nestjs/apollo';
     GraphQLModule.forRoot({
       typePaths: ['./**/*.graphql'],
       driver: ApolloFederationDriver,
-      context: ({ req }: any) => ({ req }),
+      context: ({ req }) => ({ req }),
       formatError: (error: GraphQLError) => {
         const graphQLFormattedError: GraphQLFormattedError = {
           message:
-            // @ts-expect-error
+            // @ts-expect-error lalala
             error?.extensions?.exception?.response?.message || error?.message,
         };
         return graphQLFormattedError;

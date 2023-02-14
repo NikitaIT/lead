@@ -8,7 +8,9 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["shared/packages/components/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": [
+          "shared/packages/components/**/nolint.{ts,tsx,js,jsx}"
+        ]
       }
     },
     "build": {

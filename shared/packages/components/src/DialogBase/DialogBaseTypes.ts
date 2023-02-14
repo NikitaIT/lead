@@ -11,6 +11,7 @@ export type DialogBaseProps = ModalProps &
     disableTransition: boolean;
     timeoutMs: number;
     enableAutoClose: boolean;
+    children: React.ReactNode | undefined | React.ReactNode[];
   };
 export type DialogBaseClassKey = {};
 export type DialogBaseTypeMap = {};

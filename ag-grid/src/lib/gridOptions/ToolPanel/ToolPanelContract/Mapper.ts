@@ -3,6 +3,7 @@ import { AnyComponentToolPanelContract } from './Contract';
 
 export type ToolPanelContract = AnyComponentToolPanelContract;
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace ToolPanelContract {
   export interface Mapper {
     labelKey(_: AnyComponentToolPanelContract): string;

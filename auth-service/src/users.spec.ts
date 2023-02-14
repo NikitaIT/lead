@@ -11,6 +11,8 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from './config/config.module';
+import { config } from 'dotenv';
+import path from 'path';
 
 describe('Users (e2e)', () => {
   let app: INestApplication;
@@ -20,14 +22,13 @@ describe('Users (e2e)', () => {
   let disabledUserLogin: LoginResult;
   let disabledAdminLogin: LoginResult;
   let usersService: UsersService;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let configService: ConfigService;
   let authService: AuthService;
   let jwtService: JwtService;
 
   beforeAll(async () => {
-    const path = require('path');
-
-    require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+    config({ path: path.resolve(__dirname, '../.env') });
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule, UsersModule, AuthModule, ConfigModule],
       providers: [],
@@ -75,8 +76,8 @@ describe('Users (e2e)', () => {
 
     const adminDocument = await usersService.findOneByUsername('admin');
 
-    adminDocument!.permissions = ['admin'];
-    await adminDocument!.save();
+    adminDocument.permissions = ['admin'];
+    await adminDocument.save();
 
     let result = await authService.validateUserByPassword({
       username: 'user1',
@@ -546,16 +547,16 @@ describe('Users (e2e)', () => {
 
     it('modifies the user with token and reset password works', async () => {
       if (runEmailTests) {
-        let user = await usersService.findOneByEmail(testEmailTo!);
-        expect(user!.passwordReset).toBeTruthy();
-        expect(user!.passwordReset!.token).toBeTruthy();
-        expect(user!.passwordReset!.expiration).toBeInstanceOf(Date);
+        let user = await usersService.findOneByEmail(testEmailTo);
+        expect(user.passwordReset).toBeTruthy();
+        expect(user.passwordReset.token).toBeTruthy();
+        expect(user.passwordReset.expiration).toBeInstanceOf(Date);
 
         // Bad token
         let data = {
           query: `mutation {resetPassword(
           username: "userForgotPassword"
-          code: "${user!.passwordReset!.token}a"
+          code: "${user.passwordReset.token}a"
           password: "newPassword") {
             username
           }
@@ -575,7 +576,7 @@ describe('Users (e2e)', () => {
         data = {
           query: `mutation {resetPassword(
           username: "userForgotPassword2"
-          code: "${user!.passwordReset!.token}"
+          code: "${user.passwordReset.token}"
           password: "newPassword") {
             username
           }
@@ -595,7 +596,7 @@ describe('Users (e2e)', () => {
         data = {
           query: `mutation {resetPassword(
           username: "userForgotPassword"
-          code: "${user!.passwordReset!.token}"
+          code: "${user.passwordReset.token}"
           password: "newPassword") {
             username
           }
@@ -620,8 +621,8 @@ describe('Users (e2e)', () => {
         ).toBeTruthy();
 
         // Ensure the token was removed from the user
-        user = await usersService.findOneByEmail(testEmailTo!);
-        expect(user!.passwordReset).toBeFalsy();
+        user = await usersService.findOneByEmail(testEmailTo);
+        expect(user.passwordReset).toBeFalsy();
 
         // Make sure the old password does not work
         expect(
@@ -785,7 +786,7 @@ describe('Users (e2e)', () => {
         username: 'userToUpdate1',
         password: 'password',
       });
-      const token = result!.token;
+      const token = result.token;
 
       const data = {
         query: `mutation {
@@ -804,7 +805,7 @@ describe('Users (e2e)', () => {
 
       await request(app.getHttpServer())
         .post('/graphql')
-        .set('Authorization', `Bearer ${token!}`)
+        .set('Authorization', `Bearer ${token}`)
         .send(data)
         .expect(200)
         .expect((response) => {
@@ -833,7 +834,7 @@ describe('Users (e2e)', () => {
         username: 'userToDisable',
         password: 'password',
       });
-      const token = result!.token;
+      const token = result.token;
 
       const data = {
         query: `mutation {
@@ -846,7 +847,7 @@ describe('Users (e2e)', () => {
 
       await request(app.getHttpServer())
         .post('/graphql')
-        .set('Authorization', `Bearer ${token!}`)
+        .set('Authorization', `Bearer ${token}`)
         .send(data)
         .expect(200)
         .expect((response) => {
@@ -881,7 +882,7 @@ describe('Users (e2e)', () => {
 
       await request(app.getHttpServer())
         .post('/graphql')
-        .set('Authorization', `Bearer ${adminLogin.token!}`)
+        .set('Authorization', `Bearer ${adminLogin.token}`)
         .send(data)
         .expect(200)
         .expect((response) => {
@@ -915,7 +916,7 @@ describe('Users (e2e)', () => {
 
       await request(app.getHttpServer())
         .post('/graphql')
-        .set('Authorization', `Bearer ${adminLogin.token!}`)
+        .set('Authorization', `Bearer ${adminLogin.token}`)
         .send(data)
         .expect(200)
         .expect((response) => {
@@ -936,7 +937,7 @@ describe('Users (e2e)', () => {
         username: 'userToUpdate2',
         password: 'password',
       });
-      const token = result!.token;
+      const token = result.token;
 
       const data = {
         query: `mutation {
@@ -982,7 +983,7 @@ describe('Users (e2e)', () => {
         username: 'userToUpdate3',
         password: 'password',
       });
-      const token = result!.token;
+      const token = result.token;
 
       const data = {
         query: `mutation {
@@ -1028,7 +1029,7 @@ describe('Users (e2e)', () => {
         username: 'userToUpdate4',
         password: 'password',
       });
-      const token = result!.token;
+      const token = result.token;
 
       const data = {
         query: `mutation {
@@ -1103,7 +1104,7 @@ describe('Users (e2e)', () => {
         username: 'userToUpdate55',
         password: 'password',
       });
-      const token = result!.token;
+      const token = result.token;
 
       const data = {
         query: `mutation {
@@ -1121,7 +1122,7 @@ describe('Users (e2e)', () => {
 
       await request(app.getHttpServer())
         .post('/graphql')
-        .set('Authorization', `Bearer ${token!}`)
+        .set('Authorization', `Bearer ${token}`)
         .send(data)
         .expect(200)
         .expect((response) => {

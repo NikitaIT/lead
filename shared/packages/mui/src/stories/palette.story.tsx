@@ -199,6 +199,7 @@ export const ExtraColor = function ExtraColor() {
             <Item
               key={`palette.grey[${current}]`}
               color={
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 theme.palette.grey[current as keyof typeof theme.palette.grey]!
               }
               name={`palette.grey[${current}]`}

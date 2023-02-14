@@ -7,13 +7,14 @@ export interface RequestLog extends Request {
   correlationId?: string | string[];
   parentSpan?: string | string[];
   span?: string | string[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload: any;
 }
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware<Request, Response> {
   public constructor(private logger: Logger) {}
 
-  public use(req: RequestLog, res: Response, next: () => void): any {
+  public use(req: RequestLog, res: Response, next: () => void): void {
     const before = Date.now();
     const id = req.headers['x-request-id']
       ? req.headers['x-request-id']
@@ -73,6 +74,7 @@ export class LoggerMiddleware implements NestMiddleware<Request, Response> {
         str = str.replace(term, terms[term]);
       }
     }
+    // eslint-disable-next-line no-useless-escape
     str = str.replace(/%\{([a-zA-Z\-]+)\}i/g, (match, p1) => {
       const header = req.headers[`${p1}`.toLowerCase()];
       if (header == null) {

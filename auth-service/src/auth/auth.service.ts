@@ -1,11 +1,9 @@
-import { Injectable, forwardRef, Inject, ConsoleLogger } from '@nestjs/common';
+import { Injectable, forwardRef, Inject } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
-import { LoginUserInput, User, LoginResult } from '../graphql.classes';
+import { LoginUserInput, LoginResult } from '../graphql.classes';
 import { ConfigService } from '../config/config.service';
-import { resolve } from 'path';
-import { Console } from 'console';
 import { UserEntity } from '../users/entity/users.entity';
 import * as bcrypt from 'bcrypt';
 
@@ -53,9 +51,9 @@ export class AuthService {
 
     if (isMatch) {
       // If there is a successful match, generate a JWT for the user
-      const token = this.createJwt(userToAttempt!).token;
-      const result: any = {
-        user: userToAttempt!,
+      const token = this.createJwt(userToAttempt).token;
+      const result = {
+        user: userToAttempt,
         token,
       };
       userToAttempt.updated_at = new Date();
