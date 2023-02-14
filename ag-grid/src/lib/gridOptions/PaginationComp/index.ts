@@ -72,7 +72,7 @@ function patch(components: ComponentMeta[], child: HTMLElement) {
 export function createElementFromHTML<T extends HTMLElement>(
   htmlString: string
 ): T {
-  var div = document.createElement('div');
+  const div = document.createElement('div');
   div.innerHTML = htmlString.trim();
 
   // Change this to div.childNodes to support multiple top-level nodes.
@@ -80,7 +80,7 @@ export function createElementFromHTML<T extends HTMLElement>(
 }
 
 export function outerHTML(html: HTMLElement): string {
-  var div = document.createElement('div');
+  const div = document.createElement('div');
   div.appendChild(html);
 
   // Change this to div.childNodes to support multiple top-level nodes.

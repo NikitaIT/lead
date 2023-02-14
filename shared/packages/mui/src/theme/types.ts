@@ -31,11 +31,9 @@ declare module '@mui/material' {
     extends Record<keyof Palette, true> {
     default: true;
   }
-  export interface ChipPropsColorOverrides
-    extends Record<keyof Palette, true> {}
+  export type ChipPropsColorOverrides = Record<keyof Palette, true>
 
-  export interface ButtonPropsColorOverrides
-    extends Record<keyof Palette, true> {}
+  export type ButtonPropsColorOverrides = Record<keyof Palette, true>
 
   export interface Palette {
     blue: PaletteColor;

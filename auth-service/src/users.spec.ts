@@ -522,7 +522,7 @@ describe('Users (e2e)', () => {
 
   describe('forgot password and reset password', () => {
     let testEmailTo: string | undefined;
-    let runEmailTests = false;
+    const runEmailTests = false;
     let testRequest: request.Test;
     beforeAll(async () => {
       // testEmailTo = configService.testEmailTo;
