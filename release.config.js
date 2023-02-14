@@ -3,7 +3,7 @@ const name = 'lead';
 const srcRoot = '.'; // or `packages/${name}`;
 
 module.exports = {
-  extends: 'release.config.base.js',
+  extends: './release.config.base.js',
   pkgRoot: `dist/${srcRoot}`,
   // eslint-disable-next-line no-template-curly-in-string
   tagFormat: name + '-v${version}',
