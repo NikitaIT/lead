@@ -23,14 +23,14 @@ export type Comment = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  addComment: Maybe<Set>;
+  addComment: Maybe<Comment>;
   addSet: Maybe<Set>;
 };
 
 
 export type MutationAddCommentArgs = {
   comment: Scalars['String'];
-  postId: Scalars['String'];
+  postId: Scalars['Int'];
 };
 
 
@@ -60,7 +60,7 @@ export type Subscription = {
 
 
 export type SubscriptionCommentAddedArgs = {
-  postId: Scalars['String'];
+  postId: Scalars['Int'];
 };
 
 export type SetListQueryVariables = Exact<{ [key: string]: never; }>;
@@ -76,6 +76,21 @@ export type AddSetMutationVariables = Exact<{
 
 
 export type AddSetMutation = { __typename?: 'Mutation', addSet: { __typename?: 'Set', id: number, name: string, numParts: number, year: string } | null };
+
+export type AddCommentMutationVariables = Exact<{
+  postId: Scalars['Int'];
+  comment: Scalars['String'];
+}>;
+
+
+export type AddCommentMutation = { __typename?: 'Mutation', addComment: { __typename?: 'Comment', postId: number, comment: string } | null };
+
+export type OnCommentAddedSubscriptionVariables = Exact<{
+  postId: Scalars['Int'];
+}>;
+
+
+export type OnCommentAddedSubscription = { __typename?: 'Subscription', commentAdded: { __typename?: 'Comment', postId: number, comment: string } | null };
 
 
 export const SetListDocument = gql`
@@ -153,3 +168,69 @@ export function useAddSetMutation(baseOptions?: Apollo.MutationHookOptions<AddSe
 export type AddSetMutationHookResult = ReturnType<typeof useAddSetMutation>;
 export type AddSetMutationResult = Apollo.MutationResult<AddSetMutation>;
 export type AddSetMutationOptions = Apollo.BaseMutationOptions<AddSetMutation, AddSetMutationVariables>;
+export const AddCommentDocument = gql`
+    mutation addComment($postId: Int!, $comment: String!) {
+  addComment(postId: $postId, comment: $comment) {
+    postId
+    comment
+  }
+}
+    `;
+export type AddCommentMutationFn = Apollo.MutationFunction<AddCommentMutation, AddCommentMutationVariables>;
+
+/**
+ * __useAddCommentMutation__
+ *
+ * To run a mutation, you first call `useAddCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddCommentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addCommentMutation, { data, loading, error }] = useAddCommentMutation({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *      comment: // value for 'comment'
+ *   },
+ * });
+ */
+export function useAddCommentMutation(baseOptions?: Apollo.MutationHookOptions<AddCommentMutation, AddCommentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddCommentMutation, AddCommentMutationVariables>(AddCommentDocument, options);
+      }
+export type AddCommentMutationHookResult = ReturnType<typeof useAddCommentMutation>;
+export type AddCommentMutationResult = Apollo.MutationResult<AddCommentMutation>;
+export type AddCommentMutationOptions = Apollo.BaseMutationOptions<AddCommentMutation, AddCommentMutationVariables>;
+export const OnCommentAddedDocument = gql`
+    subscription OnCommentAdded($postId: Int!) {
+  commentAdded(postId: $postId) {
+    postId
+    comment
+  }
+}
+    `;
+
+/**
+ * __useOnCommentAddedSubscription__
+ *
+ * To run a query within a React component, call `useOnCommentAddedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useOnCommentAddedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOnCommentAddedSubscription({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useOnCommentAddedSubscription(baseOptions: Apollo.SubscriptionHookOptions<OnCommentAddedSubscription, OnCommentAddedSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<OnCommentAddedSubscription, OnCommentAddedSubscriptionVariables>(OnCommentAddedDocument, options);
+      }
+export type OnCommentAddedSubscriptionHookResult = ReturnType<typeof useOnCommentAddedSubscription>;
+export type OnCommentAddedSubscriptionResult = Apollo.SubscriptionResult<OnCommentAddedSubscription>;

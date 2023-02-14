@@ -8,7 +8,7 @@ import { PubSubModule } from './PubSub.module';
 import { ConfigModule } from '@nestjs/config';
 // import { PrismaModule } from '@lead/models';
 @Module({
-  imports: [createGraphQLModule(), PubSubModule, ConfigModule.forRoot()],
+  imports: [...createGraphQLModule(), PubSubModule, ConfigModule.forRoot()],
   controllers: [AppController],
   providers: [AppService, SetResolver],
   exports: [PubSubModule],

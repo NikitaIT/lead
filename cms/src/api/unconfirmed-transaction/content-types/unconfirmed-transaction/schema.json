@@ -1,0 +1,20 @@
+{
+  "kind": "collectionType",
+  "collectionName": "unconfirmed_transactions",
+  "info": {
+    "singularName": "unconfirmed-transaction",
+    "pluralName": "unconfirmed-transactions",
+    "displayName": "UnconfirmedTransaction"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "hash": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "currencies",
+  "info": {
+    "singularName": "currency",
+    "pluralName": "currencies",
+    "displayName": "Currency",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "dai": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "decimals": {
+      "type": "integer",
+      "required": true,
+      "min": 0,
+      "max": 30
+    },
+    "chain": {
+      "type": "string"
+    },
+    "ExpectedConfirmations": {
+      "type": "integer"
+    }
+  }
+}
