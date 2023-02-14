@@ -1,12 +1,20 @@
 {
   "name": "lead",
-  "version": "0.0.0",
+  "version": "0.0.0-semantic-release",
   "license": "MIT",
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
     "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nikitait/lead.git",
+    "directory": "."
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "private": true,
   "devDependencies": {
