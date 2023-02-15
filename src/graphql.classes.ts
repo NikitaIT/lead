@@ -32,16 +32,7 @@ export class UpdatePasswordInput {
     newPassword: string;
 }
 
-export class Set {
-    id: number;
-    name: string;
-    year: string;
-    numParts: number;
-}
-
 export abstract class IQuery {
-    abstract allSets(): Set[] | Promise<Set[]>;
-
     abstract login(user: LoginUserInput): LoginResult | Promise<LoginResult>;
 
     abstract refreshToken(): string | Promise<string>;
@@ -53,11 +44,12 @@ export abstract class IQuery {
     abstract forgotPassword(email?: Nullable<string>): Nullable<boolean> | Promise<Nullable<boolean>>;
 }
 
+export class LoginResult {
+    user: User;
+    token: string;
+}
+
 export abstract class IMutation {
-    abstract addSet(name?: Nullable<string>, year?: Nullable<string>, numParts?: Nullable<number>): Nullable<Set> | Promise<Nullable<Set>>;
-
-    abstract addComment(postId: number, comment: string): Nullable<Comment> | Promise<Nullable<Comment>>;
-
     abstract createUser(createUserInput?: Nullable<CreateUserInput>): User | Promise<User>;
 
     abstract updateUser(fieldsToUpdate: UpdateUserInput, username?: Nullable<string>): User | Promise<User>;
@@ -67,20 +59,6 @@ export abstract class IMutation {
     abstract removeAdminPermission(username: string): User | Promise<User>;
 
     abstract resetPassword(username: string, code: string, password: string): User | Promise<User>;
-}
-
-export class Comment {
-    postId: number;
-    comment: string;
-}
-
-export abstract class ISubscription {
-    abstract commentAdded(postId: number): Nullable<Comment> | Promise<Nullable<Comment>>;
-}
-
-export class LoginResult {
-    user: User;
-    token: string;
 }
 
 export class User {

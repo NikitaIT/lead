@@ -1,5 +1,4 @@
 scalar Date
-scalar Upload
 
 type Home @key (fields: "id"){
     id: ID!
@@ -14,7 +13,8 @@ type Home @key (fields: "id"){
 }
 
 extend type User @key(fields: "id") {
-  id: ID! @external
+  id: ID!
+  username: String! @external
 }
 
 type Query {

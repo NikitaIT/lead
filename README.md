@@ -1,5 +1,19 @@
 # Lead
 
+## How to up
+
+```sh
+COMPOSE_FILE=docker-compose.override.yml docker-compose up -d
+```
+
+```sh
+nx run auth-service:serve
+nx run home-apis:serve
+nx run getway-service:serve
+```
+
+## Nx
+
 [![npm](https://img.shields.io/npm/v/lead.svg)](https://www.npmjs.com/package/lead)
 
 <a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>

@@ -1,9 +1,9 @@
 import { AdminGuard } from '@app/auth/guards/admin.guard';
 import { JwtAuthGuard } from '@app/auth/guards/jwt-auth.guard';
 import { Logger } from '@logger/logger';
-import { ConsoleLogger, UseGuards } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Args, Mutation, Parent, ResolveField, Context, ResolveReference } from '@nestjs/graphql';
-import { FileUpload, GraphQLUpload } from 'graphql-upload';
+// import { FileUpload, GraphQLUpload } from 'graphql-upload';
 import { Home } from '../entity/home.entity';
 import { HomeService } from './home.service';
 
@@ -40,42 +40,42 @@ curl http://localhost:5002/graphql \
 
   {"correlationId":"da2434d3-8690-448e-8548-3117c860bb61","level":"error","message":"[Fri May 27 13:30:52 2022] [error] Missing multipart field ‘operations’ (https://github.com/jaydenseric/graphql-multipart-request-spec)."}
   */
-  @Mutation()
-  async uploadHomePhoto(
-    @Args('file', { type: () => GraphQLUpload }) file: FileUpload,
-  ): Promise<{ id: number }> {
-    try {
-      console.log(file)
-      const { createReadStream } = file;
-      const stream = createReadStream();
-      const chunks: any = [];
-      console.log(stream)
+  // @Mutation()
+  // async uploadHomePhoto(
+  //   @Args('file', { type: () => GraphQLUpload }) file: FileUpload,
+  // ): Promise<{ id: number }> {
+  //   try {
+  //     console.log(file)
+  //     const { createReadStream } = file;
+  //     const stream = createReadStream();
+  //     const chunks: any = [];
+  //     console.log(stream)
 
-      const buffer = await new Promise<Buffer>((resolve, reject) => {
-        let buffer: Buffer;
+  //     const buffer = await new Promise<Buffer>((resolve, reject) => {
+  //       let buffer: Buffer;
 
-        stream.on('data', function (chunk) {
-          chunks.push(chunk);
-        });
+  //       stream.on('data', function (chunk) {
+  //         chunks.push(chunk);
+  //       });
 
-        stream.on('end', function () {
-          buffer = Buffer.concat(chunks);
-          resolve(buffer);
-        });
+  //       stream.on('end', function () {
+  //         buffer = Buffer.concat(chunks);
+  //         resolve(buffer);
+  //       });
 
-        stream.on('error', reject);
-      });
-      console.log(buffer);
-      const base64 = buffer.toString('base64');
-      // If you want to store the file, this is one way of doing
-      // it, as you have the file in-memory as Buffer
+  //       stream.on('error', reject);
+  //     });
+  //     console.log(buffer);
+  //     const base64 = buffer.toString('base64');
+  //     // If you want to store the file, this is one way of doing
+  //     // it, as you have the file in-memory as Buffer
 
-      return { id: base64.length }
-    } catch (err) {
-      console.log(err);
-      return { id: 0 };
-    }
-  }
+  //     return { id: base64.length }
+  //   } catch (err) {
+  //     console.log(err);
+  //     return { id: 0 };
+  //   }
+  // }
 
   @Query()
   async home(@Args('id') id: string) {

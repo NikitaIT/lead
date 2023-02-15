@@ -1,6 +1,6 @@
 import { ConfigService } from '@app/config/config.service';
 import { Injectable, LoggerService } from '@nestjs/common';
-import * as moment from 'moment';
+import moment from 'moment';
 import * as winston from 'winston';
 
 import { isLogLevel, LogLevel } from './loglevel';

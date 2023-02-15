@@ -20,7 +20,7 @@ import { ApolloFederationDriver } from '@nestjs/apollo';
       entities: [UserEntity],
     }),
     GraphQLModule.forRoot({
-      typePaths: ['./**/*.graphql'],
+      typePaths: ['auth-service/src/**/*.graphql'],
       driver: ApolloFederationDriver,
       context: ({ req }) => ({ req }),
       formatError: (error: GraphQLError) => {

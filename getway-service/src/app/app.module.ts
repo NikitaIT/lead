@@ -36,8 +36,9 @@ import { Auth } from './Auth';
           subgraphs: [
             { name: 'User', url: 'http://localhost:5006/graphql' },
             { name: 'Home', url: 'http://localhost:5003/graphql' },
-            { name: 'Booking', url: 'http://localhost:5004/graphql' },
+            // { name: 'Booking', url: 'http://localhost:5004/graphql' },
           ],
+          subgraphHealthCheck: true,
         }),
       },
     }),

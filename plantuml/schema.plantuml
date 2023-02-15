@@ -1,0 +1,4 @@
+home-apis: 5003
+home-apis-db: 5433
+auth: 5010
+auth-db: 5431

@@ -1,4 +1,7 @@
 {
+  "extends": "../tsconfig.base.json",
+  "files": [],
+  "include": [],
   "compilerOptions": {
     "module": "commonjs",
     "declaration": true,
@@ -26,5 +29,13 @@
       "@test/*": ["test/*"]
     }
   },
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ],
   "exclude": ["node_modules", "build", "graphql.schama.ts"]
 }

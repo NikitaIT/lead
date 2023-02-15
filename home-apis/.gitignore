@@ -10,7 +10,7 @@ coverage
 .nycrc
 # Docker
 docker-compose.override.yml
-.env
+#.env
 dist/*
 dist
 
