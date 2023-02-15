@@ -1,0 +1,6 @@
+subscription homeAdded($id: ID!) {
+  homeAdded(id: $id) {
+    id
+    name
+  }
+}

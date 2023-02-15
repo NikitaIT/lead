@@ -55,6 +55,7 @@
     "@svgr/rollup": "^6.1.2",
     "@svgr/webpack": "^6.1.2",
     "@testing-library/react": "13.4.0",
+    "@types/bcrypt": "^5.0.0",
     "@types/flat": "^5.0.2",
     "@types/jest": "28.1.1",
     "@types/node": "18.11.9",

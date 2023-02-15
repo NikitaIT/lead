@@ -1,0 +1,10 @@
+query homes {
+  home {
+    id
+    name
+    user {
+      id
+    }
+    description
+  }
+}

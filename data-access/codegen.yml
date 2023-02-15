@@ -1,8 +1,8 @@
 overwrite: true
 generates:
-  data-access/src/lib/generated/generated.tsx:
-    schema: 'api/src/app/schema.graphql'
-    documents: 'data-access/src/lib/**/*.graphql'
+  data-access/src/lib/generated/home-apis-sub.tsx:
+    schema: 'http://localhost:5003/graphql-sub'
+    documents: 'data-access/src/lib/home-apis-sub/**/*.graphql'
     plugins:
       - 'typescript'
       - 'typescript-operations'
@@ -12,8 +12,33 @@ generates:
       withComponent: false
       withHOC: false
       avoidOptionals: true
-  data-access/src/lib/generated/cms.tsx:
-    schema: 'http://localhost:1337/graphql'
+  data-access/src/lib/generated/home-apis.tsx:
+    schema: 'http://localhost:5003/graphql'
+    documents: 'data-access/src/lib/home-apis/**/*.graphql'
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+    config:
+      withHooks: true
+      withComponent: false
+      withHOC: false
+      avoidOptionals: true
+  data-access/src/lib/generated/auth-service.tsx:
+    schema: 'http://localhost:5006/graphql'
+    documents: 'data-access/src/lib/auth-service/**/*.graphql'
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+    config:
+      withHooks: true
+      withComponent: false
+      withHOC: false
+      avoidOptionals: true
+  data-access/src/lib/generated/getway-service.tsx:
+    schema: 'http://localhost:4000/graphql'
+    documents: 'data-access/src/lib/getway-service/**/*.graphql'
     plugins:
       - 'typescript'
       - 'typescript-operations'

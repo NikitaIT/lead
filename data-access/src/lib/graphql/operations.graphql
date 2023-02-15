@@ -1,30 +1,30 @@
-query setList {
-  allSets {
-    id
-    name
-    numParts
-    year
-  }
-}
+# query setList {
+#   allSets {
+#     id
+#     name
+#     numParts
+#     year
+#   }
+# }
 
-mutation addSet($name: String!, $year: String!, $numParts: Int!) {
-  addSet(name: $name, year: $year, numParts: $numParts) {
-    id
-    name
-    numParts
-    year
-  }
-}
+# mutation addSet($name: String!, $year: String!, $numParts: Int!) {
+#   addSet(name: $name, year: $year, numParts: $numParts) {
+#     id
+#     name
+#     numParts
+#     year
+#   }
+# }
 
-mutation addComment($postId: Int!, $comment: String!) {
-  addComment(postId: $postId, comment: $comment) {
-    postId
-    comment
-  }
-}
-subscription OnCommentAdded($postId: Int!) {
-  commentAdded(postId: $postId) {
-    postId
-    comment
-  }
-}
+# mutation addComment($postId: Int!, $comment: String!) {
+#   addComment(postId: $postId, comment: $comment) {
+#     postId
+#     comment
+#   }
+# }
+# subscription OnCommentAdded($postId: Int!) {
+#   commentAdded(postId: $postId) {
+#     postId
+#     comment
+#   }
+# }

@@ -37,6 +37,12 @@ export class AuthService {
       );
     }
 
+    if (!userToAttempt && loginAttempt.username) {
+      userToAttempt = await this.usersService.findOneByUsername(
+        loginAttempt.username
+      );
+    }
+
     // Check the supplied password against the hash stored for this email address
     let isMatch = false;
     try {

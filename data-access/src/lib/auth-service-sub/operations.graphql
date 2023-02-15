@@ -1,0 +1,5 @@
+query index {
+  __schema {
+    __typename
+  }
+}

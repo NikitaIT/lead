@@ -1,0 +1,22 @@
+query allUsers {
+  users {
+    id
+    username
+    email
+    permissions
+    created_at
+    updated_at
+  }
+}
+
+query homes {
+  home {
+    id
+    name
+    user {
+      id
+      username
+    }
+    description
+  }
+}

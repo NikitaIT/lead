@@ -1,17 +1,31 @@
 import { AdminGuard } from '@app/auth/guards/admin.guard';
 import { JwtAuthGuard } from '@app/auth/guards/jwt-auth.guard';
 import { Logger } from '@logger/logger';
-import { UseGuards } from '@nestjs/common';
-import { Resolver, Query, Args, Mutation, Parent, ResolveField, Context, ResolveReference } from '@nestjs/graphql';
+import { Inject, UseGuards } from '@nestjs/common';
+import {
+  Resolver,
+  Query,
+  Args,
+  Mutation,
+  Parent,
+  ResolveField,
+  Context,
+  ResolveReference,
+  Subscription,
+} from '@nestjs/graphql';
 // import { FileUpload, GraphQLUpload } from 'graphql-upload';
 import { Home } from '../entity/home.entity';
 import { HomeService } from './home.service';
+import { PubSub } from 'graphql-subscriptions';
+import { PUB_SUB } from '@app/PubSub.module';
 
 @Resolver((of: any) => Home)
 export class HomeResolver {
-  constructor(private homeService: HomeService,
-    private readonly logger: Logger) {
-  }
+  constructor(
+    private homeService: HomeService,
+    private readonly logger: Logger,
+    @Inject(PUB_SUB) private pubSub: PubSub
+  ) {}
 
   @Query()
   @UseGuards(JwtAuthGuard, AdminGuard)
@@ -86,7 +100,17 @@ curl http://localhost:5002/graphql \
   @UseGuards(JwtAuthGuard, AdminGuard)
   async createHome(@Args() args: any, @Context() context: any) {
     const { userid } = context.req.headers;
-    return await this.homeService.createHome(args, userid);
+
+    const x = await this.homeService.createHome(args, userid);
+    const msg = {
+      topic: 'homeAdded',
+      payload: {
+        homeAdded: x,
+      },
+    };
+    await this.pubSub.publish(msg.topic, msg.payload);
+
+    return x;
   }
 
   @Mutation()
@@ -97,14 +121,22 @@ curl http://localhost:5002/graphql \
 
   @ResolveField('user')
   user(@Parent() home: Home) {
-    this.logger.http("ResolveField::user::HomeResolver" + home.user_id)
+    this.logger.http('ResolveField::user::HomeResolver' + home.user_id);
     return { __typename: 'User', id: home.user_id };
   }
 
   @ResolveReference()
   async resolveReference(reference: { __typename: string; id: string }) {
-    this.logger.http('Logging :: ResolveReference :: home')
+    this.logger.http('Logging :: ResolveReference :: home');
     return await this.homeService.getByHomeId(reference.id);
   }
 
+  @Subscription('homeAdded', {
+    // filter: (payload, variables) =>
+    //   payload.homeAdded.id === variables.id,
+  })
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  homeAdded(@Args('id') id: number) {
+    return this.pubSub.asyncIterator('homeAdded');
+  }
 }

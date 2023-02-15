@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './entity/users.entity';
 import { LoggerModule } from '../logger/logger.module';
 import { ConfigService } from '../config/config.service';
+import { AdminController } from './users.controller';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { ConfigService } from '../config/config.service';
     forwardRef(() => AuthModule),
   ],
   exports: [UsersService],
-  controllers: [],
+  controllers: [AdminController],
   providers: [UsersService, UserResolver, DateScalar, ConfigService],
 })
 export class UsersModule {}

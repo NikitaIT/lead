@@ -13,6 +13,7 @@ export class AdminGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const ctx = GqlExecutionContext.create(context);
     const request = ctx.getContext().req;
+    console.log(request)
     if (request.user) {
       const user = <any>request.user;
       if (this.isAdmin(user.permissions)) return true;

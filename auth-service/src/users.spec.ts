@@ -63,14 +63,14 @@ describe('Users (e2e)', () => {
     });
 
     await usersService.create({
-      username: 'admin',
-      email: 'admin@email.com',
+      username: 'disabledAdmin',
+      email: 'disabledAdmin@email.com',
       password: 'password',
     });
 
     await usersService.create({
-      username: 'disabledAdmin',
-      email: 'disabledAdmin@email.com',
+      username: 'admin',
+      email: 'admin@email.com',
       password: 'password',
     });
 

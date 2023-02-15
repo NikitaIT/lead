@@ -7,6 +7,7 @@
 
 /* tslint:disable */
 /* eslint-disable */
+
 export class LoginUserInput {
     username?: Nullable<string>;
     email?: Nullable<string>;

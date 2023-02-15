@@ -32,7 +32,7 @@ import { ApolloFederationDriver } from '@nestjs/apollo';
         return graphQLFormattedError;
       },
       definitions: {
-        path: join(process.cwd(), 'src/graphql.classes.ts'),
+        path: join(process.cwd(), '/auth-service/src/graphql.classes.ts'),
         outputAs: 'class',
       },
     }),

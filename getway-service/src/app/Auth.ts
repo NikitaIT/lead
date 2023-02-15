@@ -3,6 +3,7 @@ import {
   HttpException,
   UnauthorizedException,
 } from '@nestjs/common';
+import assert from 'assert';
 import { verify } from 'jsonwebtoken';
 
 export class Auth {
@@ -23,6 +24,7 @@ export class Auth {
   };
 
   decodeToken = (tokenString: string) => {
+    assert(process.env.SECRET_KEY, 'set process.env.SECRET_KEY');
     const decoded = verify(tokenString, process.env.SECRET_KEY);
     if (!decoded) {
       throw new HttpException(
@@ -34,9 +36,12 @@ export class Auth {
   };
   handleAuth = ({ req }) => {
     try {
+      console.log('handleAuth', req.headers);
       if (req.headers.authorization) {
         const token = this.getToken(req.headers.authorization);
+        console.log('handleAuth:token', token);
         const decoded: any = this.decodeToken(token);
+        console.log('handleAuth:decoded', decoded);
         return {
           userId: decoded.userId,
           permissions: decoded.permissions,
@@ -44,6 +49,7 @@ export class Auth {
         };
       }
     } catch (err) {
+      console.log(err);
       throw new UnauthorizedException(
         'User unauthorized with invalid authorization Headers'
       );
