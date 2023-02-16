@@ -5,6 +5,8 @@ import {
   HttpLink,
   NormalizedCacheObject,
 } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+
 // import fetch from 'isomorphic-unfetch';
 // https://loudnoises.io/blog/next-js-two-apollo-clients-two-graphql-data-sources-the-easy-way
 let apolloClient: ApolloClient<NormalizedCacheObject> | null = null;
@@ -14,6 +16,23 @@ let apolloClient: ApolloClient<NormalizedCacheObject> | null = null;
 //   global.fetch = fetch;
 // }
 
+const authLinkAuth = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = localStorage.getItem('token');
+  // return the hesaders to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token && token !== 'undefined' ? `Bearer ${token}` : '',
+    },
+  };
+});
+// Create Second Link
+const secondLink = new HttpLink({
+  uri: 'http://localhost:4000/graphql', // getway
+  // sheaders: yourHeadersHere,
+  // other link options...
+});
 // Create First Link
 const firstLink = new HttpLink({
   uri: 'http://localhost:5003/graphql-sub', // home-apis subscribers
@@ -21,23 +40,22 @@ const firstLink = new HttpLink({
   // other link options...
 });
 
-// Create Second Link
-const secondLink = new HttpLink({
-  uri: 'http://localhost:4000/graphql', // getway
-  // sheaders: yourHeadersHere,
-  // other link options...
-});
-
 function create(initialState: NormalizedCacheObject) {
   // Check out https://github.com/zeit/next.js/pull/4611 if you want to use the AWSAppSyncClient
   return new ApolloClient({
     connectToDevTools: true, // process.browser,
+
     // ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
-    link: ApolloLink.split(
-      // generator create all getway-service methods with this name
-      (operation) => operation.getContext().clientName === 'getway', // Routes the query to the proper client
-      secondLink,
-      firstLink
+    link: authLinkAuth.concat(
+      ApolloLink.split(
+        // generator create all getway-service methods with this name
+        (operation) => {
+          console.log(operation.getContext());
+          return operation.getContext().clientName === 'non-getway';
+        }, // Routes the query to the proper client
+        firstLink,
+        secondLink
+      )
     ),
     cache: new InMemoryCache().restore(initialState || {}),
   });

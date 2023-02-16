@@ -1,0 +1,12 @@
+query login($user: LoginUserInput!) {
+  login(user: $user) {
+    user {
+      id
+      permissions
+    }
+    token
+  }
+}
+query refreshToken {
+  refreshToken
+}

@@ -5,13 +5,12 @@ import { Checkbox, ThemeProvider } from '@mui/material';
 import { theme } from '@lead/shared/packages/mui';
 import { StarRating } from '@lead/shared/packages/components';
 import { getway } from '@lead/data-access';
+import Login from '../login/SignInSide';
 
 /* eslint-disable-next-line */
 export interface RootProps {}
 
-const StyledRoot = styled.div`
-  color: pink;
-`;
+const StyledRoot = styled.div``;
 
 export function Root(props: RootProps) {
   const { data, error, loading } = getway.useAllUsersQuery();
@@ -21,17 +20,16 @@ export function Root(props: RootProps) {
       <div>{JSON.stringify(error)}</div>
       <div>{JSON.stringify({ data })}</div>
       <Banner text="Here is a list of products to buy..." />
-      <ThemeProvider theme={theme}>
-        <Checkbox defaultChecked />
-        <StarRating
-          max={5}
-          value={1.5}
-          showTextRating={false}
-          precise={false}
-          component={'div'}
-          className={''}
-        ></StarRating>
-      </ThemeProvider>
+      <Login></Login>
+      <Checkbox defaultChecked />
+      <StarRating
+        max={5}
+        value={1.5}
+        showTextRating={false}
+        precise={false}
+        component={'div'}
+        className={''}
+      ></StarRating>
       <h1>Welcome to Root!</h1>
       <Link to="/tasks">View Cart</Link>
       <Link to="/grid">View Grid</Link>

@@ -2,7 +2,6 @@ import { GridOptions } from '@ag-grid-community/core';
 import { byId } from '@lead/std';
 import { ToolPanelPropCreator, ToolPanels } from './ToolPanel';
 import { ToolPanelContract } from './ToolPanel/ToolPanelContract';
-
 export function createOptions(): GridOptions {
   const gridOptionsDefs = collectGridOptions().map((x) => x());
   console.debug('[ag-grid] GridOptions collected:', gridOptionsDefs);
@@ -58,7 +57,7 @@ const gridOptions: GridOptions = {
   // },
   // onColumnVisible: onColumnVisible
 };
-export function collectGridOptions() {
+export function collectGridOptions(): (() => GridOptions)[] {
   const component = require.context('../', true, /.gridoptions.ts/);
   if (module.hot) {
     module.hot.accept(component.id);

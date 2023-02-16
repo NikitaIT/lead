@@ -39,6 +39,7 @@ import { Auth } from './Auth';
             // { name: 'Booking', url: 'http://localhost:5004/graphql' },
           ],
           subgraphHealthCheck: true,
+          introspectionHeaders: {},
         }),
       },
     }),

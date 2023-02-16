@@ -2,7 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../dist/out-tsc",
-    "types": ["node"]
+    "types": ["node", "webpack-env"]
   },
   "files": [
     "../node_modules/@nrwl/react/typings/cssmodule.d.ts",
@@ -23,5 +23,11 @@
     "**/*.stories.jsx",
     "**/*.stories.tsx"
   ],
-  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx", ".storybook/main.ts"]
+  "include": [
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    ".storybook/main.ts"
+  ]
 }
