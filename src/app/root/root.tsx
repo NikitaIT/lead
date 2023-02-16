@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Checkbox, ThemeProvider } from '@mui/material';
 import { theme } from '@lead/shared/packages/mui';
 import { StarRating } from '@lead/shared/packages/components';
+import { getway } from '@lead/data-access';
 
 /* eslint-disable-next-line */
 export interface RootProps {}
@@ -13,8 +14,12 @@ const StyledRoot = styled.div`
 `;
 
 export function Root(props: RootProps) {
+  const { data, error, loading } = getway.useAllUsersQuery();
   return (
     <StyledRoot>
+      <div>{JSON.stringify({ loading })}</div>
+      <div>{JSON.stringify(error)}</div>
+      <div>{JSON.stringify({ data })}</div>
       <Banner text="Here is a list of products to buy..." />
       <ThemeProvider theme={theme}>
         <Checkbox defaultChecked />

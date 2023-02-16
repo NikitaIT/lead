@@ -33,7 +33,7 @@ import { ApolloFederationDriver } from '@nestjs/apollo';
       },
       definitions: {
         path: join(process.cwd(), '/auth-service/src/graphql.classes.ts'),
-        outputAs: 'class',
+        // outputAs: 'class',
       },
     }),
     UsersModule,

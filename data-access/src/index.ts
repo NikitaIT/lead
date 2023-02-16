@@ -1,2 +1,2 @@
-export * from './lib/data-access';
-export * from './lib/generated/generated';
+export * as getway from './lib/generated/getway-service';
+export * as pubsub from './lib/generated/home-apis-sub';

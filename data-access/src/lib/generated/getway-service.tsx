@@ -2,16 +2,10 @@ import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
-const defaultOptions = {} as const;
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+const defaultOptions = {"context":{"clientName":"getway"}} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -19,7 +13,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  Date: any;
+  Date: string;
 };
 
 export type CreateUserInput = {
@@ -70,21 +64,26 @@ export type Mutation = {
   updateUser: User;
 };
 
+
 export type MutationAddAdminPermissionArgs = {
   username: Scalars['String'];
 };
+
 
 export type MutationCreateHomeArgs = {
   payload: HomeInput;
 };
 
+
 export type MutationCreateUserArgs = {
   createUserInput: InputMaybe<CreateUserInput>;
 };
 
+
 export type MutationRemoveAdminPermissionArgs = {
   username: Scalars['String'];
 };
+
 
 export type MutationResetPasswordArgs = {
   code: Scalars['String'];
@@ -92,10 +91,12 @@ export type MutationResetPasswordArgs = {
   username: Scalars['String'];
 };
 
+
 export type MutationUpdateHomeArgs = {
   id: Scalars['ID'];
   payload: HomeInput;
 };
+
 
 export type MutationUpdateUserArgs = {
   fieldsToUpdate: UpdateUserInput;
@@ -115,21 +116,26 @@ export type Query = {
   users: Array<User>;
 };
 
+
 export type QueryFindHomesArgs = {
   name: Scalars['String'];
 };
+
 
 export type QueryForgotPasswordArgs = {
   email: InputMaybe<Scalars['String']>;
 };
 
+
 export type QueryHomeArgs = {
   id: InputMaybe<Scalars['ID']>;
 };
 
+
 export type QueryLoginArgs = {
   user: LoginUserInput;
 };
+
 
 export type QueryUserArgs = {
   id: Scalars['ID'];
@@ -157,46 +163,29 @@ export type User = {
   username: Scalars['String'];
 };
 
-export type AllUsersQueryVariables = Exact<{ [key: string]: never }>;
+export type AllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
-export type AllUsersQuery = {
-  __typename?: 'Query';
-  users: Array<{
-    __typename?: 'User';
-    id: string;
-    username: string;
-    email: string;
-    permissions: Array<string>;
-    created_at: any;
-    updated_at: any;
-  }>;
-};
 
-export type HomesQueryVariables = Exact<{ [key: string]: never }>;
+export type AllUsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, username: string, email: string, permissions: Array<string>, created_at: string, updated_at: string }> };
 
-export type HomesQuery = {
-  __typename?: 'Query';
-  home: {
-    __typename?: 'Home';
-    id: string;
-    name: string;
-    description: string;
-    user: { __typename?: 'User'; id: string; username: string } | null;
-  };
-};
+export type HomesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type HomesQuery = { __typename?: 'Query', home: { __typename?: 'Home', id: string, name: string, description: string, user: { __typename?: 'User', id: string, username: string } | null } };
+
 
 export const AllUsersDocument = gql`
-  query allUsers {
-    users {
-      id
-      username
-      email
-      permissions
-      created_at
-      updated_at
-    }
+    query allUsers {
+  users {
+    id
+    username
+    email
+    permissions
+    created_at
+    updated_at
   }
-`;
+}
+    `;
 
 /**
  * __useAllUsersQuery__
@@ -213,48 +202,30 @@ export const AllUsersDocument = gql`
  *   },
  * });
  */
-export function useAllUsersQuery(
-  baseOptions?: Apollo.QueryHookOptions<AllUsersQuery, AllUsersQueryVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<AllUsersQuery, AllUsersQueryVariables>(
-    AllUsersDocument,
-    options
-  );
-}
-export function useAllUsersLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    AllUsersQuery,
-    AllUsersQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<AllUsersQuery, AllUsersQueryVariables>(
-    AllUsersDocument,
-    options
-  );
-}
-export type AllUsersQueryHookResult = ReturnType<typeof useAllUsersQuery>;
-export type AllUsersLazyQueryHookResult = ReturnType<
-  typeof useAllUsersLazyQuery
->;
-export type AllUsersQueryResult = Apollo.QueryResult<
-  AllUsersQuery,
-  AllUsersQueryVariables
->;
-export const HomesDocument = gql`
-  query homes {
-    home {
-      id
-      name
-      user {
-        id
-        username
+export function useAllUsersQuery(baseOptions?: Apollo.QueryHookOptions<AllUsersQuery, AllUsersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AllUsersQuery, AllUsersQueryVariables>(AllUsersDocument, options);
       }
-      description
+export function useAllUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllUsersQuery, AllUsersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AllUsersQuery, AllUsersQueryVariables>(AllUsersDocument, options);
+        }
+export type AllUsersQueryHookResult = ReturnType<typeof useAllUsersQuery>;
+export type AllUsersLazyQueryHookResult = ReturnType<typeof useAllUsersLazyQuery>;
+export type AllUsersQueryResult = Apollo.QueryResult<AllUsersQuery, AllUsersQueryVariables>;
+export const HomesDocument = gql`
+    query homes {
+  home {
+    id
+    name
+    user {
+      id
+      username
     }
+    description
   }
-`;
+}
+    `;
 
 /**
  * __useHomesQuery__
@@ -271,27 +242,14 @@ export const HomesDocument = gql`
  *   },
  * });
  */
-export function useHomesQuery(
-  baseOptions?: Apollo.QueryHookOptions<HomesQuery, HomesQueryVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<HomesQuery, HomesQueryVariables>(
-    HomesDocument,
-    options
-  );
-}
-export function useHomesLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<HomesQuery, HomesQueryVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<HomesQuery, HomesQueryVariables>(
-    HomesDocument,
-    options
-  );
-}
+export function useHomesQuery(baseOptions?: Apollo.QueryHookOptions<HomesQuery, HomesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<HomesQuery, HomesQueryVariables>(HomesDocument, options);
+      }
+export function useHomesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<HomesQuery, HomesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<HomesQuery, HomesQueryVariables>(HomesDocument, options);
+        }
 export type HomesQueryHookResult = ReturnType<typeof useHomesQuery>;
 export type HomesLazyQueryHookResult = ReturnType<typeof useHomesLazyQuery>;
-export type HomesQueryResult = Apollo.QueryResult<
-  HomesQuery,
-  HomesQueryVariables
->;
+export type HomesQueryResult = Apollo.QueryResult<HomesQuery, HomesQueryVariables>;

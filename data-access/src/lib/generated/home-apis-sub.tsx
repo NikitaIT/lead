@@ -2,15 +2,9 @@ import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -47,9 +41,11 @@ export type Mutation = {
   updateHome: Maybe<Home>;
 };
 
+
 export type MutationCreateHomeArgs = {
   payload: HomeInput;
 };
+
 
 export type MutationUpdateHomeArgs = {
   id: Scalars['ID'];
@@ -64,9 +60,11 @@ export type Query = {
   homes: Maybe<Array<Home>>;
 };
 
+
 export type QueryFindHomesArgs = {
   name: Scalars['String'];
 };
+
 
 export type QueryHomeArgs = {
   id: InputMaybe<Scalars['ID']>;
@@ -76,6 +74,7 @@ export type Subscription = {
   __typename?: 'Subscription';
   homeAdded: Maybe<Home>;
 };
+
 
 export type SubscriptionHomeAddedArgs = {
   id: Scalars['ID'];
@@ -90,19 +89,18 @@ export type HomeAddedSubscriptionVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
-export type HomeAddedSubscription = {
-  __typename?: 'Subscription';
-  homeAdded: { __typename?: 'Home'; id: string; name: string } | null;
-};
+
+export type HomeAddedSubscription = { __typename?: 'Subscription', homeAdded: { __typename?: 'Home', id: string, name: string } | null };
+
 
 export const HomeAddedDocument = gql`
-  subscription homeAdded($id: ID!) {
-    homeAdded(id: $id) {
-      id
-      name
-    }
+    subscription homeAdded($id: ID!) {
+  homeAdded(id: $id) {
+    id
+    name
   }
-`;
+}
+    `;
 
 /**
  * __useHomeAddedSubscription__
@@ -120,20 +118,9 @@ export const HomeAddedDocument = gql`
  *   },
  * });
  */
-export function useHomeAddedSubscription(
-  baseOptions: Apollo.SubscriptionHookOptions<
-    HomeAddedSubscription,
-    HomeAddedSubscriptionVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useSubscription<
-    HomeAddedSubscription,
-    HomeAddedSubscriptionVariables
-  >(HomeAddedDocument, options);
-}
-export type HomeAddedSubscriptionHookResult = ReturnType<
-  typeof useHomeAddedSubscription
->;
-export type HomeAddedSubscriptionResult =
-  Apollo.SubscriptionResult<HomeAddedSubscription>;
+export function useHomeAddedSubscription(baseOptions: Apollo.SubscriptionHookOptions<HomeAddedSubscription, HomeAddedSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<HomeAddedSubscription, HomeAddedSubscriptionVariables>(HomeAddedDocument, options);
+      }
+export type HomeAddedSubscriptionHookResult = ReturnType<typeof useHomeAddedSubscription>;
+export type HomeAddedSubscriptionResult = Apollo.SubscriptionResult<HomeAddedSubscription>;

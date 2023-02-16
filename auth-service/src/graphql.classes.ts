@@ -8,60 +8,52 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export class LoginUserInput {
+export interface LoginUserInput {
     username?: Nullable<string>;
     email?: Nullable<string>;
     password: string;
 }
 
-export class CreateUserInput {
+export interface CreateUserInput {
     username: string;
     email: string;
     password: string;
 }
 
-export class UpdateUserInput {
+export interface UpdateUserInput {
     username?: Nullable<string>;
     email?: Nullable<string>;
     password?: Nullable<UpdatePasswordInput>;
     enabled?: Nullable<boolean>;
 }
 
-export class UpdatePasswordInput {
+export interface UpdatePasswordInput {
     oldPassword: string;
     newPassword: string;
 }
 
-export abstract class IQuery {
-    abstract login(user: LoginUserInput): LoginResult | Promise<LoginResult>;
-
-    abstract refreshToken(): string | Promise<string>;
-
-    abstract users(): User[] | Promise<User[]>;
-
-    abstract user(id: string): User | Promise<User>;
-
-    abstract forgotPassword(email?: Nullable<string>): Nullable<boolean> | Promise<Nullable<boolean>>;
+export interface IQuery {
+    login(user: LoginUserInput): LoginResult | Promise<LoginResult>;
+    refreshToken(): string | Promise<string>;
+    users(): User[] | Promise<User[]>;
+    user(id: string): User | Promise<User>;
+    forgotPassword(email?: Nullable<string>): Nullable<boolean> | Promise<Nullable<boolean>>;
 }
 
-export class LoginResult {
+export interface LoginResult {
     user: User;
     token: string;
 }
 
-export abstract class IMutation {
-    abstract createUser(createUserInput?: Nullable<CreateUserInput>): User | Promise<User>;
-
-    abstract updateUser(fieldsToUpdate: UpdateUserInput, username?: Nullable<string>): User | Promise<User>;
-
-    abstract addAdminPermission(username: string): User | Promise<User>;
-
-    abstract removeAdminPermission(username: string): User | Promise<User>;
-
-    abstract resetPassword(username: string, code: string, password: string): User | Promise<User>;
+export interface IMutation {
+    createUser(createUserInput?: Nullable<CreateUserInput>): User | Promise<User>;
+    updateUser(fieldsToUpdate: UpdateUserInput, username?: Nullable<string>): User | Promise<User>;
+    addAdminPermission(username: string): User | Promise<User>;
+    removeAdminPermission(username: string): User | Promise<User>;
+    resetPassword(username: string, code: string, password: string): User | Promise<User>;
 }
 
-export class User {
+export interface User {
     id: string;
     username: string;
     email: string;

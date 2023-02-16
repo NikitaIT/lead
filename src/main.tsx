@@ -1,16 +1,16 @@
 import { StrictMode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import * as ReactDOM from 'react-dom/client';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client';
 
 import App from './app/app';
-const client = new ApolloClient({
-  uri: 'http://localhost:3333/graphql',
-  cache: new InMemoryCache(),
-});
+import initApollo from './initApollo';
+
+const client = initApollo({});
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+console.log('ibndsfsadfasdf');
 root.render(
   <ApolloProvider client={client}>
     <StrictMode>
