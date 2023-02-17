@@ -6,7 +6,28 @@ import {
   NormalizedCacheObject,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { getMainDefinition } from '@apollo/client/utilities';
+import { assert } from '@lead/std';
+import { createClient } from 'graphql-ws';
+assert(process.env.NX_HOME_SERVER, 'Set .env NX_HOME_SERVER');
+assert(process.env.NX_GETWAY_SERVER, 'Set .env NX_GETWAY_SERVER');
+const wsLink = new GraphQLWsLink(
+  createClient({
+    url: `ws://${process.env.NX_HOME_SERVER}`,
+    // should works with context link
+    // connectionParams: () => {
+    //   // Note: getSession() is a placeholder function created by you
+    //   const token = localStorage.getItem('token');
+    //   if (!token || token === 'undefined') {
+    //     return {};
+    //   }
+    //   return {
+    //     authorization: `Bearer ${token}`,
+    //   };
+    // },
+  })
+);
 // import fetch from 'isomorphic-unfetch';
 // https://loudnoises.io/blog/next-js-two-apollo-clients-two-graphql-data-sources-the-easy-way
 let apolloClient: ApolloClient<NormalizedCacheObject> | null = null;
@@ -29,13 +50,13 @@ const authLinkAuth = setContext((_, { headers }) => {
 });
 // Create Second Link
 const secondLink = new HttpLink({
-  uri: 'http://localhost:4000/graphql', // getway
+  uri: `http://${process.env.NX_GETWAY_SERVER}`, // getway
   // sheaders: yourHeadersHere,
   // other link options...
 });
 // Create First Link
 const firstLink = new HttpLink({
-  uri: 'http://localhost:5003/graphql-sub', // home-apis subscribers
+  uri: `http://${process.env.NX_HOME_SERVER}`, // home-apis subscribers
   // headers: yourHeadersHere,
   // other link options...
 });
@@ -53,7 +74,18 @@ function create(initialState: NormalizedCacheObject) {
           console.log(operation.getContext());
           return operation.getContext().clientName === 'non-getway';
         }, // Routes the query to the proper client
-        firstLink,
+
+        ApolloLink.split(
+          ({ query }) => {
+            const definition = getMainDefinition(query);
+            return (
+              definition.kind === 'OperationDefinition' &&
+              definition.operation === 'subscription'
+            );
+          },
+          wsLink,
+          firstLink
+        ),
         secondLink
       )
     ),

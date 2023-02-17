@@ -3,48 +3,58 @@ import { Route, Routes } from 'react-router-dom';
 import Root from './root/root';
 
 import { ThemeProvider } from '@mui/material';
-import { theme } from '@lead/shared/packages/mui';
+import { createTheme, themeObject } from '@lead/shared/packages/mui';
 // import { Tasks } from '@lead/tasks';
-import { AgGrid } from '@lead/ag-grid';
 import './styles.css';
 import tw from 'twin.macro';
-import { getway } from '@lead/data-access';
-import { useCallback, useEffect } from 'react';
+import { AgGridRoot } from './grid/AgGridRoot';
+import {
+  Link as RouterLink,
+  LinkProps as RouterLinkProps,
+} from 'react-router-dom';
+import { forwardRef } from 'react';
+import { LinkProps } from '@mui/material/Link';
 const StyledApp = styled.div`
   // Test
   /* ${tw`bg-white text-center rounded py-8 px-5 shadow max-w-xs`} */
 `;
 
-export function App() {
-  const { data, error, loading } = getway.useLoginQuery({
-    variables: {
-      user: {
-        username: 'admin',
-        email: 'admin@email.com',
-        password: 'password',
+const LinkBehavior = forwardRef<
+  HTMLAnchorElement,
+  Omit<RouterLinkProps, 'to'> & { href: RouterLinkProps['to'] }
+>((props, ref) => {
+  const { href, ...other } = props;
+  // Map href (MUI) -> to (react-router)
+  return <RouterLink ref={ref} to={href} {...other} />;
+});
+const theme = createTheme({
+  ...themeObject,
+  components: {
+    ...themeObject.components,
+    MuiLink: {
+      ...themeObject.components?.MuiLink,
+      defaultProps: {
+        ...themeObject.components?.MuiLink?.defaultProps,
+        component: LinkBehavior,
+      } as LinkProps,
+    },
+    MuiButtonBase: {
+      ...themeObject.components?.MuiButtonBase,
+      defaultProps: {
+        ...themeObject.components?.MuiButtonBase?.defaultProps,
+        LinkComponent: LinkBehavior,
       },
     },
-    fetchPolicy: 'network-only',
-  });
-  useEffect(() => {
-    if (data) {
-      localStorage.setItem('token', data.login.token + '');
-      alert(data?.login.token);
-    }
-  }, [data]);
-  if (error) {
-    return <div>{JSON.stringify(error)}</div>;
-  }
-  if (loading) {
-    return <div>loading</div>;
-  }
+  },
+});
+export function App() {
   return (
     <StyledApp className="">
       <ThemeProvider theme={theme}>
         <Routes>
           <Route path="/" element={<Root />}></Route>
           {/* <Route path="/tasks" element={<Tasks />}></Route> */}
-          <Route path="/grid" element={<AgGrid />}></Route>
+          <Route path="/grid" element={<AgGridRoot />}></Route>
         </Routes>
       </ThemeProvider>
     </StyledApp>

@@ -94,12 +94,12 @@ export type _Service = {
 export type HomesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type HomesQuery = { __typename?: 'Query', home: { __typename?: 'Home', id: string, name: string, description: string, user: { __typename?: 'User', id: string } | null } };
+export type HomesQuery = { __typename?: 'Query', homes: Array<{ __typename?: 'Home', id: string, name: string, description: string, user: { __typename?: 'User', id: string } | null }> | null };
 
 
 export const HomesDocument = gql`
     query homes {
-  home {
+  homes {
     id
     name
     user {

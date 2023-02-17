@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
+import { AutoLogin } from './AutoLogin';
 
 function Copyright(props: any) {
   return (
@@ -30,7 +31,9 @@ function Copyright(props: any) {
   );
 }
 
-export default function SignInSide() {
+export const SignInSide: React.FC<React.PropsWithChildren<unknown>> = ({
+  children,
+}) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -113,6 +116,8 @@ export default function SignInSide() {
             >
               Sign In
             </Button>
+            {children}
+            <AutoLogin></AutoLogin>
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
@@ -131,4 +136,4 @@ export default function SignInSide() {
       </Grid>
     </Grid>
   );
-}
+};

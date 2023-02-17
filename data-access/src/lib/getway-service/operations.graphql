@@ -10,7 +10,7 @@ query allUsers {
 }
 
 query homes {
-  home {
+  homes {
     id
     name
     user {
@@ -18,5 +18,13 @@ query homes {
       username
     }
     description
+  }
+}
+mutation createHome($payload: HomeInput!) {
+  createHome(payload: $payload) {
+    id
+    name
+    description
+    is_active
   }
 }

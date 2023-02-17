@@ -183,7 +183,14 @@ export type AllUsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 
 export type HomesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type HomesQuery = { __typename?: 'Query', home: { __typename?: 'Home', id: string, name: string, description: string, user: { __typename?: 'User', id: string, username: string } | null } };
+export type HomesQuery = { __typename?: 'Query', homes: Array<{ __typename?: 'Home', id: string, name: string, description: string, user: { __typename?: 'User', id: string, username: string } | null }> | null };
+
+export type CreateHomeMutationVariables = Exact<{
+  payload: HomeInput;
+}>;
+
+
+export type CreateHomeMutation = { __typename?: 'Mutation', createHome: { __typename?: 'Home', id: string, name: string, description: string, is_active: boolean } | null };
 
 
 export const LoginDocument = gql`
@@ -298,7 +305,7 @@ export type AllUsersLazyQueryHookResult = ReturnType<typeof useAllUsersLazyQuery
 export type AllUsersQueryResult = Apollo.QueryResult<AllUsersQuery, AllUsersQueryVariables>;
 export const HomesDocument = gql`
     query homes {
-  home {
+  homes {
     id
     name
     user {
@@ -336,3 +343,39 @@ export function useHomesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Home
 export type HomesQueryHookResult = ReturnType<typeof useHomesQuery>;
 export type HomesLazyQueryHookResult = ReturnType<typeof useHomesLazyQuery>;
 export type HomesQueryResult = Apollo.QueryResult<HomesQuery, HomesQueryVariables>;
+export const CreateHomeDocument = gql`
+    mutation createHome($payload: HomeInput!) {
+  createHome(payload: $payload) {
+    id
+    name
+    description
+    is_active
+  }
+}
+    `;
+export type CreateHomeMutationFn = Apollo.MutationFunction<CreateHomeMutation, CreateHomeMutationVariables>;
+
+/**
+ * __useCreateHomeMutation__
+ *
+ * To run a mutation, you first call `useCreateHomeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateHomeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createHomeMutation, { data, loading, error }] = useCreateHomeMutation({
+ *   variables: {
+ *      payload: // value for 'payload'
+ *   },
+ * });
+ */
+export function useCreateHomeMutation(baseOptions?: Apollo.MutationHookOptions<CreateHomeMutation, CreateHomeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateHomeMutation, CreateHomeMutationVariables>(CreateHomeDocument, options);
+      }
+export type CreateHomeMutationHookResult = ReturnType<typeof useCreateHomeMutation>;
+export type CreateHomeMutationResult = Apollo.MutationResult<CreateHomeMutation>;
+export type CreateHomeMutationOptions = Apollo.BaseMutationOptions<CreateHomeMutation, CreateHomeMutationVariables>;
