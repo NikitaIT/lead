@@ -1,5 +1,5 @@
 {
-  "name": "@mobileleaplabs/home-manager",
+  "name": "@lead/home-apis",
   "version": "1.1.0",
   "description": "home manager app to manage homes",
   "license": "UNLICENSED",
@@ -137,7 +137,6 @@
     "@blob": "dist/src/app/blob",
     "@core": "dist/src/app/core",
     "@domain": "dist/src/app/domain",
-    "@logger": "dist/src/logger",
     "@config": "dist/src/config",
     "@db": "dist/src/db"
   },

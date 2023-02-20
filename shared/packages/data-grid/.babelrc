@@ -8,5 +8,10 @@
       }
     ]
   ],
-  "plugins": [["styled-components", { "pure": true, "ssr": true }]]
+  "plugins": [["styled-components", { "pure": true, "ssr": true }]],
+  "env": {
+    "test": {
+      "plugins": ["require-context-hook"]
+    }
+  }
 }

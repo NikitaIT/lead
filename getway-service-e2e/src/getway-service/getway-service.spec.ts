@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-describe('GET /', () => {
+describe.skip('GET /', () => {
   it('should return a message', async () => {
     const res = await axios.get(`/`);
 

@@ -1,4 +1,40 @@
-home-apis: 5003
-home-apis-db: 5433
-auth: 5010
-auth-db: 5431
+@startuml Example
+
+!include ./headers.plantuml!1
+
+' rectangle SupportContext {
+'   hexagon RPCGateway #aliceblue;line:blue;line.dotted; {
+'     !include ./Context/ServiceClients.plantuml!1
+'   }
+' }
+
+Query("Welcome") [
+  Welcome
+  --
+  home-apis: 5003
+  home-apis-db: 5433
+  auth: 5010
+  auth-db: 5431
+]
+note right
+ entityName should be aggregateName
+endnote
+
+Actor("Bob") [
+  Bob
+]
+
+Welcome -> Bob #line:green;text:green : sharded by
+Welcome .[#red].> Bob
+
+legend bottom right
+  |Color| Line Type |
+  |<#red>| Write |
+  |<#FireBrick>| Read Write |
+  |<#Green>| Read |
+
+  Dashed - kafka events
+
+  Dashed Black - notification only
+endlegend
+@enduml

@@ -1,7 +1,3 @@
-import { AdminGuard } from '@app/auth/guards/admin.guard';
-import { JwtAuthGuard } from '@app/auth/guards/jwt-auth.guard';
-import { Logger } from '@logger/logger';
-import { Inject, UseGuards } from '@nestjs/common';
 import {
   Resolver,
   Query,
@@ -16,31 +12,33 @@ import {
 // import { FileUpload, GraphQLUpload } from 'graphql-upload';
 import { Home } from '../entity/home.entity';
 import { HomeService } from './home.service';
-import { PubSub } from 'graphql-subscriptions';
-import { PUB_SUB } from '@app/PubSub.module';
+import { PubSub } from '../../PubSub.module';
+import { Logger } from '@lead/logger';
+import { AdminOnly } from './AdminOnly';
+import { Inject } from '@nestjs/common';
 
 @Resolver((of: any) => Home)
 export class HomeResolver {
   constructor(
     private homeService: HomeService,
-    private readonly logger: Logger,
-    @Inject(PUB_SUB) private pubSub: PubSub
+    @Inject(Logger) private readonly logger: Logger,
+    private pubSub: PubSub
   ) {}
 
   @Query()
-  @UseGuards(JwtAuthGuard, AdminGuard)
+  @AdminOnly()
   async homes() {
     return await this.homeService.listAll();
   }
 
   @Query()
-  @UseGuards(JwtAuthGuard, AdminGuard)
+  @AdminOnly()
   async findHomes(@Args('name') name: string) {
     return await this.homeService.findHome(name);
   }
 
   @Query()
-  @UseGuards(JwtAuthGuard, AdminGuard)
+  @AdminOnly()
   async activeHomes() {
     return await this.homeService.listAllActiveHomes();
   }
@@ -97,7 +95,7 @@ curl http://localhost:5002/graphql \
   }
 
   @Mutation()
-  @UseGuards(JwtAuthGuard, AdminGuard)
+  @AdminOnly()
   async createHome(@Args() args: any, @Context() context: any) {
     const { userid } = context.req.headers;
 
@@ -114,7 +112,7 @@ curl http://localhost:5002/graphql \
   }
 
   @Mutation()
-  @UseGuards(JwtAuthGuard, AdminGuard)
+  @AdminOnly()
   async updateHome(@Args('id') id: string, @Args() args: any) {
     return await this.homeService.updateHome(id, args);
   }

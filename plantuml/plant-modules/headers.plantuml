@@ -1,0 +1,40 @@
+@startuml Headers
+
+left to right direction
+
+!global $INCLUSION_MODE="local"
+' loads the library
+!include ./distribution/bootstrap.puml
+
+' loads the package bootstrap
+!include ./distribution/eventstorming/bootstrap.puml
+
+!include ./distribution/eventstorming/Element/Query.puml
+
+!include ./distribution/eventstorming/Element/FacadeCommand.puml
+!include ./distribution/eventstorming/Element/Command.puml
+
+!include ./distribution/eventstorming/Element/Result.puml
+
+!include ./distribution/eventstorming/Element/Event.puml
+!include ./distribution/eventstorming/Element/DomainEvent.puml
+!include ./distribution/eventstorming/Element/IntegrationEvent.puml
+
+!include ./distribution/eventstorming/Element/Person.puml
+!include ./distribution/eventstorming/Element/System.puml
+!include ./distribution/eventstorming/Element/Aggregate.puml
+
+!include ./distribution/eventstorming/Element/Saga.puml
+!include ./distribution/eventstorming/Element/Service.puml
+!include ./distribution/eventstorming/Element/Policy.puml
+!include ./distribution/eventstorming/Element/Process.puml
+
+!include ./distribution/eventstorming/Element/Timer.puml
+
+
+!include ./distribution/eventstorming/Element/UserInterface.puml
+!include ./distribution/eventstorming/Element/ReadModel.puml
+
+!include ./distribution/eventstorming/Element/Comment.puml
+
+@enduml

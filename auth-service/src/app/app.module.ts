@@ -2,23 +2,20 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { GraphQLError, GraphQLFormattedError } from 'graphql';
-import { AuthModule } from '../auth/auth.module';
-import { ConfigModule } from '../config/config.module';
-import { DbModule } from '../db/db.module';
-import { LoggerModule } from '../logger/logger.module';
-import { UserEntity } from '../users/entity/users.entity';
-import { UsersModule } from '../users/users.module';
+import { adapters } from '../auth';
+import { ConfigModule } from '@lead/config';
+import { DBModule } from './db.module';
+import { UsersModule } from '../users';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { ApolloFederationDriver } from '@nestjs/apollo';
+import { LoggerModule } from '../Logger';
 
 @Module({
   imports: [
-    DbModule.forRoot({
-      entities: [UserEntity],
-    }),
+    DBModule,
     GraphQLModule.forRoot({
       typePaths: ['auth-service/src/**/*.graphql'],
       driver: ApolloFederationDriver,
@@ -37,9 +34,9 @@ import { ApolloFederationDriver } from '@nestjs/apollo';
       },
     }),
     UsersModule,
-    AuthModule,
+    adapters.AuthModule,
     ConfigModule,
-    LoggerModule,
+    LoggerModule(),
   ],
   controllers: [AppController],
   providers: [AppService],

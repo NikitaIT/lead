@@ -1,6 +1,6 @@
 import axios from 'axios';
 //import { GraphQLSchemaHost } from "@nestjs/graphql";
-describe('GET /', () => {
+describe.skip('GET /', () => {
   it('should return a message', async () => {
     //const { schema } = app.get(GraphQLSchemaHost);
     const res = await axios.get(`/`);

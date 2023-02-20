@@ -10,7 +10,6 @@ function _(): GridOptions {
   //     AgComponent.bind(null, id + '-mount-place'),
   //   ])
   // );
-  console.log('components', components);
 
   return {
     frameworkComponents: {

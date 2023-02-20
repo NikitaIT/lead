@@ -7,5 +7,10 @@
         "useBuiltIns": "usage"
       }
     ]
-  ]
+  ],
+  "env": {
+    "test": {
+      "plugins": ["require-context-hook"]
+    }
+  }
 }

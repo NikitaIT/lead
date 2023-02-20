@@ -54,7 +54,8 @@
       },
       "configurations": {
         "development": {
-          "buildTarget": "lead:build:development"
+          "buildTarget": "lead:build:development",
+          "hmr": true
         },
         "production": {
           "buildTarget": "lead:build:production",

@@ -8,7 +8,6 @@ export class AdminController {
   @Get('/init')
   async init() {
     const admin = await this.usersService.findOneByUsername('admin');
-    console.log(admin);
     if (admin) return;
 
     await this.usersService.create({

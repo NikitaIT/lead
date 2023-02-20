@@ -10,10 +10,15 @@ import {
   addPaginationCompTemplateChild,
   createElementFromHTML,
 } from '../gridOptions/PaginationComp';
+import { suppressAgGridLicense } from '../gridOptions/suppressLicence';
+import { GridChartsModule } from '@ag-grid-enterprise/charts';
+
+suppressAgGridLicense();
 
 addPaginationCompTemplateChild(
   createElementFromHTML(`<div class="AgPaginationTemplateContent"></div>`)
 );
+
 export function getModules(): Module[] {
   return [
     ClientSideRowModelModule,
@@ -23,5 +28,6 @@ export function getModules(): Module[] {
     MenuModule,
     ColumnsToolPanelModule,
     StatusBarModule,
+    GridChartsModule,
   ];
 }

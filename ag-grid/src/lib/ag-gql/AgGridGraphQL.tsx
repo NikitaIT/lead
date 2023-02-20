@@ -41,7 +41,6 @@ export function AgGridGraphQL(props: AgGridGraphQLProps) {
   const [showAgPaginationTemplateContent, renderFooter] =
     useState<Element | null>(null);
   const onGridReady = useCallback(() => {
-    console.log('onGridReady');
     assert(gridRef.current);
     const template = gridRef.current.getElementsByClassName(
       'AgPaginationTemplateContent'

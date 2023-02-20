@@ -1,4 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, CreateDateColumn, DeleteDateColumn, UpdateDateColumn, OneToOne, JoinColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BaseEntity,
+  CreateDateColumn,
+  DeleteDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+
 @Entity('homes')
 export class Home extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -9,7 +18,6 @@ export class Home extends BaseEntity {
 
   @Column({ type: 'uuid' })
   public user_id!: string;
-
 
   @Column('varchar')
   public description!: string;
@@ -34,5 +42,4 @@ export class Home extends BaseEntity {
 
   @DeleteDateColumn()
   public deleted_at?: Date | null;
-
 }

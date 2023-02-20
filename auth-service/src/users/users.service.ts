@@ -2,8 +2,8 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { CreateUserInput, UpdateUserInput } from '../graphql.classes';
 import { randomBytes } from 'crypto';
 // import { createTransport, SendMailOptions } from 'nodemailer';
-import { ConfigService } from '../config/config.service';
-import { AuthService } from '../auth/auth.service';
+import { ConfigService } from '@lead/config';
+import { AuthService } from '../auth';
 import { UserEntity } from './entity/users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -15,7 +15,8 @@ export class UsersService {
     @InjectRepository(UserEntity) private userRepo: Repository<UserEntity>,
     private configService: ConfigService,
 
-    @Inject(forwardRef(() => AuthService)) private authService: AuthService
+    @Inject(forwardRef(() => AuthService))
+    private authService: AuthService
   ) {}
 
   /**
@@ -104,12 +105,12 @@ export class UsersService {
     const fields: any = {};
 
     if (fieldsToUpdate.password) {
-      if (
-        await this.authService.validateUserByPassword({
-          username,
-          password: fieldsToUpdate.password.oldPassword,
-        })
-      ) {
+      const loginAttempt = {
+        username,
+        password: fieldsToUpdate.password.oldPassword,
+      };
+
+      if (await this.validateUserByPassword(loginAttempt)) {
         fields.password = fieldsToUpdate.password.newPassword;
       }
     }
@@ -138,6 +139,24 @@ export class UsersService {
     if (!user) return null;
 
     return user;
+  }
+
+  async validateUserByPassword(loginAttempt: {
+    username?: string;
+    email?: string;
+    password: string;
+  }) {
+    // This will be used for the initial login
+    const userToAttempt: UserEntity | undefined =
+      await this.findOneByUsernameOrEmail(loginAttempt);
+
+    if (!userToAttempt) {
+      return;
+    }
+    return await this.authService.validateUserByPassword(
+      userToAttempt,
+      loginAttempt
+    );
   }
 
   /**
@@ -278,9 +297,21 @@ export class UsersService {
    */
   async findOneByUserId(id: string): Promise<UserEntity | null> {
     const user = await this.userRepo.findOne({ where: { id } });
-    console.log(user);
     if (user) return user;
     return null;
+  }
+
+  async findOneByUsernameOrEmail({
+    email,
+    username,
+  }: {
+    email?: string;
+    username?: string;
+  }): Promise<UserEntity | undefined> {
+    return (
+      (email && (await this.findOneByEmail(email))) ||
+      (username && (await this.findOneByUsername(username)))
+    );
   }
 
   /**

@@ -1,4 +1,4 @@
-## Home-manager APIs [NestJS APIs]
+## Home APIs [NestJS APIs]
 
 ### Installation and Setup
 
@@ -10,6 +10,7 @@ npm i
 ```
 
 ##### Copy files
+
 ```
 cp env.example .env
 cp docker-compose.override.example.yml docker-compose.override.yml
@@ -18,6 +19,7 @@ cp docker-compose.override.example.yml docker-compose.override.yml
 ## populating postgres tables
 
 - Validate configuration and enable for npm install and Migration
+
 ```
 version: "3"
 services:
@@ -28,20 +30,23 @@ services:
       NPM_INSTALL: ENABLE
       TYPEORM_MIGRATION: ENABLE
 ```
+
 ### Keep NPM_INSTALL and TYPEORM_MIGRATION as ENABLED to run Migration
+
 ```
  NPM_INSTALL: ENABLE
  TYPEORM_MIGRATION: ENABLE
 ```
 
-
 Running in docker using docker-compose
+
 ```
 docker-compose build
 docker-compose up
 ```
 
 # Running tests
+
 ```
 docker-compose exec node npm run test
 
@@ -64,15 +69,17 @@ docker-compose exec node npm run test:e2e
 Please ensure to set the right environment variables in the .env file.
 
 ## Debugging:
+
 For debugging support, copy the provided docker compose override
 
 ```
 cp docker-compose.override.debug.yml docker-compose.override.yml
 ```
+
 This will expose debugger port 5858, rest you just need to have launch.json file in root of pr project
 
 Just configure your inspector to attach to port 5858
-add launch.json in .vscode folder [vscode editor] for docker container debugging 
+add launch.json in .vscode folder [vscode editor] for docker container debugging
 
 ```
 {

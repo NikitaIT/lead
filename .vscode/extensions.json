@@ -3,6 +3,21 @@
     "nrwl.angular-console",
     "esbenp.prettier-vscode",
     "dbaeumer.vscode-eslint",
-    "firsttris.vscode-jest-runner"
+    "Orta.vscode-jest",
+    "firsttris.vscode-jest-runner",
+    "kisstkondoros.vscode-codemetrics",
+    "vivaxy.vscode-conventional-commits",
+    "IronGeek.vscode-env",
+    "jebbs.plantuml",
+    "styled-components.vscode-styled-components",
+    "redhat.vscode-yaml",
+    "bradlc.vscode-tailwindcss",
+    "unifiedjs.vscode-mdx",
+    "DavidAnson.vscode-markdownlint",
+    "yzhang.markdown-all-in-one",
+    "GraphQL.vscode-graphql-syntax",
+    "GraphQL.vscode-graphql",
+    "ms-azuretools.vscode-docker",
+    "ms-vscode-remote.remote-containers"
   ]
 }

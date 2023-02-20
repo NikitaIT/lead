@@ -11,14 +11,19 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2017", "dom"],
+    "lib": ["ESNext", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
       "@lead/ag-grid": ["ag-grid/src/index.ts"],
+      "@lead/auth-client": ["framework/auth-client/src/index.ts"],
       "@lead/data-access": ["data-access/src/index.ts"],
+      "@lead/db-client": ["framework/db-client/src/index.ts"],
+      "@lead/config": ["framework/config/src/index.ts"],
+      "@lead/logger": ["framework/logger/src/index.ts"],
       "@lead/models": ["models/src/index.ts"],
+      "@lead/nest-module": ["framework/nest-module/src/index.ts"],
       "@lead/shared/packages/codemod": ["shared/packages/codemod/src/index.ts"],
       "@lead/shared/packages/components": [
         "shared/packages/components/src/index.ts"

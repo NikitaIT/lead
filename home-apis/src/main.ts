@@ -2,21 +2,25 @@ import { NestApplicationOptions } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 // import { graphqlUploadExpress } from 'graphql-upload';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import helmet from 'helmet';
+// import helmet from 'helmet';
 import { AppModule } from './app/app.module';
-import { Logger } from './logger/logger';
+import { Logger } from '@lead/logger';
 import 'module-alias/register';
 const LISTEN_PORT = 3005;
 
 const NEST_LOGGING = true;
 async function bootstrap() {
-  const opts: NestApplicationOptions = {};
-  if (!NEST_LOGGING) { opts.logger = false; }
+  const opts: NestApplicationOptions = {
+    // bufferLogs: true,
+  };
+  if (!NEST_LOGGING) {
+    opts.logger = false;
+  }
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule, opts);
   app.disable('x-powered-by');
   // app.use(graphqlUploadExpress({ maxFileSize: 1000000, maxFiles: 10 }));
-  app.useLogger(app.get(Logger));
+  // app.useLogger(app.get(Logger));
   app.enableCors({
     exposedHeaders: 'X-Document-Name',
   });

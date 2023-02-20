@@ -1,10 +1,7 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ConfigModule } from '@app/config/config.module';
-import { DbModule } from '../../db/db.module';
-import { Home } from './entity/home.entity';
+import { ConfigModule } from '@lead/config';
 import { HomeModule } from './home/home.module';
-import { LoggerModule } from '@logger/logger.module';
 import { NextFn } from '@nestjs/graphql';
 
 import {
@@ -14,13 +11,12 @@ import {
 } from '@nestjs/apollo';
 import { GraphQLError, GraphQLFormattedError } from 'graphql';
 import { join } from 'path';
+import { DBModule } from './db.module';
+
 const LIB_ROOT = 'home-apis';
 @Module({
   imports: [
-    DbModule.forRoot({
-      entities: [Home],
-    }),
-    LoggerModule,
+    DBModule,
     HomeModule,
     ConfigModule,
 

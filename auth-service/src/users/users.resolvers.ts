@@ -8,17 +8,15 @@ import {
   ResolveReference,
 } from '@nestjs/graphql';
 import { UsersService } from './users.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard, AdminOnly } from '../auth/guards';
 import { CreateUserInput, UpdateUserInput } from '../graphql.classes';
-import { UsernameEmailAdminGuard } from '../auth/guards/username-email-admin.guard';
-import { AdminGuard } from '../auth/guards/admin.guard';
 import { UserInputError, ValidationError } from 'apollo-server-core';
 import { AdminAllowedArgs } from '../decorators/admin-allowed-args';
 import { UserEntity } from './entity/users.entity';
-import { Logger } from '../logger/logger';
+import { Logger } from '@lead/logger';
 import { UserSignup } from './dto/users.dto';
 import { validate } from 'class-validator';
-
+import { UsernameEmailAdminGuard } from './guards';
 @Resolver('User')
 export class UserResolver {
   constructor(
@@ -27,7 +25,7 @@ export class UserResolver {
   ) {}
 
   @Query('users')
-  @UseGuards(JwtAuthGuard, AdminGuard)
+  @AdminOnly()
   async users(): Promise<UserEntity[]> {
     return await this.usersService.getAllUsers();
   }
@@ -105,7 +103,7 @@ export class UserResolver {
   }
 
   @Mutation('addAdminPermission')
-  @UseGuards(JwtAuthGuard, AdminGuard)
+  @AdminOnly()
   async addAdminPermission(
     @Args('username') username: string
   ): Promise<UserEntity> {
@@ -115,7 +113,7 @@ export class UserResolver {
   }
 
   @Mutation('removeAdminPermission')
-  @UseGuards(JwtAuthGuard, AdminGuard)
+  @AdminOnly()
   async removeAdminPermission(
     @Args('username') username: string
   ): Promise<UserEntity> {
@@ -131,7 +129,7 @@ export class UserResolver {
   }
 
   @Query('user')
-  @UseGuards(JwtAuthGuard, AdminGuard)
+  @AdminOnly()
   user(@Args('id') id: string) {
     return this.usersService.findOneByUserId(id);
   }

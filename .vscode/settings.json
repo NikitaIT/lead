@@ -2,8 +2,21 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
   "files.associations": {
     "*.graphql.pubsub": "graphql",
     "*.graphql.ext": "graphql"
+  },
+  // exclude ignored files from search
+  // todo: need include .env
+  // "search.useParentIgnoreFiles": true,
+  // "search.useGlobalIgnoreFiles": true,
+  // "search.useIgnoreFiles": true,
+  // plantuml-server
+  "plantuml.render": "PlantUMLServer",
+  "plantuml.server": "http://localhost:8089",
+  "[plantuml]": {
+    "editor.defaultFormatter": "jebbs.plantuml"
   }
 }

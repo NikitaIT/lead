@@ -1,4 +1,5 @@
 export default {
+  'ag.toolpanel.settings': 'Settings', // custom
   // Set Filter
   selectAll: '(Select All)',
   selectAllSearchResults: '(Select All Search Results)',
