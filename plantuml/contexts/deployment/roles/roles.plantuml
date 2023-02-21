@@ -1,0 +1,37 @@
+@startuml Roles
+
+    actor ProductOwner as "ProductOwner
+    ---
+    - observe canary deployments
+    - observe frequency
+    "
+    actor KeyHolder as "KeyHolder
+    ---
+    - setup k8s keys
+    - update certs
+    "
+    actor Developer as "Developer"
+    actor Customer as "Customer"
+    actor DemoCustomer as "DemoCustomer
+    --
+    - only x.x.0 versions
+    - releace log
+    "
+    actor PreviewCustomer as "PreviewCustomer
+    --
+    - only x.x.x-x versions
+    - releace log
+    "
+    actor ReleaceCustomer as "ReleaceCustomer
+    --
+    - only x.x.x versions
+    - releace log
+    - preview proposal
+    "
+    Customer <|-- DemoCustomer
+    Customer <|-- PreviewCustomer
+    Customer <|-- ReleaceCustomer
+    Customer <|-- ProductOwner
+    Developer <|-- PreviewCustomer
+    Developer <|-- KeyHolder
+@enduml

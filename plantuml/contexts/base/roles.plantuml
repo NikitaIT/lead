@@ -1,0 +1,11 @@
+@startuml Roles
+
+legend bottom right
+  Use cases:
+  - add a role if you can give a more explicit name for the role
+  - if you can't, use the least abstract role possible
+  Info:
+  - This artifact should describe your team or customers
+endlegend
+
+@enduml

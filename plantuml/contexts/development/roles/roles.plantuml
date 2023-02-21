@@ -1,0 +1,55 @@
+@startuml Roles
+
+actor Customer
+
+actor TeamMember
+
+actor Lead as "Lead
+--
+- make frameworks
+- make PoC
+- setup tools for team work
+"
+
+actor Developer as "Developer
+--
+- make features
+"
+
+actor DomainExpert as "DomainExpert
+--
+- define user value / story points
+"
+
+
+actor ProductOwner as "ProductOwner
+--
+- define costs in $
+- define priority based on $ and story points
+"
+
+actor ScrumMaster as "ScrumMaster
+--
+- speed of user value delivery
+"
+
+actor TechnicalWriter as "TechnicalWriter
+--
+- write docs
+- make demos
+"
+
+actor Auditor as "Auditor
+--
+- make security audits
+"
+
+TeamMember <|-- Auditor
+TeamMember <|-- TechnicalWriter
+TeamMember <|-- Developer
+TeamMember <|-- Lead
+TeamMember <|-- ScrumMaster
+TeamMember <|-- ProductOwner
+Customer <|-- DomainExpert
+
+@enduml

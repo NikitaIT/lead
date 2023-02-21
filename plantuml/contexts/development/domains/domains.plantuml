@@ -1,0 +1,240 @@
+@startuml Domains
+
+actor Editor as "Editor"
+actor Reader as "Reader
+--
+- read may be outdated
+"
+actor TechnicalWriter
+
+
+package Cache [
+  Memcached or ...
+  --
+]
+
+package Getway [
+  GraphQL Getway
+  --
+  Is used for:
+  - Analytical queries
+  - Writing non-transactional changes
+  - Combining queries for fast loading landing pages
+  Don't use it when:
+  - You need the latest version of data to modify
+  - You need to get the changes of the mutation you just made (synchronous response)
+  - You need collaborative editing
+  - Both for multiple client applications and multiple 'human' clients.
+]
+
+
+
+rectangle WriteContext {
+  package Auth [
+    Is used for:
+    - credentials
+    - access
+  ]
+
+  database AuthDB [
+    AuthDB
+    --
+    postgress
+    - should be key-value
+  ]
+
+  artifact AuthDocs [
+    Docusaurus
+  ]
+
+  artifact AuthTests [
+    Tests
+    --
+    - Jest
+  ]
+
+  Auth .. AuthDB
+  Auth .. AuthDocs
+  Auth .. AuthTests
+
+  rectangle SingleUserContext {
+    package User [
+      Is used for:
+      - user info
+      - user settings
+    ]
+
+    database UserDB [
+      UserDB
+      --
+      postgress
+      - should be key-value
+    ]
+
+    artifact UserDocs [
+      Storybook
+    ]
+
+    artifact UserTests [
+      Tests
+      --
+      - Jest
+      - Cypress component
+      - Storybook component
+    ]
+
+    User .. UserDB
+    User .. UserDocs
+    User .. UserTests
+
+    package Grid [
+      Is used for:
+      - grid user settings
+    ]
+
+    database GridDB [
+      GridDB
+      --
+      postgress
+      - should be key-value
+      - may be collaborative
+    ]
+
+    artifact GridDocs [
+      Storybook
+    ]
+
+    artifact GridTests [
+      Tests
+      --
+      - Jest
+      - Cypress component
+      - Storybook component
+    ]
+    
+    Grid .. GridDB
+    Grid .. GridDocs
+    Grid .. GridTests
+  }
+
+    
+  rectangle ColaborativeContext {
+    package Home [
+      Is used for:
+      - some data
+    ]
+
+    database HomeDB [
+      HomeDB
+      --
+      postgress
+    ]
+
+    artifact HomeDocs [
+      Storybook
+    ]
+    
+    Home .. HomeDB
+    Home .. HomeDocs
+  }
+}
+
+rectangle PubSubContext {
+  queue In
+  queue Out
+  database Redis
+  Redis .. In
+  Redis .. Out
+  Out ..> Reader
+ 
+}
+WriteContext .> In
+
+rectangle ContentManagementContext {
+  package CMS [
+    Strapi
+  ]
+
+  database CMSDB [
+    postgress
+    --
+    - translations
+    - pages
+    - articles
+  ]
+
+  package CMSCache [
+    Memcached or ...
+    --
+  ]
+
+  CMS .. CMSDB
+  CMS --|> CMSCache
+}
+
+rectangle FrameworkContext {
+  package AuthClient [
+    Is used for:
+    - internal service auth
+  ]
+
+  package DBClient [
+    Is used for:
+    - db integration
+  ]
+
+  package Logs [
+    Is used for:
+    - app logs
+  ]
+
+  package Metrics [
+    Is used for:
+    - app metrics
+  ]
+
+  package CustomerExp [
+    Is used for:
+    - user metrics
+  ]
+}
+
+package PlantUml [
+  Is used for:
+  - secure visualization of documentation (no codebase leakage in online editors)
+  - good DX, local server always responds faster
+  - no need to install platform-specific software
+]
+
+package AppShell [
+  - combine all in one
+]
+
+cloud CDN [
+  CDN
+  --
+  fonts/etc
+]
+
+package E2E [
+  Cypress
+  --
+  - high level tests
+]
+
+AppShell ..> CDN
+AppShell ..> CMS
+
+AppShell .. E2E
+
+Getway --|> Cache
+Reader ..> Getway: jwt or not / gql
+Getway ..> WriteContext
+WriteContext ..> Cache: renew
+Editor ..> User: jwt / pubsub / gql
+Editor ..> Home: jwt / pubsub / gql
+Editor ..> Grid: jwt / pubsub / gql
+Editor ..> Auth: clame jwt / pubsub / gql
+TechnicalWriter ..> PlantUml
+WriteContext ---|> FrameworkContext
+@enduml
