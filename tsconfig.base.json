@@ -9,6 +9,7 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "importHelpers": true,
+    "resolveJsonModule": true,
     "target": "es2015",
     "module": "esnext",
     "lib": ["ESNext", "dom"],
@@ -16,13 +17,13 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@lead/ag-grid": ["ag-grid/src/index.ts"],
+      "@lead/ag-grid": ["domains/grid/ag-grid/src/index.ts"],
       "@lead/auth-client": ["framework/auth-client/src/index.ts"],
       "@lead/data-access": ["data-access/src/index.ts"],
       "@lead/db-client": ["framework/db-client/src/index.ts"],
       "@lead/config": ["framework/config/src/index.ts"],
       "@lead/logger": ["framework/logger/src/index.ts"],
-      "@lead/models": ["models/src/index.ts"],
+      "@lead/models": ["domains/dev/models/src/index.ts"],
       "@lead/nest-module": ["framework/nest-module/src/index.ts"],
       "@lead/shared/packages/codemod": ["shared/packages/codemod/src/index.ts"],
       "@lead/shared/packages/components": [
@@ -40,10 +41,16 @@
       "@lead/shared/packages/mui": ["shared/packages/mui/src/index.ts"],
       "@lead/shared/ui": ["shared/ui/src/index.ts"],
       "@lead/std": ["std/src/index.ts"],
-      "@lead/storybook-preview": ["storybook-preview/src/index.ts"],
-      "@lead/storybook-story": ["storybook-story/src/index.ts"],
-      "@lead/storybook-template": ["storybook-template/src/index.ts"],
-      "@lead/tasks": ["tasks/src/index.ts"]
+      "@lead/storybook-preview": [
+        "frontend-framework/storybook-preview/src/index.ts"
+      ],
+      "@lead/storybook-story": [
+        "frontend-framework/storybook-story/src/index.ts"
+      ],
+      "@lead/storybook-template": [
+        "frontend-framework/storybook-template/src/index.ts"
+      ],
+      "@lead/tasks": ["domains/dev/tasks/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

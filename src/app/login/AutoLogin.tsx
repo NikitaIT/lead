@@ -13,10 +13,11 @@ export function AutoLogin() {
     fetchPolicy: 'network-only',
   });
   useEffect(() => {
+    console.log('data', data);
     if (
       !data &&
       !loading &&
-      (localStorage.getItem('token') || '').length > 15
+      (localStorage.getItem('token') || '').length < 15
     ) {
       login();
     }
