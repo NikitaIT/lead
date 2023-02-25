@@ -12,6 +12,10 @@ import { AppService } from './app.service';
 
 import { ApolloFederationDriver } from '@nestjs/apollo';
 import { LoggerModule } from '../Logger';
+import {
+  resolvers as scalarResolvers,
+  typeDefs as scalarTypeDefs,
+} from 'graphql-scalars';
 import project from '../../project.json';
 const LIB_ROOT_SRC = project.sourceRoot;
 @Module({
@@ -20,6 +24,8 @@ const LIB_ROOT_SRC = project.sourceRoot;
     GraphQLModule.forRoot({
       typePaths: [`${LIB_ROOT_SRC}/**/*.graphql`],
       driver: ApolloFederationDriver,
+      typeDefs: scalarTypeDefs,
+      resolvers: scalarResolvers,
       context: ({ req }) => ({ req }),
       formatError: (error: GraphQLError) => {
         const graphQLFormattedError: GraphQLFormattedError = {

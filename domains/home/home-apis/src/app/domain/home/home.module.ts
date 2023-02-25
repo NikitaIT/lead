@@ -3,7 +3,6 @@ import { HomeService } from './home.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HomeResolver } from './home.resolver';
 import { Home } from '../entity/home.entity';
-import { DateScalar } from '../../scalars/date.scalar';
 import { adapters } from '@lead/auth-client';
 import { LoggerModule } from '../../../../src/Logger';
 import { ConfigModule, ConfigService } from '@lead/config';
@@ -23,6 +22,6 @@ import { ConfigModule, ConfigService } from '@lead/config';
     }),
     TypeOrmModule.forFeature([Home]),
   ],
-  providers: [HomeService, HomeResolver, DateScalar],
+  providers: [HomeService, HomeResolver /*DateScalar */],
 })
 export class HomeModule {}

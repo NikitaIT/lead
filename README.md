@@ -12,6 +12,11 @@ nx run home-apis:serve
 nx run getway-service:serve
 ```
 
+## About
+
+- [about setup](https://medium.com/@guysenpai89/nx-monorepo-publish-libraries-to-github-packages-with-github-actions-semantic-release-970883f2786a)
+- [small bundle](https://github.com/nrwl/nx/issues/9717)
+
 ## Nx
 
 [![npm](https://img.shields.io/npm/v/lead.svg)](https://www.npmjs.com/package/lead)

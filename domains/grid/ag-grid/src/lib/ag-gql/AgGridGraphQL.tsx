@@ -12,7 +12,7 @@ import { getModules } from '../install/install';
 import { createOptions } from '../gridOptions/gridOptions';
 import ReactDOM, { createPortal } from 'react-dom';
 import { assert } from '@lead/std';
-import { getway, pubsub } from '@lead/data-access';
+import { getway, home } from '@lead/data-access';
 import { Button } from '@mui/material';
 /* eslint-disable-next-line */
 export interface AgGridGraphQLProps {}
@@ -70,13 +70,13 @@ export function AgGridGraphQL(props: AgGridGraphQLProps) {
       <Button
         onClick={() => {
           subscribeToMore<
-            pubsub.HomeAddedSubscription,
-            pubsub.HomeAddedSubscriptionVariables
+            home.HomeAddedSubscription,
+            home.HomeAddedSubscriptionVariables
           >({
             context: {
               clientName: 'non-getway',
             },
-            document: pubsub.HomeAddedDocument,
+            document: home.HomeAddedDocument,
             variables: { id: '' },
             updateQuery: (prev, { subscriptionData }) => {
               if (Object.keys(prev || {}).length === 0) {

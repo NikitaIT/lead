@@ -1,7 +1,7 @@
-import { Scalar } from '@nestjs/graphql';
+// import { Scalar } from '@nestjs/graphql';
 import { Kind, ASTNode } from 'graphql';
-
-@Scalar('Date')
+// removed
+// @Scalar('Date')
 export class DateScalar {
   description = 'Date custom scalar type';
 

@@ -4,13 +4,12 @@ import * as ReactDOM from 'react-dom/client';
 import { ApolloProvider } from '@apollo/client';
 
 import App from './app/app';
-import initApollo from './initApollo';
+import { initApollo } from './Config';
 
-const client = initApollo({});
+const client = initApollo().create({});
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-console.log('ibndsfsadfasdf');
 root.render(
   <ApolloProvider client={client}>
     <StrictMode>

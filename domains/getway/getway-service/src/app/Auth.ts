@@ -26,7 +26,7 @@ export class Auth {
   decodeToken = (tokenString: string) => {
     assert(process.env.SECRET_KEY, 'set process.env.SECRET_KEY');
     const decoded = verify(tokenString, process.env.SECRET_KEY);
-    if (!decoded) {
+    if (!decoded || typeof decoded === 'string') {
       throw new HttpException(
         { message: this.config.INVALID_AUTH_TOKEN },
         HttpStatus.UNAUTHORIZED
@@ -40,7 +40,7 @@ export class Auth {
       if (req.headers.authorization) {
         const token = this.getToken(req.headers.authorization);
         console.log('handleAuth:token', token);
-        const decoded: any = this.decodeToken(token);
+        const decoded = this.decodeToken(token);
         console.log('handleAuth:decoded', decoded);
         return {
           userId: decoded.userId,

@@ -1,27 +1,20 @@
-import { PubSub as GQLPubSub } from 'graphql-subscriptions';
-// import { RedisPubSub } from 'graphql-redis-subscriptions';
 import { Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@lead/config';
+import { adapters } from '@lead/pub-sub';
+export { PubSub } from '@lead/pub-sub';
 
-export abstract class PubSub extends GQLPubSub {}
-
+const pubsub = adapters.PubSubModule.forRootAsync(adapters.PubSubModule, {
+  imports: [ConfigModule],
+  useFactory(configService: ConfigService) {
+    return {
+      type: 'self',
+    };
+  },
+  inject: [ConfigService],
+});
 @Global()
 @Module({
-  imports: [ConfigModule],
-  providers: [
-    {
-      provide: PubSub,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      useFactory: (configService: ConfigService) =>
-        new GQLPubSub({
-          // connection: {
-          //   host: configService.get('REDIS_HOST'),
-          //   port: configService.get('REDIS_PORT'),
-          // }
-        }),
-      inject: [ConfigService],
-    },
-  ],
-  exports: [PubSub],
+  imports: [pubsub],
+  exports: [pubsub],
 })
 export class PubSubModule {}

@@ -5,8 +5,11 @@ const registerContext = require('path').resolve(
   __dirname,
   './.jest/register-context.js'
 );
+
+const setEnvVars = require('path').resolve(__dirname, './.jest/setEnvVars.js');
+
 module.exports = {
   ...nxPreset,
 
-  setupFiles: [...(nxPreset.setupFiles || []), registerContext],
+  setupFiles: [...(nxPreset.setupFiles || []), registerContext, setEnvVars],
 };

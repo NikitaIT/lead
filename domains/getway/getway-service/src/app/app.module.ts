@@ -36,7 +36,7 @@ import { Auth } from './Auth';
           subgraphs: [
             { name: 'User', url: 'http://localhost:5006/graphql' },
             { name: 'Home', url: 'http://localhost:5003/graphql' },
-            // { name: 'Booking', url: 'http://localhost:5004/graphql' },
+            // { name: 'Grid', url: 'http://localhost:5004/graphql' },
           ],
           pollIntervalInMs: 2000, // reconnect interval if subgraph was down
           subgraphHealthCheck: true,

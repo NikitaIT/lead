@@ -1,0 +1,72 @@
+enum Order {
+  asc
+  desc
+}
+
+enum PinnedDir {
+  left
+  right
+}
+
+union ColumnPinnedType = PinnedDir | boolean | null | undefined
+
+interface ColumnStateParams {
+  "True if the column is hidden"
+  hide: boolean #| null
+  "Width of the column in pixels"
+  width: number
+  "Column's flex if flex is set"
+  flex: number #| null
+  "Sort applied to the column"
+  sort: Order #| null
+  "The order of the sort, if sorting by many columns"
+  sortIndex: number #| null
+  "The aggregation function applied"
+  aggFunc: string #| IAggFunc | null we can make IAggFunc scalar, but we shouldn't
+  "True if pivot active"
+  pivot: boolean #| null
+  "The order of the pivot, if pivoting by many columns"
+  pivotIndex: number #| null
+  "Set if column is pinned"
+  pinned: ColumnPinnedType
+  "True if row group active"
+  rowGroup: boolean #| null
+  "The order of the row group, if grouping by many columns"
+  rowGroupIndex: number #| null
+}
+type ColumnState implements ColumnStateParams {
+  "ID of the column"
+  colId: string!
+}
+
+union ConfigId = ID
+union UserId = ID
+
+union FilterModel = JSON # [key: string]: any;
+union Column = JSON
+
+type ColumnGroupState {
+  groupId: string
+  open: boolean
+}
+
+type Config @key(fields: "id") {
+  id: ConfigId!
+  userId: UserId!
+  isPivotMode: boolean!
+  columns: [Column!]!
+  columnStates: [ColumnState!]!
+  filterModel: FilterModel!
+  "Gets the state of the column groups. Typically used when saving column group state."
+  columnGroupStates: [ColumnGroupState!]!
+}
+
+type Query {
+  configs(userId: UserId!): [Config!]!
+  config(id: ConfigId!): Config!
+  columnGroupStates(id: ConfigId!): [ColumnGroupState!]!
+}
+
+type Mutation {
+  saveConfig(userId: UserId!): [Config!]!
+}

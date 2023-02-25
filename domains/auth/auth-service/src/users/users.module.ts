@@ -1,7 +1,7 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UserResolver } from './users.resolvers';
-import { DateScalar } from '../scalars/date.scalar';
+// import { DateScalar } from '../scalars/date.scalar';
 import { ConfigModule } from '@lead/config';
 import { adapters } from '../auth';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -19,6 +19,6 @@ import { AuthResolver } from './Login.resolver';
   ],
   exports: [UsersService],
   controllers: [AdminController],
-  providers: [UsersService, UserResolver, AuthResolver, DateScalar],
+  providers: [UsersService, UserResolver, AuthResolver /* DateScalar */],
 })
 export class UsersModule {}

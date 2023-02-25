@@ -1,4 +1,4 @@
-scalar Date
+# scalar Date
 
 type Home @key(fields: "id") {
   id: ID!

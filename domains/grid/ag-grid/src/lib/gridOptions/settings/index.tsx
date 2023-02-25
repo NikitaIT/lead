@@ -1,4 +1,4 @@
-import { IToolPanelParams } from '@ag-grid-community/core';
+import { IToolPanelParams, ModelUpdatedEvent } from '@ag-grid-community/core';
 import { FC, useEffect, useState } from 'react';
 
 const totalStyle = { paddingBottom: '15px' };
@@ -12,7 +12,7 @@ export function SettingsTool<TData>(
   const [numSilver, setNumSilver] = useState(0);
   const [numBronze, setNumBronze] = useState(0);
 
-  const updateTotals = () => {
+  const updateTotals = (e: ModelUpdatedEvent<TData>) => {
     let numGold = 0,
       numSilver = 0,
       numBronze = 0;
