@@ -1,7 +1,10 @@
 import type { StorybookConfig } from '@storybook/react-webpack5';
 import { remarkCodeHike } from '@code-hike/mdx';
 import remarkGfm from 'remark-gfm';
-import theme from 'shiki/themes/dark-plus.json';
+
+// https://github.com/microsoft/TypeScript/issues/43940
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const theme = require('shiki/themes/dark-plus.json');
 
 export const config: StorybookConfig = {
   stories: [

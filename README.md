@@ -1,5 +1,13 @@
 # Lead
 
+## Dev
+
+When a developer runs say `nx serve lead --devRemotes=ag-grid-shell --verbose`, they still run the whole application, but `auth` and `home` are served statically, from cache. As a result, the serve time and the time it takes to see the changes on the screen go down, often by an order of magnitude.
+
+```sh
+nx serve lead --devRemotes=ag-grid-shell --verbose
+```
+
 ## How to up
 
 ```sh

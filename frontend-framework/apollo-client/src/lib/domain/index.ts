@@ -10,3 +10,4 @@ export {
   RequestLogger,
 } from './logger';
 export * from './Domain';
+export * from './offline';

@@ -13,6 +13,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     return request;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
   handleRequest(err: any, user: any, info: any) {
     if (err || !user) {
       throw err || new AuthenticationError('Could not authenticate with token');

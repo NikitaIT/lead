@@ -9,7 +9,17 @@ declare module '@apollo/client' {
 export function requestedClientIs(
   clientName: string
 ): (operation: Operation) => boolean {
-  return (operation) => operation.getContext().clientName === clientName;
+  return (operation) => {
+    console.log(
+      'expect ',
+      operation.getContext().clientName,
+      '=',
+      clientName,
+      ' : ',
+      operation.getContext()
+    );
+    return operation.getContext().clientName === clientName;
+  };
 }
 
 export function isWebsocket({ query }: Operation): boolean {

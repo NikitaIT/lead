@@ -23,13 +23,13 @@ export function AgGridGraphQL(props: AgGridGraphQLProps) {
     createHome,
     { data: homeResult, error: homeError, loading: homeLoading },
   ] = getway.useCreateHomeMutation({
-    variables: {
-      payload: {
-        description: 'omg',
-        is_active: true,
-        name: 'lala',
-      },
-    },
+    // variables: {
+    //   payload: {
+    //     description: 'omg',
+    //     is_active: true,
+    //     name: 'lala',
+    //   },
+    // },
   });
   const [columnDefs] = useState([
     { field: 'id' },
@@ -74,11 +74,11 @@ export function AgGridGraphQL(props: AgGridGraphQLProps) {
             home.HomeAddedSubscriptionVariables
           >({
             context: {
-              clientName: 'non-getway',
+              clientName: 'home',
             },
             document: home.HomeAddedDocument,
             variables: { id: '' },
-            updateQuery: (prev, { subscriptionData }) => {
+            updateQuery: (prev, { subscriptionData, variables }) => {
               if (Object.keys(prev || {}).length === 0) {
                 // there's nothing in cache, return empty array otherwise crash!
                 return { homes: [] };
@@ -102,12 +102,14 @@ export function AgGridGraphQL(props: AgGridGraphQLProps) {
       </Button>
       <Button
         onClick={() => {
+          const name = Date.now() + 'lala_';
+          console.log(name);
           createHome({
             variables: {
               payload: {
                 description: 'omg',
                 is_active: true,
-                name: 'lala' + Math.random(),
+                name: name,
               },
             },
           });

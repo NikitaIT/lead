@@ -2,6 +2,7 @@
 export default {
   displayName: 'lead',
   preset: './jest.preset.js',
+  setupFiles: ['./.jest/setEnvVars.js'],
   transform: {
     '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '@nrwl/react/plugins/jest',
     '^.+\\.[tj]sx?$': ['babel-jest', { presets: ['@nrwl/react/babel'] }],

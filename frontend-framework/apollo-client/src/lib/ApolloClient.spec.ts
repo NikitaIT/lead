@@ -4,6 +4,7 @@ import { Config } from './Config';
 describe('Config', () => {
   it('should work', async () => {
     const config: Config = {
+      localForageOptions: {},
       name: 'test',
       version: '0.0.0',
       domains: [
@@ -24,8 +25,8 @@ describe('Config', () => {
         },
       },
     };
-    const x = new ApolloClient(null, config);
+    const x = new ApolloClient(null, config, {});
 
-    x.create({});
+    x.create();
   });
 });

@@ -2,39 +2,8 @@
   "name": "auth-client",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "framework/auth-client/src",
-  "projectType": "application",
+  "projectType": "library",
   "targets": {
-    "build": {
-      "executor": "@nrwl/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "target": "node",
-        "compiler": "tsc",
-        "outputPath": "dist/auth-client",
-        "main": "framework/auth-client/src/main.ts",
-        "tsConfig": "framework/auth-client/tsconfig.app.json",
-        "assets": ["framework/auth-client/src/assets"],
-        "webpackConfig": "framework/auth-client/webpack.config.js"
-      },
-      "configurations": {
-        "production": {
-          "optimization": true,
-          "extractLicenses": true,
-          "inspect": false
-        }
-      }
-    },
-    "serve": {
-      "executor": "@nrwl/js:node",
-      "options": {
-        "buildTarget": "auth-client:build"
-      },
-      "configurations": {
-        "production": {
-          "buildTarget": "auth-client:build:production"
-        }
-      }
-    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

@@ -4,6 +4,7 @@ import { BaseLink } from '../../framework';
 import { Config } from './Config';
 import { formatMessage } from './formatMessage';
 import { logging } from './logging';
+import { onError } from '@apollo/client/link/error';
 
 declare module '@apollo/client' {
   export interface DefaultContext {
@@ -41,11 +42,21 @@ export class RequestLogger implements BaseLink {
 export class ErrorLogger implements BaseLink {
   constructor(private config: Config) {}
   get apolloLink(): ApolloLink {
-    return new ApolloLink((operation, forward) => {
-      const observable = forward(operation);
+    return onError((error) => {
+      if (error.graphQLErrors)
+        error.graphQLErrors.forEach(({ message, locations, path }) =>
+          console.log(
+            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+          )
+        );
+      if (error.networkError)
+        console.log(`[Network error]: ${error.networkError}`);
+      // const observable = forward(operation);
       // errors will be sent to the errorCallback
-      observable.subscribe({ error: this.config.errorCallback });
-      return observable;
+      // observable.subscribe({ error: this.config.errorCallback });
+      // ps we can't because it call all stack twice
+      //observable.subscribe({ error: this.config.errorCallback });
+      // return observable;
     });
   }
 }

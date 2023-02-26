@@ -2,39 +2,8 @@
   "name": "pub-sub",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "framework/pub-sub/src",
-  "projectType": "application",
+  "projectType": "library",
   "targets": {
-    "build": {
-      "executor": "@nrwl/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "target": "node",
-        "compiler": "tsc",
-        "outputPath": "dist/pub-sub",
-        "main": "framework/pub-sub/src/main.ts",
-        "tsConfig": "framework/pub-sub/tsconfig.app.json",
-        "assets": ["framework/pub-sub/src/assets"],
-        "webpackConfig": "framework/pub-sub/webpack.config.js"
-      },
-      "configurations": {
-        "production": {
-          "optimization": true,
-          "extractLicenses": true,
-          "inspect": false
-        }
-      }
-    },
-    "serve": {
-      "executor": "@nrwl/js:node",
-      "options": {
-        "buildTarget": "pub-sub:build"
-      },
-      "configurations": {
-        "production": {
-          "buildTarget": "pub-sub:build:production"
-        }
-      }
-    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

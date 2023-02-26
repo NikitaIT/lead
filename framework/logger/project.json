@@ -2,39 +2,8 @@
   "name": "logger",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "framework/logger/src",
-  "projectType": "application",
+  "projectType": "library",
   "targets": {
-    "build": {
-      "executor": "@nrwl/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "target": "node",
-        "compiler": "tsc",
-        "outputPath": "dist/logger",
-        "main": "framework/logger/src/main.ts",
-        "tsConfig": "framework/logger/tsconfig.app.json",
-        "assets": ["framework/logger/src/assets"],
-        "webpackConfig": "framework/logger/webpack.config.js"
-      },
-      "configurations": {
-        "production": {
-          "optimization": true,
-          "extractLicenses": true,
-          "inspect": false
-        }
-      }
-    },
-    "serve": {
-      "executor": "@nrwl/js:node",
-      "options": {
-        "buildTarget": "logger:build"
-      },
-      "configurations": {
-        "production": {
-          "buildTarget": "logger:build:production"
-        }
-      }
-    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

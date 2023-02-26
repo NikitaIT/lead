@@ -15,7 +15,7 @@ export const testEnvConfigData: ConfigData = {
     suppressDateAndLevelInMsg: true,
   },
   newRelicKey: '',
-  port: 5003,
+  port: 9000,
   sendGrid: {
     apiKey: '',
     verifiedEmail: '',

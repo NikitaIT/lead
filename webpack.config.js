@@ -1,9 +1,21 @@
 const { composePlugins, withNx } = require('@nrwl/webpack');
 const { withReact } = require('@nrwl/react');
+const { withModuleFederation } = require('@nrwl/react/module-federation');
 
-// Nx plugins for webpack.
-module.exports = composePlugins(withNx(), withReact(), (config) => {
-  // Update the webpack config as needed here.
-  // e.g. `config.plugins.push(new MyPlugin())`
-  return config;
-});
+const baseConfig = require('./module-federation.config');
+
+const config = {
+  ...baseConfig,
+};
+
+// Nx plugins for webpack to build config object from Nx options and context.
+module.exports = composePlugins(
+  withNx(),
+  withReact(),
+  withModuleFederation(config),
+  (config) => {
+    // Update the webpack config as needed here.
+    // e.g. `config.plugins.push(new MyPlugin())`
+    return config;
+  }
+);

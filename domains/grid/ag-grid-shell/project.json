@@ -1,0 +1,111 @@
+{
+  "name": "ag-grid-shell",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "./domains/grid/ag-grid-shell/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/ag-grid-shell",
+        "index": "domains/grid/ag-grid-shell/src/index.html",
+        "baseHref": "/",
+        "main": "./domains/grid/ag-grid-shell/src/main.ts",
+        "tsConfig": "domains/grid/ag-grid-shell/tsconfig.app.json",
+        "assets": [
+          "domains/grid/ag-grid-shell/src/favicon.ico",
+          "domains/grid/ag-grid-shell/src/assets"
+        ],
+        "styles": [],
+        "scripts": [],
+        "isolatedConfig": true,
+        "webpackConfig": "./domains/grid/ag-grid-shell/webpack.config.js"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "domains/grid/ag-grid-shell/src/environments/environment.ts",
+              "with": "domains/grid/ag-grid-shell/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "webpackConfig": "./domains/grid/ag-grid-shell/webpack.config.prod.js"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/react:module-federation-dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "ag-grid-shell:build",
+        "hmr": true,
+        "port": 4202
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "ag-grid-shell:build:development"
+        },
+        "production": {
+          "buildTarget": "ag-grid-shell:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "./domains/grid/ag-grid-shell/**/*.{ts,tsx,js,jsx}"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "domains/grid/ag-grid-shell/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "serve-static": {
+      "executor": "@nrwl/web:file-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "ag-grid-shell:build",
+        "port": 4202
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "ag-grid-shell:build:development"
+        },
+        "production": {
+          "buildTarget": "ag-grid-shell:build:production"
+        }
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["home-apis"]
+}

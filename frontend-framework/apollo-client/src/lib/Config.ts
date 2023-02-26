@@ -12,6 +12,7 @@ import {
 export const ConfigSchema = object({
   name: string().required(),
   version: string().required(),
+  localForageOptions: object(),
   domains: array(DomainSchema).required(),
   getway: string().required(),
   auth: AuthConfigSchema.required(),
@@ -21,6 +22,7 @@ export const ConfigSchema = object({
 export interface Config {
   readonly name: string;
   readonly version: string;
+  readonly localForageOptions: LocalForageOptions;
   // generator create all getway-service methods with this name
   readonly domains: Domain[];
   readonly getway: string;

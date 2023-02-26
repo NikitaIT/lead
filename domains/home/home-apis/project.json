@@ -1,6 +1,6 @@
 {
   "name": "home-apis",
-  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "domains/home/home-apis/src",
   "projectType": "application",
   "targets": {

@@ -40,17 +40,18 @@
           "sourceMap": false,
           "namedChunks": false,
           "extractLicenses": true,
-          "vendorChunk": false
+          "vendorChunk": false,
+          "webpackConfig": "webpack.config.prod.js"
         }
       }
     },
     "serve": {
-      "executor": "@nrwl/webpack:dev-server",
+      "executor": "@nrwl/react:module-federation-dev-server",
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "lead:build",
         "hmr": true,
-        "proxyConfig": "./proxy.conf.json"
+        "port": 4199
       },
       "configurations": {
         "development": {
@@ -84,6 +85,22 @@
         }
       }
     },
+    "serve-static": {
+      "executor": "@nrwl/web:file-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "lead:build",
+        "port": 4200
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "lead:build:development"
+        },
+        "production": {
+          "buildTarget": "lead:build:production"
+        }
+      }
+    },
     "release": {
       "executor": "nx:run-commands",
       "outputs": [],
@@ -93,5 +110,11 @@
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "implicitDependencies": [
+    "ag-grid-shell",
+    "auth-shell",
+    "home-shell",
+    "getway-service"
+  ]
 }

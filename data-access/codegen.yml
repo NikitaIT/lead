@@ -17,8 +17,9 @@ generates:
         JSON: string
         UUID: string
         Date: string
-      context:
-        clientName: 'home'
+      defaultBaseOptions:
+        context:
+          clientName: 'home'
 
   data-access/src/lib/generated/home-apis.tsx:
     schema: 'http://localhost:5003/graphql'
@@ -38,27 +39,28 @@ generates:
         UUID: string
         Date: string
 
-      context:
-        clientName: 'home'
-  data-access/src/lib/generated/grid-service.tsx:
-    schema: 'http://localhost:5004/graphql'
-    documents: 'data-access/src/lib/grid-service/**/*.graphql'
-    plugins:
-      - 'typescript'
-      - 'typescript-operations'
-      - 'typescript-react-apollo'
-      - 'typescript-apollo-client-helpers'
-    config:
-      withHooks: true
-      withComponent: false
-      withHOC: false
-      avoidOptionals: true
-      scalars:
-        JSON: string
-        UUID: string
-        Date: string
-      context:
-        clientName: 'grid'
+      defaultBaseOptions:
+        context:
+          clientName: 'home'
+  # data-access/src/lib/generated/grid-service.tsx:
+  #   schema: 'http://localhost:5004/graphql'
+  #   documents: 'data-access/src/lib/grid-service/**/*.graphql'
+  #   plugins:
+  #     - 'typescript'
+  #     - 'typescript-operations'
+  #     - 'typescript-react-apollo'
+  #     - 'typescript-apollo-client-helpers'
+  #   config:
+  #     withHooks: true
+  #     withComponent: false
+  #     withHOC: false
+  #     avoidOptionals: true
+  #     scalars:
+  #       JSON: string
+  #       UUID: string
+  #       Date: string
+  #     context:
+  #       clientName: 'grid'
   data-access/src/lib/generated/auth-service.tsx:
     schema: 'http://localhost:5006/graphql'
     documents: 'data-access/src/lib/auth-service/**/*.graphql'
@@ -76,8 +78,9 @@ generates:
         JSON: string
         UUID: string
         Date: string
-      context:
-        clientName: 'auth'
+      defaultBaseOptions:
+        context:
+          clientName: 'auth'
   data-access/src/lib/generated/getway-service.tsx:
     schema: 'http://localhost:4000/graphql'
     documents: 'data-access/src/lib/getway-service/**/*.graphql'

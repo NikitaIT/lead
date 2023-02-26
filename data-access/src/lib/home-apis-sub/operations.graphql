@@ -2,5 +2,9 @@ subscription homeAdded($id: ID!) {
   homeAdded(id: $id) {
     id
     name
+    description
+    user {
+      id
+    }
   }
 }

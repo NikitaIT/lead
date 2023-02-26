@@ -82,6 +82,6 @@ export function collectToolPanelContacts(): ToolPanelContract[] {
   }
   return component
     .keys()
-    .map((key) => component(key).default)
+    .map((key) => (component(key) as { default: ToolPanelContract }).default)
     .filter((x) => x);
 }

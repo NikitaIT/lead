@@ -3,6 +3,7 @@ import { Config, ConfigSchema } from './Config';
 describe('Config', () => {
   it('should work', async () => {
     const config: Config = {
+      localForageOptions: {},
       name: 'test',
       version: '0.0.0',
       domains: [

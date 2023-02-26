@@ -1,5 +1,4 @@
-import { permutator, powerset } from '@lead/std';
-import { Test, TestingModule } from '@nestjs/testing';
+import { permutator } from '@lead/std';
 import { ConfigSchema, Config } from './Config';
 describe('config', () => {
   const validSchema = Config({ expireIn: 1, jwtSecret: 'lalal' });

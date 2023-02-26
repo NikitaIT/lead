@@ -2,39 +2,8 @@
   "name": "db-client",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "framework/db-client/src",
-  "projectType": "application",
+  "projectType": "library",
   "targets": {
-    "build": {
-      "executor": "@nrwl/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "target": "node",
-        "compiler": "tsc",
-        "outputPath": "dist/db-client",
-        "main": "framework/db-client/src/main.ts",
-        "tsConfig": "framework/db-client/tsconfig.app.json",
-        "assets": ["framework/db-client/src/assets"],
-        "webpackConfig": "framework/db-client/webpack.config.js"
-      },
-      "configurations": {
-        "production": {
-          "optimization": true,
-          "extractLicenses": true,
-          "inspect": false
-        }
-      }
-    },
-    "serve": {
-      "executor": "@nrwl/js:node",
-      "options": {
-        "buildTarget": "db-client:build"
-      },
-      "configurations": {
-        "production": {
-          "buildTarget": "db-client:build:production"
-        }
-      }
-    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

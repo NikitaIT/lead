@@ -12,10 +12,12 @@ export class AdminGuard implements CanActivate {
   }
   canActivate(context: ExecutionContext): boolean {
     const ctx = GqlExecutionContext.create(context);
-    const request = ctx.getContext().req;
+    const request = ctx.getContext<{
+      req: { user: { permissions: string[] } };
+    }>().req;
     console.log(request);
     if (request.user) {
-      const user = <any>request.user;
+      const user = request.user;
       if (this.isAdmin(user.permissions)) return true;
     }
     throw new AuthenticationError(
