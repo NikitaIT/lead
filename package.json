@@ -141,7 +141,7 @@
     "@ag-grid-enterprise/viewport-row-model": "^29.1.0",
     "@apollo/client": "^3.7.6",
     "@apollo/federation": "^0.38.1",
-    "@apollo/gateway": "^2.3.0",
+    "@apollo/gateway": "^2.3.2",
     "@apollo/subgraph": "^2.3.2",
     "@code-hike/mdx": "^0.8.0",
     "@commitlint/config-conventional": "^17.4.4",
