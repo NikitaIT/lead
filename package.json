@@ -162,7 +162,7 @@
     "@mui/x-date-pickers-pro": "^5.0.18",
     "@mui/x-license-pro": "^5.17.12",
     "@nestjs/apollo": "^10.1.7",
-    "@nestjs/common": "^9.0.0",
+    "@nestjs/common": "^9.3.9",
     "@nestjs/config": "^2.3.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/graphql": "^10.1.7",
