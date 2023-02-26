@@ -227,7 +227,7 @@
     "typeorm": "^0.3.12",
     "url-join-ts": "^1.0.5",
     "winston": "^3.8.2",
-    "yup": "^1.0.0"
+    "yup": "^1.0.1"
   },
   "lint-staged": {
     "*.js": "eslint --cache --fix",
