@@ -7,6 +7,7 @@ const apollo = [
   '@apollo/client/link/subscriptions',
   '@apollo/client/link/context',
   '@apollo/client/link/error',
+  '@apollo/client/link/core',
 ];
 module.exports = {
   name: shell.name,
@@ -22,10 +23,6 @@ module.exports = {
         singleton: true,
         strictVersion: false,
         requiredVersion: '3.7.6',
-
-        // "@apollo/client/utilities": "^3.7.6",
-        // "@apollo/client/link/context": "^3.7.6",
-        // "@apollo/client/link/subscriptions": "^3.7.6",
       };
     }
   },

@@ -61,7 +61,7 @@ export function AgGridGraphQL(props: AgGridGraphQLProps) {
             <div>Last: {homeResult?.createHome?.name || 'Tap create bth'}</div>
             <div>
               From gql pub-sub:
-              {(data?.homes && data?.homes[data?.homes.length - 1].name) ||
+              {(data?.homes && data?.homes[0] && data?.homes[0].name) ||
                 'Tap create bth'}
             </div>
           </div>,
@@ -92,7 +92,13 @@ export function AgGridGraphQL(props: AgGridGraphQLProps) {
               const newFeedItem = subscriptionData.data.homeAdded;
               // const sd = data?.homes;
               return Object.assign({}, prev, {
-                homes: [newFeedItem, ...(prev.homes || [])],
+                homes: [
+                  {
+                    ...newFeedItem,
+                    user: { ...newFeedItem.user, username: 'unknown' },
+                  },
+                  ...(prev.homes || []),
+                ],
               });
             },
           });

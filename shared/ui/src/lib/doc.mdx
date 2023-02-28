@@ -1,0 +1,536 @@
+import { Meta, Story, Preview } from '@storybook/blocks';
+import AppShell from '../assets/app-shell.png';
+import MFGraph from '../assets/mf-graph.png';
+import SignIn from '../assets/sign-in.png';
+import OldSignIn from '../assets/old-sign.png';
+import federationGraph from '../assets/federation-graph.png';
+
+<Meta />
+<div className="sb-unstyled">
+
+# Architectural overview
+
+With Module Federation, a large application is split into:
+
+- A single `Shell` application that references external...
+- Remote `domains/<domain>/<domain>-shell` applications, which handle a single domain or feature.
+
+In current project we have:
+
+```yaml
+domains
+  # main domains
+  - auth
+  - grid
+  - home
+  # support domains
+  - getway
+  - dev
+  - app-shell
+  # external domains
+  - cms
+```
+
+Each **main domain** contains:
+
+<CH.Code>
+
+```yaml temlpate
+<domain>
+  # backend
+  - <domain>-service # backend api
+  - <domain>-service-e2e # backend e2e tests, we use cucumber for more business transparency
+  # frontend
+  - <domain> # library + storybook
+  - <domain>-shell # connect library with shell
+  - <domain>-shell-e2e # cypress e2e tests
+```
+
+```yaml auth
+auth
+  # backend
+  - auth-service # graphql endpoints
+  - auth-service-e2e # cross app auth
+  # frontend
+  - auth # login components
+  - auth-shell # login page and etc. cms integration
+  - auth-shell-e2e # login user jorney
+```
+
+</CH.Code>
+
+We can find **main domains** as routes at the [main page](http://localhost:4199/). This is `shell` application with three remotes under these routes:
+
+```tsx app.tsx
+<Route path="/grid" element={<AgGridShell />}></Route>
+<Route path="/home" element={<HomeShell />}></Route>
+<Route path="/auth" element={<AuthShell />}></Route>
+```
+
+We can track this dependency using the repository's dependency graph:
+
+<img src={MFGraph} width={'100%'} />
+
+You can use the following template to add a new `domain shell` project:
+
+<CH.Code>
+
+```tsx temlpate
+// src/app/app.tsx
+const <domain>Shell = React.lazy(() => import('<domain>-shell/Module'));
+<Route path="/<domain>" element={<<Domain>Shell />}></Route>;
+
+// src/remotes.d.ts
+declare module 'ag-grid-shell/Module';
+
+// webpack.config.prod.js
+const <domain> = require('./domains/<domain>/<domain>-shell/project.json');
+const prodConfig = {
+  remotes: [
+    [
+      <domain>.name,
+      `http://localhost:${<domain>.targets['serve-static'].options.port}/`,
+    ],
+  ],
+};
+```
+
+```tsx example
+// src/app/app.tsx
+const AgGridShell = React.lazy(() => import('ag-grid-shell/Module'));
+<Route path="/grid" element={<AgGridShell />}></Route>;
+
+// src/remotes.d.ts
+declare module 'ag-grid-shell/Module';
+
+// webpack.config.prod.js
+const home = require('./domains/home/home-shell/project.json');
+const prodConfig = {
+  remotes: [
+    [
+      home.name,
+      `http://localhost:${home.targets['serve-static'].options.port}/`,
+    ],
+  ],
+};
+```
+
+</CH.Code>
+
+<CH.Scrollycoding>
+
+### Our apps
+
+We also need to inform the federation about the names of our applications.
+
+```typescript focus=1:3,13:14
+const auth = require('./domains/auth/auth-shell/project.json');
+// ...
+const shell = require('./project.json');
+
+const apollo = [
+  '@apollo/client/utilities',
+  '@apollo/client/link/subscriptions',
+  '@apollo/client/link/context',
+  '@apollo/client/link/error',
+  '@apollo/client/link/core',
+];
+module.exports = {
+  name: shell.name,
+  remotes: [auth, grid, home].map((x) => x.name),
+  shared: (libraryName, sharedConfig) => {
+    // We want lodash to be tree shaken, and bundled into each host/remote separately.
+    if (apollo.includes(libraryName)) {
+      return {
+        singleton: true,
+        strictVersion: false,
+        requiredVersion: '3.7.6',
+      };
+    }
+  },
+  additionalShared: apollo.map((libraryName) => ({
+    libraryName,
+    sharedConfig: {
+      singleton: true,
+      strictVersion: false,
+      requiredVersion: '3.7.6',
+    },
+  })),
+};
+```
+
+---
+
+### Versionless External libs
+
+We must also specify dependency versions if they are not explicitly specified.
+Like with Apollo. Look at the [Issue](https://github.com/webpack/webpack/issues/15864).
+
+```typescript focus=5:10,17:17,19:21,28:30
+
+```
+
+</CH.Scrollycoding>
+
+As a result, the `app-shell` ui will look like this.
+
+<img src={AppShell} width={'100%'} />
+
+## GraphQL federation
+
+All endpoints splited into 2 parts:
+
+- `/graphql` (domain in federation graph)
+- `/graphql-sub` (domain with subscriptions)
+
+With 2 usecases:
+
+As a `Reader` you want to observe different slices of data from **federation graph**.
+
+As an `Editor` you want to modify latest data from **domain graph**.
+
+As a result, the `getway-service` apollo **federation graph** look like this.
+
+<img src={federationGraph} width={'100%'} />
+
+## Auth
+
+The authorization server `auth-service` allows:
+
+- log in (get a jwt token),
+- create an account with admin roles and any others
+
+All authentication functionality extracted into a separate **framework** module `@lead/auth-client` and reused by all `<domain>-service` microservices.
+
+Authentication client `@lead/auth-client` provide the following features:
+
+- jwt token validation
+- role based access
+
+### Login
+
+Login page copy-pasted from [material-ui templates](https://mui.com/material-ui/getting-started/templates/) and styled with [mui ThemeProvider](https://mui.com/material-ui/customization/theming/).
+
+Сomponent gallery available on [storybook](http://localhost:4407/?path=/story/overview-mui--mui-alert) `@lead/shared/packages/mui` page.
+
+As a result, the `auth-shell` ui will look like this.
+
+<img src={SignIn} width={'100%'} />
+
+The source code of these pages is completely identical. Except for the added button.
+
+The original example looked like this:
+
+<img src={OldSignIn} width={'100%'} />
+
+## Home and framework
+
+This is not a large domain, allowing authorized users with an administrator role to:
+
+- create homes (graphql)
+- get a list of homes (graphql federation)
+- subscribe to the creation of a home (graphql subscriptions)
+- etc.
+
+All functionality not related to the `domain` is placed in separate modules in `framework` folder, reused by all microservices.
+
+```sh
+framework
+  - auth-client # jwt auth / RBAC
+  - db-client # postgress and TypeORM configuration
+  - nest-module # utils for module composition
+  - config # As a devops I whant to provide all configs from env. (Docker/K8s/gitlab-ci/etc.)
+  - logger # winston logger
+  - pub-sub # graphql federation 2-endpoints template
+```
+
+## AgGrid and frontend framework
+
+First of all, you need to install or disable the license.
+Without this, unit tests will fail with an error.
+
+```ts
+suppressAgGridLicense();
+```
+
+Let's just turn off the license check.
+
+```ts
+/**
+ * AgGrid license
+ * watermark: https://github.com/ag-grid/ag-grid/blob/latest/enterprise-modules/core/src/license/watermark.ts
+ * licenseManager: https://github.com/ag-grid/ag-grid/blob/latest/enterprise-modules/core/src/licenseManager.ts
+ */
+export function suppressAgGridLicense() {
+  // if something not defined check links
+  LicenseManager.prototype.validateLicense = () => {};
+  GridCtrl.prototype.showWatermark = () => false;
+  // u should set it in production
+  LicenseManager.setLicenseKey(process.env.AG_LICENSE_KEY || 'LICENSE_KEY');
+}
+```
+
+Then let's extend some `built-in component`. For example the `pagination panel`.
+
+In versions of `ag-grid` prior to `20.0.0`, it was possible to override java-like beans. In the most recent version, we will probably need to patch the initialization factory.
+
+```ts
+addPaginationCompTemplateChild(
+  createElementFromHTML(`<div class="AgPaginationTemplateContent"></div>`)
+);
+```
+
+We have 3 implementation options:
+
+- runtime prototype pollution
+- npm library patch applied in `npm after install` hook
+- library fork
+
+Each of these options has its drawbacks.
+I prefer runtime prototype pollution because it's the easiest to maintain and doesn't require application build changes.
+
+```ts
+interface GridCoreCreatorPrototype {
+  // https://github.com/ag-grid/ag-grid/blob/c583aef47e3e734694149a0645497581a5401eec/community-modules/core/src/ts/grid.ts#L261
+  createAgStackComponentsList(registeredModules: Module[]): any[];
+}
+interface PaginationCompPrototype {
+  // https://github.com/ag-grid/ag-grid/blob/6923eafce79e99cc1fcd0464e1533f60d604d2ea/community-modules/core/src/ts/pagination/paginationComp.ts#L123
+  getTemplate(): string;
+}
+let isGridCoreCreatorPrototypeReady = false;
+let isPaginationCompPrototypeReady = false;
+/**
+ * prototype pollution
+ **/
+export function addPaginationCompTemplateChild(child: HTMLElement) {
+  if (isGridCoreCreatorPrototypeReady || isPaginationCompPrototypeReady) return;
+  isGridCoreCreatorPrototypeReady = true;
+
+  const ctor = GridCoreCreator.prototype as unknown as GridCoreCreatorPrototype;
+  const baseCreateAgStackComponentsList = ctor.createAgStackComponentsList;
+  ctor.createAgStackComponentsList = createAgStackComponentsList;
+  function createAgStackComponentsList(
+    this: GridCoreCreator,
+    registeredModules: Module[]
+  ): any[] {
+    const components: ComponentMeta[] =
+      baseCreateAgStackComponentsList.bind(this)(registeredModules);
+
+    if (!isPaginationCompPrototypeReady) {
+      isPaginationCompPrototypeReady = true;
+      patch(components, child);
+    }
+
+    return components;
+  }
+}
+
+function patch(components: ComponentMeta[], child: HTMLElement) {
+  const PaginationCompMeta = components.find(
+    ({ componentName }) => componentName === 'AgPagination'
+  );
+  // if we don't have PaginationCompMeta, we should setup AgPagination
+  if (PaginationCompMeta) {
+    const PaginationComp = PaginationCompMeta.componentClass;
+    const ctor = PaginationComp.prototype as unknown as PaginationCompPrototype;
+
+    assert(
+      typeof ctor.getTemplate == 'function',
+      `Method getTemplate removed from PaginationComp.
+    Link: https://github.com/ag-grid/ag-grid/blob/6923eafce79e99cc1fcd0464e1533f60d604d2ea/community-modules/core/src/ts/pagination/paginationComp.ts#L123
+    PaginationCompMeta:`,
+      PaginationCompMeta
+    );
+
+    const baseGetTemplate = ctor.getTemplate;
+    // no side effects
+    ctor.getTemplate = function getTemplate(): string {
+      const htmlTemplate = baseGetTemplate.bind(this)();
+      const elementTemplate = createElementFromHTML(htmlTemplate);
+      elementTemplate.insertAdjacentElement('afterbegin', child);
+      return outerHTML(elementTemplate);
+    };
+  }
+}
+```
+
+Next, you need to render the react component in a pre-selected place.
+
+There are two options for this:
+
+- Multiroot react app,
+- and portals.
+
+The last one makes it easier to pass events and state without using a message bus.
+
+<CH.Scrollycoding>
+
+### Multiroot
+
+```tsx focus=13:23
+const gridRef = useRef<HTMLDivElement | null>(null);
+
+const [showAgPaginationTemplateContent, renderFooter] =
+  useState<Element | null>(null);
+
+const onGridReady = useCallback(() => {
+  assert(gridRef.current);
+  const template = gridRef.current.getElementsByClassName(
+    'AgPaginationTemplateContent'
+  )[0];
+  assert(template);
+  assert(template.childNodes.length === 0);
+  ReactDOM.render(
+    <div>
+      <div>Last: {homeResult?.createHome?.name || 'Tap create btn'}</div>
+      <div>
+        From gql pub-sub:
+        {(data?.homes && data?.homes[0] && data?.homes[0].name) ||
+          'Tap create btn'}
+      </div>
+    </div>,
+    template
+  );
+}, []);
+return <div></div>;
+```
+
+---
+
+### Ports
+
+```tsx focus=13:13,17:28
+const gridRef = useRef<HTMLDivElement | null>(null);
+
+const [showAgPaginationTemplateContent, renderFooter] =
+  useState<Element | null>(null);
+
+const onGridReady = useCallback(() => {
+  assert(gridRef.current);
+  const template = gridRef.current.getElementsByClassName(
+    'AgPaginationTemplateContent'
+  )[0];
+  assert(template);
+  assert(template.childNodes.length === 0);
+  renderFooter(template);
+}, []);
+return (
+  <div>
+    {showAgPaginationTemplateContent &&
+      createPortal(
+        <div>
+          <div>Last: {homeResult?.createHome?.name || 'Tap create btn'}</div>
+          <div>
+            From gql pub-sub:
+            {(data?.homes && data?.homes[0] && data?.homes[0].name) ||
+              'Tap create btn'}
+          </div>
+        </div>,
+        showAgPaginationTemplateContent
+      )}
+  </div>
+);
+```
+
+</CH.Scrollycoding>
+
+Our grid architecture can grow, and we would probably like to follow the `SOLID` principles and domain separation, with `single reason to change` both inside and outside modules.
+
+Let's add a simple function that allows you to define ag-grid components without changing the base grid options file.
+
+This will also allow us to chunk modules and lazily load them in the future.
+
+```ts
+export function collectToolPanelContacts(): ToolPanelContract[] {
+  const component = require.context('../', true, /.toolpanel.ts/);
+  if (module.hot) {
+    module.hot.accept(component.id);
+  }
+  return component
+    .keys()
+    .map((key) => (component(key) as { default: ToolPanelContract }).default)
+    .filter((x) => x);
+}
+```
+
+All functionality not related to the `domain` is placed in separate modules in `framework` folder, reused by all microservices.
+
+```sh
+frontend-framework
+  - apollo-client # logger, pub-sub, routs, db, persist, error handling
+  # storybook
+  - storybook-preview # storybook preview page settings
+  - storybook-story # story page wrapper / globals
+  - storybook-temlpate # storybook nodejs env config
+```
+
+We generate `GraphQL` types in the form of `React hooks`, adding `clientName:<domain>` to the context of the operation.
+
+And we can call it like:
+
+```typescript
+const { subscribeToMore, data, error, loading } = gateway.useHomesQuery();
+```
+
+Or if we need to **change the data transactionally**, we can get the latest data directly from `<domain>`:
+
+```typescript
+const { subscribeToMore, data, error, loading } = home.useHomesQuery();
+```
+
+For a modular architecture, it is vital for us to have several connections:
+
+```typescript ApolloLinks
+this.config.domains.reduce(
+  (acc, x) =>
+    If(
+      requestedClientIs(x.name), // clientName check
+      If(isWebsocket, this.wsLink(x), this.httpLink(x)),
+      acc
+    ),
+  this.getway
+);
+```
+
+## Todo
+
+Css:
+
+- tailwind
+
+Scaffolding:
+
+- Generate GraphQL `merge` schema from GraphQL type schema
+- Generate optimistic responses from GraphQL type schema
+
+Offline-first:
+
+- Replace `InMemory` provider with `IndexedDb`
+- Move GraphQL `Subscriptions` to `SharedWorker`
+- Add `colab`, `offline` and `single-user` strategies.
+- PWA
+
+Domain:
+
+- Add stream of `AgGrid` configuration events
+- Add server side `AgGrid` configuration with different server strategies
+
+Infra:
+
+- redis/kafka
+
+- k8s, linkerD
+
+- grafana
+
+## Conclusions
+
+- The apollo federation architecture will cause naming conflicts in the future.
+  This can be avoided by having two endpoints, as done in this project.
+  However, when integrating external systems like cms, you will need to resolve name conflicts.
+  For example using a wondergraph.
+- The Apollo client works well for public sites where data is not stored for a long time and is not modified,
+  but for applications it is not a production ready solution.
+
+</div>

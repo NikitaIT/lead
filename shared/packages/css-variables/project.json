@@ -51,7 +51,7 @@
       "executor": "@nrwl/storybook:storybook",
       "options": {
         "uiFramework": "@storybook/react",
-        "port": 4400,
+        "port": 4404,
         "configDir": "shared/packages/css-variables/.storybook"
       },
       "configurations": {

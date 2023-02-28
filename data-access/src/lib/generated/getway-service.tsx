@@ -236,6 +236,8 @@ export type RefreshTokenQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type RefreshTokenQuery = { __typename?: 'Query', refreshToken: string };
 
+export type HomesQueryResultItemFragment = { __typename?: 'Home', id: string, name: string, description: string, user: { __typename?: 'User', id: string, username: string } | null };
+
 export type AllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -246,6 +248,8 @@ export type HomesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type HomesQuery = { __typename?: 'Query', homes: Array<{ __typename?: 'Home', id: string, name: string, description: string, user: { __typename?: 'User', id: string, username: string } | null }> | null };
 
+export type HomeCreatedFragment = { __typename?: 'Home', id: string, name: string, description: string, is_active: boolean };
+
 export type CreateHomeMutationVariables = Exact<{
   payload: HomeInput;
 }>;
@@ -253,7 +257,25 @@ export type CreateHomeMutationVariables = Exact<{
 
 export type CreateHomeMutation = { __typename?: 'Mutation', createHome: { __typename?: 'Home', id: string, name: string, description: string, is_active: boolean } | null };
 
-
+export const HomesQueryResultItemFragmentDoc = gql`
+    fragment HomesQueryResultItem on Home {
+  id
+  name
+  description
+  user {
+    id
+    username
+  }
+}
+    `;
+export const HomeCreatedFragmentDoc = gql`
+    fragment HomeCreated on Home {
+  id
+  name
+  description
+  is_active
+}
+    `;
 export const LoginDocument = gql`
     query login($user: LoginUserInput!) {
   login(user: $user) {
@@ -367,16 +389,10 @@ export type AllUsersQueryResult = Apollo.QueryResult<AllUsersQuery, AllUsersQuer
 export const HomesDocument = gql`
     query homes {
   homes {
-    id
-    name
-    user {
-      id
-      username
-    }
-    description
+    ...HomesQueryResultItem
   }
 }
-    `;
+    ${HomesQueryResultItemFragmentDoc}`;
 
 /**
  * __useHomesQuery__
@@ -407,13 +423,10 @@ export type HomesQueryResult = Apollo.QueryResult<HomesQuery, HomesQueryVariable
 export const CreateHomeDocument = gql`
     mutation createHome($payload: HomeInput!) {
   createHome(payload: $payload) {
-    id
-    name
-    description
-    is_active
+    ...HomeCreated
   }
 }
-    `;
+    ${HomeCreatedFragmentDoc}`;
 export type CreateHomeMutationFn = Apollo.MutationFunction<CreateHomeMutation, CreateHomeMutationVariables>;
 
 /**
@@ -511,3 +524,14 @@ export type StrictTypedTypePolicies = {
 	}
 };
 export type TypedTypePolicies = StrictTypedTypePolicies & TypePolicies;
+
+      export interface PossibleTypesResultData {
+        possibleTypes: {
+          [key: string]: string[]
+        }
+      }
+      const result: PossibleTypesResultData = {
+  "possibleTypes": {}
+};
+      export default result;
+    

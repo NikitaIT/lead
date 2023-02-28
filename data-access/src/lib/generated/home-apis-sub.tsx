@@ -78,28 +78,28 @@ export type Scalars = {
 };
 
 export type Home = {
-  __typename?: 'Home';
-  created_at: Maybe<Scalars['Date']>;
-  description: Scalars['String'];
-  display_images: Maybe<Array<Scalars['String']>>;
-  id: Scalars['ID'];
-  is_active: Scalars['Boolean'];
-  name: Scalars['String'];
-  original_images: Maybe<Array<Scalars['String']>>;
-  updated_at: Maybe<Scalars['Date']>;
-  user: Maybe<User>;
+  readonly __typename?: 'Home';
+  readonly created_at: Maybe<Scalars['Date']>;
+  readonly description: Scalars['String'];
+  readonly display_images: Maybe<ReadonlyArray<Scalars['String']>>;
+  readonly id: Scalars['ID'];
+  readonly is_active: Scalars['Boolean'];
+  readonly name: Scalars['String'];
+  readonly original_images: Maybe<ReadonlyArray<Scalars['String']>>;
+  readonly updated_at: Maybe<Scalars['Date']>;
+  readonly user: Maybe<User>;
 };
 
 export type HomeInput = {
-  description: Scalars['String'];
-  is_active: Scalars['Boolean'];
-  name: Scalars['String'];
+  readonly description: Scalars['String'];
+  readonly is_active: Scalars['Boolean'];
+  readonly name: Scalars['String'];
 };
 
 export type Mutation = {
-  __typename?: 'Mutation';
-  createHome: Maybe<Home>;
-  updateHome: Maybe<Home>;
+  readonly __typename?: 'Mutation';
+  readonly createHome: Maybe<Home>;
+  readonly updateHome: Maybe<Home>;
 };
 
 
@@ -114,11 +114,11 @@ export type MutationUpdateHomeArgs = {
 };
 
 export type Query = {
-  __typename?: 'Query';
-  activeHomes: Maybe<Array<Home>>;
-  findHomes: Maybe<Array<Home>>;
-  home: Home;
-  homes: Maybe<Array<Home>>;
+  readonly __typename?: 'Query';
+  readonly activeHomes: Maybe<ReadonlyArray<Home>>;
+  readonly findHomes: Maybe<ReadonlyArray<Home>>;
+  readonly home: Home;
+  readonly homes: Maybe<ReadonlyArray<Home>>;
 };
 
 
@@ -132,8 +132,8 @@ export type QueryHomeArgs = {
 };
 
 export type Subscription = {
-  __typename?: 'Subscription';
-  homeAdded: Maybe<Home>;
+  readonly __typename?: 'Subscription';
+  readonly homeAdded: Maybe<Home>;
 };
 
 
@@ -142,30 +142,36 @@ export type SubscriptionHomeAddedArgs = {
 };
 
 export type User = {
-  __typename?: 'User';
-  id: Scalars['ID'];
+  readonly __typename?: 'User';
+  readonly id: Scalars['ID'];
 };
+
+export type HomesQueryResultItemFragment = { readonly __typename?: 'Home', readonly id: string, readonly name: string, readonly description: string, readonly user: { readonly __typename?: 'User', readonly id: string } | null };
 
 export type HomeAddedSubscriptionVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type HomeAddedSubscription = { __typename?: 'Subscription', homeAdded: { __typename?: 'Home', id: string, name: string, description: string, user: { __typename?: 'User', id: string } | null } | null };
+export type HomeAddedSubscription = { readonly __typename?: 'Subscription', readonly homeAdded: { readonly __typename?: 'Home', readonly id: string, readonly name: string, readonly description: string, readonly user: { readonly __typename?: 'User', readonly id: string } | null } | null };
 
-
-export const HomeAddedDocument = gql`
-    subscription homeAdded($id: ID!) {
-  homeAdded(id: $id) {
+export const HomesQueryResultItemFragmentDoc = gql`
+    fragment HomesQueryResultItem on Home {
+  id
+  name
+  description
+  user {
     id
-    name
-    description
-    user {
-      id
-    }
   }
 }
     `;
+export const HomeAddedDocument = gql`
+    subscription homeAdded($id: ID!) {
+  homeAdded(id: $id) {
+    ...HomesQueryResultItem
+  }
+}
+    ${HomesQueryResultItemFragmentDoc}`;
 
 /**
  * __useHomeAddedSubscription__
@@ -244,3 +250,14 @@ export type StrictTypedTypePolicies = {
 	}
 };
 export type TypedTypePolicies = StrictTypedTypePolicies & TypePolicies;
+
+      export interface PossibleTypesResultData {
+        possibleTypes: {
+          [key: string]: string[]
+        }
+      }
+      const result: PossibleTypesResultData = {
+  "possibleTypes": {}
+};
+      export default result;
+    

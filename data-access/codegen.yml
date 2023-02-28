@@ -8,11 +8,14 @@ generates:
       - 'typescript-operations'
       - 'typescript-react-apollo'
       - 'typescript-apollo-client-helpers'
+
+      - 'fragment-matcher'
     config:
       withHooks: true
       withComponent: false
       withHOC: false
       avoidOptionals: true
+      immutableTypes: true
       scalars:
         JSON: string
         UUID: string
@@ -29,6 +32,8 @@ generates:
       - 'typescript-operations'
       - 'typescript-react-apollo'
       - 'typescript-apollo-client-helpers'
+
+      - 'fragment-matcher'
     config:
       withHooks: true
       withComponent: false
@@ -69,6 +74,8 @@ generates:
       - 'typescript-operations'
       - 'typescript-react-apollo'
       - 'typescript-apollo-client-helpers'
+
+      - 'fragment-matcher'
     config:
       withHooks: true
       withComponent: false
@@ -89,6 +96,7 @@ generates:
       - 'typescript-operations'
       - 'typescript-react-apollo'
       - 'typescript-apollo-client-helpers'
+      - 'fragment-matcher'
     config:
       withHooks: true
       withComponent: false
@@ -101,3 +109,8 @@ generates:
       defaultBaseOptions:
         context:
           clientName: 'getway'
+  data-access/src/lib/generated/introspection.json:
+    schema: 'http://localhost:4000/graphql'
+    documents: 'data-access/src/lib/getway-service/**/*.graphql'
+    plugins:
+      - 'introspection'

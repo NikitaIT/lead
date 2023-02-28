@@ -1,6 +1,6 @@
 import { ApolloClient, Config, ConfigSchema } from '@lead/apollo-client';
 import { assert } from '@lead/std';
-import { getway } from '@lead/data-access';
+import { getway, home, introspection } from '@lead/data-access';
 
 import pkg from '../../package.json';
 export function initApollo(): ApolloClient {
@@ -10,19 +10,79 @@ export function initApollo(): ApolloClient {
   assert(process.env.NX_GETWAY_SERVER, 'Set .env NX_GETWAY_SERVER');
   assert(pkg.name, 'Set .package.json name');
   assert(pkg.version, 'Set .package.json version');
+  // used to define fragments
+  // TODO: how to merge it?
+  // p.s. generator not works
+  const possibleTypes = {
+    ...home.default.possibleTypes,
+    ...getway.default.possibleTypes,
+  };
 
+  // used to update related query
+  // todo: generate additional keyFields from schema
+  // todo: generate merge fn from microservice data schema (define which type+id is same, or we can use some convention on federation schema endpoints)
   const typePolicies: getway.StrictTypedTypePolicies = {
+    // https://github.com/apollographql/apollo-client/issues/5876
     Home: {
       keyFields: ['id'],
-      merge: (existingOrNotInCash, incoming, options) => {
-        return options.mergeObjects(existingOrNotInCash, incoming);
-      },
     },
     User: {
       keyFields: ['id'],
     },
-    Mutation: {},
-    Query: {},
+    Mutation: {
+      fields: {
+        createHome: {
+          // read(existing, options) {
+          //   return existing;
+          // },
+          // merge: (existingOrNotInCashRef, incomingRef, options) => {
+          //   const userSended = options.variables?.payload;
+          //   if (!existingOrNotInCashRef && incomingRef) {
+          //     try {
+          //       // 1. don't client.modify - circumvents any merge functions
+          //       const client = options.cache;
+          //       // read previos
+          //       const data = client.readQuery<getway.HomesQuery>({
+          //         query: getway.HomesDocument,
+          //       });
+          //       // const y = client.read({
+          //       //   id: client.identify(incomingRef),
+          //       //   optimistic: false,
+          //       //   query: HomeAddedDocument,
+          //       // });
+          //       const incoming = client.readFragment({
+          //         id: client.identify(incomingRef),
+          //         fragment: getway.HomeCreatedFragmentDoc,
+          //       });
+          //       // if data = undefined then query not executed,
+          //       // and we can skip it (for optimistic we should add read from cash fn, instead of this update)
+          //       if (data) {
+          //         options.cache.writeQuery({
+          //           query: getway.HomesDocument,
+          //           data: {
+          //             homes: [incoming, ...(data.homes || [])],
+          //           },
+          //         });
+          //       }
+          //     } catch (e) {
+          //       console.error(e); // todo: handle
+          //     }
+          //   }
+          //   return options.mergeObjects(existingOrNotInCashRef, incomingRef);
+          // },
+        },
+      },
+    },
+    Query: {
+      fields: {
+        home: {},
+        homes: {
+          // merge: (existingOrNotInCash, incoming, options) => {
+          //   return incoming;
+          // },
+        },
+      },
+    },
   };
   const config: Config = {
     localForageOptions: {
@@ -64,28 +124,15 @@ export function initApollo(): ApolloClient {
         return token && token !== 'undefined' ? token : '';
       },
     },
+    // https://christianlydemann.com/graphql-cache-updates-made-easy/
+    // https://www.freecodecamp.org/news/how-to-update-the-apollo-clients-cache-after-a-mutation-79a0df79b840/
     inMemoryCacheConfig: {
       typePolicies,
-      // typePolicies: {
-      //   // Type policy map
-      //   Product: {
-      //     fields: {
-      //       // Field policy map for the Product type
-      //       isInCart: {
-      //         // Field policy for the isInCart field
-      //         read(_, { variables }) {
-      //           // The read function for the isInCart field
-      //           return localStorage
-      //             .getItem('CART')
-      //             .includes(variables.productId);
-      //         },
-      //       },
-      //     },
-      //   },
-      // },
+      possibleTypes,
     },
   };
   ConfigSchema.validateSync(config);
+  // try https://wundergraph.com/
   // Reuse client on the client-side
   return new ApolloClient(null, config, {});
 }

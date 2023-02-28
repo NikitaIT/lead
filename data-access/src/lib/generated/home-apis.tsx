@@ -152,24 +152,30 @@ export type _Service = {
   sdl: Maybe<Scalars['String']>;
 };
 
+export type HomesQueryResultItemFragment = { __typename?: 'Home', id: string, name: string, description: string, user: { __typename?: 'User', id: string } | null };
+
 export type HomesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type HomesQuery = { __typename?: 'Query', homes: Array<{ __typename?: 'Home', id: string, name: string, description: string, user: { __typename?: 'User', id: string } | null }> | null };
 
-
-export const HomesDocument = gql`
-    query homes {
-  homes {
+export const HomesQueryResultItemFragmentDoc = gql`
+    fragment HomesQueryResultItem on Home {
+  id
+  name
+  description
+  user {
     id
-    name
-    user {
-      id
-    }
-    description
   }
 }
     `;
+export const HomesDocument = gql`
+    query homes {
+  homes {
+    ...HomesQueryResultItem
+  }
+}
+    ${HomesQueryResultItemFragmentDoc}`;
 
 /**
  * __useHomesQuery__
@@ -254,3 +260,19 @@ export type StrictTypedTypePolicies = {
 	}
 };
 export type TypedTypePolicies = StrictTypedTypePolicies & TypePolicies;
+
+      export interface PossibleTypesResultData {
+        possibleTypes: {
+          [key: string]: string[]
+        }
+      }
+      const result: PossibleTypesResultData = {
+  "possibleTypes": {
+    "_Entity": [
+      "Home",
+      "User"
+    ]
+  }
+};
+      export default result;
+    

@@ -1,9 +1,9 @@
 import './styles.css';
 import styled from 'styled-components';
-import { Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 import Root from './root/root';
 
-import { ThemeProvider } from '@mui/material';
+import { Button, ThemeProvider } from '@mui/material';
 import { createTheme, themeObject } from '@lead/shared/packages/mui';
 // import { Tasks } from '@lead/tasks';
 import tw from 'twin.macro';
@@ -48,6 +48,7 @@ const theme = createTheme({
     },
   },
 });
+(window as any).theme = theme;
 
 const AgGridShell = React.lazy(() => import('ag-grid-shell/Module'));
 const HomeShell = React.lazy(() => import('home-shell/Module'));
@@ -59,9 +60,44 @@ export function App() {
       <ThemeProvider theme={theme}>
         <React.Suspense fallback={<div>Error</div>}>
           <Routes>
-            <Route path="/" element={<div>Hi root</div>}></Route>
+            <Route
+              path="/"
+              element={
+                <div>
+                  <Button
+                    component={Link}
+                    to="/grid"
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                  >
+                    Grid
+                  </Button>
+                  <Button
+                    component={Link}
+                    to="/auth"
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                  >
+                    Auth
+                  </Button>
+                  <Button
+                    component={Link}
+                    to="/home"
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                  >
+                    Home
+                  </Button>
+                </div>
+              }
+            ></Route>
             <Route path="/root" element={<Root />}></Route>
-            {/* <Route path="/tasks" element={<Tasks />}></Route> */}
             <Route path="/grid" element={<AgGridShell />}></Route>
             <Route path="/home" element={<HomeShell />}></Route>
             <Route path="/auth" element={<AuthShell />}></Route>

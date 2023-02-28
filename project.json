@@ -111,10 +111,5 @@
     }
   },
   "tags": [],
-  "implicitDependencies": [
-    "ag-grid-shell",
-    "auth-shell",
-    "home-shell",
-    "getway-service"
-  ]
+  "implicitDependencies": ["ag-grid-shell", "auth-shell", "home-shell"]
 }

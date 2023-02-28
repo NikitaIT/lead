@@ -1,3 +1,13 @@
+fragment HomesQueryResultItem on Home {
+  id
+  name
+  description
+  user {
+    id
+    username
+  }
+}
+
 query allUsers {
   users {
     id
@@ -11,20 +21,19 @@ query allUsers {
 
 query homes {
   homes {
-    id
-    name
-    user {
-      id
-      username
-    }
-    description
+    ...HomesQueryResultItem
   }
 }
+
+fragment HomeCreated on Home {
+  id
+  name
+  description
+  is_active
+}
+
 mutation createHome($payload: HomeInput!) {
   createHome(payload: $payload) {
-    id
-    name
-    description
-    is_active
+    ...HomeCreated
   }
 }

@@ -1,10 +1,13 @@
+fragment HomesQueryResultItem on Home {
+  id
+  name
+  description
+  user {
+    id
+  }
+}
 query homes {
   homes {
-    id
-    name
-    user {
-      id
-    }
-    description
+    ...HomesQueryResultItem
   }
 }
