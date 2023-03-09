@@ -3,7 +3,13 @@ import { GridOptions } from '@ag-grid-community/core';
 //import { collectToolPanels } from '@/infra/collectToolPanels';
 
 function _(): GridOptions {
-  const components = {};
+  const components = {
+    numberEditor: {},
+    stringEditor: {},
+    textEditor: {},
+    reachTextEditor: {},
+  };
+
   // Object.fromEntries(
   //   Object.entries(collectToolPanels()).map(([id, x]) => [
   //     id,

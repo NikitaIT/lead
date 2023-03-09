@@ -1,3 +1,6 @@
+import { EditXHtml } from '@lead/html-lang';
+EditXHtml.useNative();
+
 export const globalTypes = {
   theme: {
     name: 'Theme',
@@ -13,4 +16,15 @@ export const globalTypes = {
       ],
     },
   },
+  // add axe overrides
+  // a11y: {
+  //   config: {
+  //     rules: [
+  //       {
+  //         id: 'listItem',
+  //         enable: false,
+  //       },
+  //     ],
+  //   },
+  // },
 };

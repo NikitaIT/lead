@@ -8,6 +8,7 @@ import {
   LoggerConfig,
   LoggerConfigSchema,
 } from './domain';
+import 'localforage';
 
 export const ConfigSchema = object({
   name: string().required(),

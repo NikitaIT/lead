@@ -9,6 +9,12 @@ export function isNullOrUndefined<T>(
 export function isNotUndefined<T>(x: T | undefined): x is T {
   return x !== undefined;
 }
+
+export function isFelsely<T>(x: T | ''): x is T {
+  // todo: cover all cases
+  return isNullOrUndefined(x) || (typeof x === 'string' && !isNotEmpty(x));
+}
+
 export function isNotEmpty<T>(x: T | ''): x is T {
   return x !== '';
 }

@@ -2,6 +2,10 @@
   "compileOnSave": false,
   "compilerOptions": {
     "rootDir": ".",
+    "typeRoots": [
+      "node_modules/@types",
+      "frontend-framework/html-lang/src/types"
+    ],
     "sourceMap": true,
     "allowJs": true,
     "declaration": false,
@@ -21,10 +25,13 @@
       "@lead/ag-grid": ["domains/grid/ag-grid/src/index.ts"],
       "@lead/apollo-client": ["frontend-framework/apollo-client/src/index.ts"],
       "@lead/auth-client": ["framework/auth-client/src/index.ts"],
+      "@lead/axe": ["frontend-framework/axe/src/index.ts"],
       "@lead/config": ["framework/config/src/index.ts"],
       "@lead/data-access": ["data-access/src/index.ts"],
       "@lead/db-client": ["framework/db-client/src/index.ts"],
       "@lead/graphql-client": ["framework/graphql-client/src/index.ts"],
+      "@lead/html-lang": ["frontend-framework/html-lang/src/index.ts"],
+      "@lead/mui-lang": ["frontend-framework/mui-lang/src/index.ts"],
       "@lead/logger": ["framework/logger/src/index.ts"],
       "@lead/models": ["domains/dev/models/src/index.ts"],
       "@lead/nest-module": ["framework/nest-module/src/index.ts"],

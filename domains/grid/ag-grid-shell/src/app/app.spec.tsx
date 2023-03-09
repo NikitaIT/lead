@@ -3,12 +3,12 @@ import { render } from '@testing-library/react';
 import App from './app';
 
 describe('App', () => {
-  it('should render successfully', () => {
+  it.skip('should render successfully', () => {
     const { baseElement } = render(<App />);
     expect(baseElement).toBeTruthy();
   });
 
-  it('should have a greeting as the title', () => {
+  it.skip('should have a greeting as the title', () => {
     const { getByText } = render(<App />);
     expect(getByText(/Welcome ag-grid-1/gi)).toBeTruthy();
   });

@@ -223,6 +223,52 @@ The original example looked like this:
 
 <img src={OldSignIn} width={'100%'} />
 
+## Components Lang
+
+```yaml
+html-lang # HTML allowed components like input/button/...
+mui-lang
+```
+
+HTML is not perfect. I know of at least 4 things that are still not fixed in it (due to compatibility):
+
+- `input` element `type=`, primary(submit) and secondary buttons never change their `type` at runtime - **code smell**.
+  sLet's [Replace Type Code with Subclasses](https://refactoring.guru/replace-type-code-with-subclasses)
+- `option` element have **only one** text child.
+- `input type="number"` not works with i18n.
+- `input type="date"` can not be flat.
+
+Most of these problems can be solved with a subtle abstraction over html elements.
+
+What does HTML do better than existing libraries such as `@mui`:
+
+- `option / li` is single for all components.
+- `label` is reference to element by id, instead of being provided as prop.
+
+What are both doing wrong?
+
+- provide ready-made templates like `<Input leftIcon={<Icon/>}>` instead of `<InputRoot><Icon class="left"/><Input/></InputRoot>`
+
+So:
+
+```yaml
+# 1. define window["XHtml"] = XHtml;
+html-lang
+  - src # <html-lang-src>
+    - types
+      - html-lang
+        - index.d.ts # provides global types
+# 2. provide path to globals in tsconfig.base.json
+compilerOptions.typeRoots[0]
+ - "<html-lang-src>/types"
+# 3. provide path to setup in jest.preset.js
+setupFilesAfterEnv[0]
+  - "dist/<html-lang-src>/index.js"
+# 4. provide path to setup in storybook-preview
+storybook-preview
+ - import('@lead/html-lang').EditXHtml.useNative()
+```
+
 ## Home and framework
 
 This is not a large domain, allowing authorized users with an administrator role to:
@@ -282,11 +328,40 @@ addPaginationCompTemplateChild(
 
 We have 3 implementation options:
 
-- runtime prototype pollution
-- npm library patch applied in `npm after install` hook
-- library fork
+1. runtime prototype pollution
+2. npm library patch applied in `npm postinstall` hook
+3. library fork
+
+### npm library patch
+
+Let's try:
+
+```sh
+npm i -D patch-package
+```
+
+And Then
+
+```diff
+ "scripts": {
++  "postinstall": "patch-package"
+ }
+```
+
+#### How to use
+
+```sh
+# fix a bug in one of your dependencies
+edit node_modules/@ag-grid-community/core/src/ts/pagination/paginationComp.ts
+
+# run patch-package to create a .patch file
+npx patch-package some-package
+```
+
+### runtime prototype pollution
 
 Each of these options has its drawbacks.
+
 I prefer runtime prototype pollution because it's the easiest to maintain and doesn't require application build changes.
 
 ```ts

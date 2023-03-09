@@ -2,7 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc",
-    "types": ["node", "webpack-env"]
+    "types": ["node", "webpack-env", "html-lang"]
   },
   "files": [
     "../../../node_modules/@nrwl/react/typings/cssmodule.d.ts",

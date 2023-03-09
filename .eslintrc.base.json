@@ -2,10 +2,30 @@
   "root": true,
   "ignorePatterns": ["**/*"],
   "plugins": ["@nrwl/nx"],
+  "settings": {
+    "linkComponents": [
+      "Hyperlink",
+      { "name": "Link", "linkAttribute": "href" },
+      "Hyperlink",
+      { "name": "XHtml.a", "linkAttribute": "href" }
+    ],
+    "formComponents": [
+      "CustomForm",
+      { "name": "Form", "formAttribute": "action" }
+    ]
+  },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": ["@mui/*/*/*"]
+          }
+        ],
+        "react/jsx-no-undef": 0,
+        "react/jsx-pascal-case": [2, { "allowNamespace": true }],
         "@nrwl/nx/enforce-module-boundaries": 0
       }
     },

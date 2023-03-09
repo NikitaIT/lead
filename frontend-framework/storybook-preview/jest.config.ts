@@ -8,8 +8,13 @@ export default {
     },
   },
   transform: {
-    '^.+\\.[tj]s$': 'ts-jest',
+    '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '@nrwl/react/plugins/jest',
+    '^.+\\.[tj]sx?$': ['babel-jest', { presets: ['@nrwl/react/babel'] }],
   },
-  moduleFileExtensions: ['ts', 'js', 'html'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
+  // transform: {
+  //   '^.+\\.[tj]s$': 'ts-jest',
+  // },
+  // moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/storybook-preview',
 };

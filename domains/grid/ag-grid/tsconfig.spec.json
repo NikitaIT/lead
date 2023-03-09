@@ -3,7 +3,7 @@
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc",
     "module": "commonjs",
-    "types": ["jest", "node", "webpack-env"]
+    "types": ["jest", "node", "webpack-env", "html-lang"]
   },
   "include": [
     "jest.config.ts",

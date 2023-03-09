@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LinkRenderer should render successfully link should be hidden 1`] = `
+<body>
+  <div>
+    value
+  </div>
+</body>
+`;
+
+exports[`LinkRenderer should render successfully value should be visible 1`] = `
+<body>
+  <div>
+    <a
+      href="#value"
+      rel="noreferrer"
+      target="_blank"
+    >
+      value
+    </a>
+  </div>
+</body>
+`;
+
+exports[`LinkRenderer should render successfully valueFormatted should be visible 1`] = `
+<body>
+  <div>
+    <a
+      href="#value"
+      rel="noreferrer"
+      target="_blank"
+    >
+      valueFormatted
+    </a>
+  </div>
+</body>
+`;

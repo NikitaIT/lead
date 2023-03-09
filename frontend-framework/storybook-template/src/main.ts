@@ -14,6 +14,9 @@ export const config: StorybookConfig = {
   addons: [
     '@storybook/addon-essentials',
     '@nrwl/react/plugins/storybook',
+    '@storybook/addon-jest',
+    '@storybook/addon-a11y', // https://storybook.js.org/addons/@storybook/addon-a11y
+    // '@storybook/addon-graphql',
     {
       name: '@storybook/addon-docs',
       options: {
