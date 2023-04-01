@@ -240,7 +240,7 @@
     "y-indexeddb": "^9.0.9",
     "y-webrtc": "^10.2.4",
     "yjs": "^13.5.48",
-    "yup": "^1.0.0"
+    "yup": "^1.0.2"
   },
   "lint-staged": {
     "*.js": "eslint --cache --fix",
