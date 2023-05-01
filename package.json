@@ -158,7 +158,7 @@
     "@golevelup/nestjs-modules": "^0.6.1",
     "@hookform/resolvers": "^2.9.10",
     "@mdx-js/react": "^2.3.0",
-    "@mui/icons-material": "^5.11.0",
+    "@mui/icons-material": "^5.11.16",
     "@mui/lab": "^5.0.0-alpha.119",
     "@mui/material": "^5.11.7",
     "@mui/styled-engine-sc": "^5.11.0",
