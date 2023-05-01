@@ -85,7 +85,7 @@
     "autoprefixer": "10.4.13",
     "babel-jest": "28.1.1",
     "babel-loader": "8.1.0",
-    "babel-plugin-styled-components": "1.10.7",
+    "babel-plugin-styled-components": "2.1.1",
     "cypress": "^12.2.0",
     "cypress-plugin-tab": "^1.0.5",
     "debug": "^4.3.3",
